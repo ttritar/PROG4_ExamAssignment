@@ -10,6 +10,9 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
+#include <chrono>
+#include <thread>
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -83,12 +86,37 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
-	// todo: this update loop could use some work.
-	bool doContinue = true;
-	while (doContinue)
+	// GAME LOOP
+	//-----------
+	bool do_continue = true;
+	auto last_time = std::chrono::high_resolution_clock::now();;
+	float lag = 0.0f;
+	const float fixed_time_step = 0.02f;
+	const int ms_per_frame = 16;
+	
+	while (do_continue)
 	{
-		doContinue = input.ProcessInput();
-		sceneManager.Update();
+		const auto current_time = std::chrono::high_resolution_clock::now();;
+		const float delta_time = std::chrono::duration<float>(current_time - last_time).count()	;
+		last_time = current_time;
+		lag += delta_time;
+
+		//1. PROCESS INPUT
+		do_continue = input.ProcessInput();
+
+		//2. UPDATE GAME
+		while (lag >= fixed_time_step)
+		{
+			sceneManager.FixedUpdate(fixed_time_step);
+			lag -= fixed_time_step;
+		}
+		sceneManager.Update(delta_time);
+
+		//3. RENDER
 		renderer.Render();
+
+		//4. Wait until time for next frame.
+		const auto sleep_time = current_time + std::chrono:: milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
+		std::this_thread::sleep_for(sleep_time);
 	}
 }

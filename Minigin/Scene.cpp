@@ -26,11 +26,28 @@ void Scene::RemoveAll()
 	m_objects.clear();
 }
 
-void Scene::Update()
+void Scene::Update(float deltaTime)
 {
 	for(auto& object : m_objects)
 	{
-		object->Update();
+		object->Update(deltaTime);
+	}
+
+	for (auto& object : m_objects)
+	{
+		object->LateUpdate(deltaTime);
+	}
+
+	auto iterator = std::remove_if(m_objects.begin(), m_objects.end(),	// evrything that should be removed is put on the back of the vector
+		[](const std::shared_ptr<GameObject>& object) { return object->pendingRemove; });
+	m_objects.erase(iterator, m_objects.end());
+}
+
+void dae::Scene::FixedUpdate(float fixedStep)
+{
+	for (auto& object : m_objects)
+	{
+		object->FixedUpdate(fixedStep);
 	}
 }
 
