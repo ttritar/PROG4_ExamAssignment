@@ -14,7 +14,6 @@ namespace dae
 		virtual void Render() const {};
 
 
-
 		virtual ~BaseComponent()=default;
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;

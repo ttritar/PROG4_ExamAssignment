@@ -3,7 +3,14 @@
 #include "SceneManager.h"
 #include "Texture2D.h"
 
-int GetOpenGLDriverIndex()
+#include "imgui.h"
+#include "implot.h"
+#include "backends/imgui_impl_sdl2.h"
+#include "backends/imgui_impl_opengl3.h"  // Change if using Vulkan/DirectX
+
+
+
+static int GetOpenGLDriverIndex()
 {
 	auto openglIndex = -1;
 	const auto driverCount = SDL_GetNumRenderDrivers();
@@ -21,25 +28,63 @@ void dae::Renderer::Init(SDL_Window* window)
 {
 	m_window = window;
 	m_renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED);
-	if (m_renderer == nullptr) 
+	if (m_renderer == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
-}
 
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImPlot::CreateContext();
+
+	ImGuiIO& io = ImGui::GetIO(); 
+	(void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
+	ImGui::StyleColorsDark();
+	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
+	ImGui_ImplOpenGL3_Init();
+
+}
 void dae::Renderer::Render() const
 {
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_renderer);
 
+	// ImGui
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
+	
 	SceneManager::GetInstance().Render();
 	
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+
+	ImGuiIO& io = ImGui::GetIO();
+	(void)io;
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) 
+	{
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+	}
+
 	SDL_RenderPresent(m_renderer);
 }
 
+
 void dae::Renderer::Destroy()
 {
+	//imgui destryo
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImPlot::DestroyContext();
+	ImGui::DestroyContext();
+
+
 	if (m_renderer != nullptr)
 	{
 		SDL_DestroyRenderer(m_renderer);
@@ -67,3 +112,8 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 }
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }
+
+SDL_Window* dae::Renderer::GetSDLWindow() const
+{
+	return m_window;
+}

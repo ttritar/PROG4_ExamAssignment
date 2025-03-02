@@ -8,7 +8,7 @@
 namespace dae
 {
 
-	struct TransformAlt
+	struct WorldTransform
 	{
 		float matrix[16] = {
 			1,0,0,0,
@@ -17,10 +17,17 @@ namespace dae
 			0,0,0,1 };
 	};
 
+	class GameObject3D
+	{
+	public:
+		WorldTransform transform;
+		int ID;
+	};
+
 	class GameObject3DAlt
 	{
 	public:
-		TransformAlt transform;
+		WorldTransform* transform;
 		int ID;
 	};
 
@@ -28,12 +35,16 @@ namespace dae
 	class ThrashTheCacheComponent final : public BaseComponent
 	{
 	public:
-		//void Update(float deltaTime) override;
+		void Render()const override;
+		void ImGuiWindow()const;
+		void ImGuiCreateGraph(const std::vector<glm::vec2>&resultsVec)const;
+
+		void TrashTheCacheInt()const;
+		void TrashTheCacheGameObject3D()const;
+		void TrashTheCacheGameObject3DAlt()const;
+
 
 		ThrashTheCacheComponent(std::shared_ptr<dae::GameObject> owner);
-
-		void MeasureTimeInt(const int arrSize, const int sampleSize);	//Default = int
-		void MeasureTimeGameObject3D(const int arrSize, const int sampleSize);
 
 		virtual ~ThrashTheCacheComponent() = default;
 		ThrashTheCacheComponent(const ThrashTheCacheComponent& other) = delete;
@@ -43,7 +54,11 @@ namespace dae
 
 
 	private:
-		
+		mutable int m_sampleSize = 10;
+		mutable std::vector<glm::vec2> m_resultsInt;
+		mutable std::vector<glm::vec2> m_resultsGameObject3D;
+		mutable std::vector<glm::vec2> m_resultsGameObject3DAlt;
+		mutable bool m_isAlt = 0;
 	};
 
 }
