@@ -39,7 +39,7 @@ void Scene::Update(float deltaTime)
 	}
 
 	auto iterator = std::remove_if(m_objects.begin(), m_objects.end(),	// evrything that should be removed is put on the back of the vector
-		[](const std::shared_ptr<GameObject>& object) { return object->pendingRemove; });
+		[](const std::shared_ptr<GameObject>& object) { return object->m_pendingRemoval; });
 	m_objects.erase(iterator, m_objects.end());
 }
 

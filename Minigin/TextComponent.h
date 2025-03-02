@@ -2,8 +2,7 @@
 #include <string>
 #include <memory>
 
-#include "Transform.h"
-
+#include "GameObject.h"
 #include "BaseComponent.h"
 
 namespace dae
@@ -19,7 +18,7 @@ namespace dae
 
 		void SetText(const std::string& text);
 
-		TextComponent(const std::string& text, std::shared_ptr<Font> font);
+		TextComponent(std::shared_ptr<dae::GameObject> owner, const std::string& text, std::shared_ptr<Font> font);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;

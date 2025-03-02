@@ -25,14 +25,20 @@ namespace dae
 
 		// Datamember functions
 		//------------------
+		void Update(float deltaTime);
+		void LateUpdate(float deltaTime);
+		void FixedUpdate(float fixedStep);
+		void Render() const;
+		Transform GetTransform()const;
 
-		void AddComponent(std::shared_ptr<BaseComponent> component) {
+
+		// COMPONENTS
+		void AddComponent(std::shared_ptr<BaseComponent> component)
+		{
 			m_components.push_back(component);
-			component->SetOwner(this);
 		}
-		template <typename T>
-		void RemoveComponent(int index = 0) {
-			int idx = 0;
+		template <typename T>	void RemoveComponent()
+		{
 
 			if (m_components.size() == 0)
 				return;
@@ -41,17 +47,11 @@ namespace dae
 			{
 				if (auto* castedComponent = dynamic_cast<T*>(component.get()))
 				{
-					if (idx == index)
-						castedComponent->pendingRemove = true;
-					++idx;
-
-					if (idx >= m_components.size())
-						break;
+					castedComponent->pendingRemove = true;
 				}
 			}
 		}
-		template <typename T>
-		void RemoveAllComponents()	// Removes all components of type T
+		template <typename T>	void RemoveAllComponents()
 		{
 			if (m_components.size() == 0)
 				return;
@@ -63,10 +63,9 @@ namespace dae
 					castedComponent->pendingRemove = true;
 				}
 			}
-		}
-		template <typename T>
-		T* GetComponent(int index = 0){
-			int idx = 0;
+		};
+		template <typename T>	T* GetComponent()
+		{
 
 			if (m_components.size() == 0)
 				return nullptr;
@@ -75,19 +74,13 @@ namespace dae
 			{
 				if (auto* castedComponent = dynamic_cast<T*>(component.get()))
 				{
-					if (idx == index)
-						return castedComponent;
-					++idx;
-
-					if (idx >= m_components.size())
-						break;
+					return castedComponent;
 				}
 			}
 
 			return nullptr;
 		}
-		template <typename T>
-		bool CheckComponentAdded()
+		template <typename T>	bool CheckComponentAdded()
 		{
 			for (const auto& component : m_components)
 			{
@@ -100,19 +93,32 @@ namespace dae
 			return false;
 		}
 
-		void Update(float deltaTime);
-		void LateUpdate(float deltaTime);
-		void FixedUpdate(float fixedStep);
-		void Render() const;
 
-		void SetPosition(float x, float y);
+		// PARENT-CHILD
+		void SetParent(GameObject* parent, bool keepWorldPosition);
+		GameObject* GetParent() const;
+		size_t GetChildCount()const;
+		GameObject* GetChildAt(unsigned int index)const;
+		bool IsChild(GameObject* object)const;
 
+		// TRANSFORM
+		void SetPositionDirty();
+		void SetLocalPosition(const glm::vec3& pos);
+		const glm::vec3& GetWorldPosition();
+		void UpdateWorldPosition();
 
-		bool pendingRemove = false;
+		bool m_pendingRemoval = false;
 	private:
 		Transform m_transform{};
 
 		std::vector<std::shared_ptr<BaseComponent>> m_components{};
+
+		GameObject* m_parent{};
+		std::vector<GameObject*> m_children{};
+
+		bool m_positionIsDirty{};
+		glm::vec3 m_localPosition{};
+		glm::vec3 m_worldPosition{};
 
 	};
 }

@@ -5,24 +5,17 @@ namespace dae
 {
 	class GameObject;
 
-	class BaseComponent
+	class BaseComponent	// MAKE INTERFACE
 	{
 	public:
-		virtual void Update([[maybe_unused]]float deltaTime) {};
-		virtual void LateUpdate([[maybe_unused]] float deltaTime) {};
-		virtual void FixedUpdate([[maybe_unused]] float fixedStep) { };
+		virtual void Update(float ) {  };
+		virtual void LateUpdate(float ) {  };
+		virtual void FixedUpdate(float ) {  };
 		virtual void Render() const {};
 
 
-		void SetOwner(GameObject* owner) { m_owner = owner; }
-		virtual void SetPosition(const float x, const float y)
-		{
-			m_transform.SetPosition(x, y, 0.0f);
-		}
 
-
-		BaseComponent()=default;
-		virtual ~BaseComponent() = default;
+		virtual ~BaseComponent()=default;
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
 		BaseComponent& operator=(const BaseComponent& other) = delete;
@@ -30,9 +23,13 @@ namespace dae
 
 
 		bool pendingRemove = false;
+
 	protected:
-		GameObject* m_owner{ nullptr };
-		Transform m_transform{};
+		BaseComponent(dae::GameObject& owner) { m_pOwner = &owner; };
+		virtual GameObject* GetOwner() const { return m_pOwner; }
+
+	private:
+		GameObject* m_pOwner{ nullptr };	// REQUIRED
 	};
 
 }

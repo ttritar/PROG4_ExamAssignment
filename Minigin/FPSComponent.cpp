@@ -11,13 +11,10 @@ void dae::FPSComponent::Update(float deltaTime)
 	{
 		m_fps = 1/deltaTime;
 
-		m_elapsedSec = 0.0f;
+		m_elapsedSec -= updateInterval;
 
-		if (m_owner)
-		{
-			TextComponent* texComp = m_owner->GetComponent<TextComponent>();
-			if (texComp)
-				texComp->SetText(std::to_string(m_fps) + " FPS");
-		}
+		if (m_pTextComponent)
+			m_pTextComponent->SetText(std::to_string(m_fps) + " FPS");
+		
 	}
 }

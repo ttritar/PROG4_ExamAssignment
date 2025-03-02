@@ -111,7 +111,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			lag -= fixed_time_step;
 		}
 		sceneManager.Update(delta_time);
-
 		//3. RENDER
 		renderer.Render();
 

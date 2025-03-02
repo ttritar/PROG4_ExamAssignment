@@ -2,9 +2,10 @@
 #include <memory>
 #include <string>
 
+#include "GameObject.h"
+
 #include "BaseComponent.h"
 
-#include "Transform.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
 
@@ -16,21 +17,21 @@ namespace dae
 	{
 	public:
 
-		void Update(float deltaTime) override
+		void Update(float ) override
 		{
-			deltaTime;
 		}
 
 		void Render() const override
-		{
-			const auto& pos = m_transform.GetPosition();
+		{	
+			const auto& pos = GetOwner()->GetWorldPosition();
 			Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
 		}
 
 
 
-		TextureComponent(const std::string& filename) {
-
+		TextureComponent(std::shared_ptr<dae::GameObject> owner,const std::string& filename)
+			:BaseComponent(*owner)
+		{
 			m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 		};
 		virtual ~TextureComponent() = default;

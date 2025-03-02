@@ -13,7 +13,10 @@ namespace dae
 
 		float GetFPS() const { return m_fps; }
 
-		FPSComponent() = default;
+		FPSComponent(std::shared_ptr<dae::GameObject> owner)
+			:BaseComponent(*owner) {
+			m_pTextComponent = GetOwner()->GetComponent<TextComponent>();
+		};
 		virtual ~FPSComponent() = default;
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) = delete;
@@ -23,5 +26,7 @@ namespace dae
 	private: 
 		float m_fps = 0.0f;
 		float m_elapsedSec = 0.0f;
+
+		TextComponent* m_pTextComponent=nullptr;
 	};
 }
