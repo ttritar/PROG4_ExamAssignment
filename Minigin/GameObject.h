@@ -31,6 +31,9 @@ namespace dae
 		void Render() const;
 		Transform GetTransform()const;
 
+		// MOVE
+		void SetSpeed(const float speed);
+		void Move(float dx, float dy);
 
 		// COMPONENTS
 		void AddComponent(std::shared_ptr<BaseComponent> component)
@@ -119,6 +122,8 @@ namespace dae
 		bool m_positionIsDirty{};
 		glm::vec3 m_localPosition{};
 		glm::vec3 m_worldPosition{};
+
+		float m_speed;
 
 	};
 }

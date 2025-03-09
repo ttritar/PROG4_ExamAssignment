@@ -4,6 +4,7 @@
 
 #include "ResourceManager.h"
 #include "Renderer.h"
+#include "TimeSingleton.h"
 
 // Datamember functions
 //------------------
@@ -50,6 +51,25 @@ dae::Transform dae::GameObject::GetTransform() const
 {
 	return m_transform;
 }
+
+// move
+void dae::GameObject::SetSpeed(const float speed)
+{
+	m_speed = speed;
+}
+
+void dae::GameObject::Move(float dx, float dy)
+{
+	auto& time = Time::GetInstance();
+
+	glm::vec3 pos = m_localPosition;
+	pos.x += dx * m_speed * time.DeltaTime;
+	pos.y += dy * m_speed* time.DeltaTime;
+	SetLocalPosition(pos);
+}
+
+
+
 
 
 // Parent-Child functions

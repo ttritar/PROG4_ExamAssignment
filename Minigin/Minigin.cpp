@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "TimeSingleton.h"
 
 #include <chrono>
 #include <thread>
@@ -85,6 +86,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& time = Time::GetInstance();
 
 	// GAME LOOP
 	//-----------
@@ -102,6 +104,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lag += delta_time;
 
 		//1. PROCESS INPUT
+		time.DeltaTime = delta_time;
 		do_continue = input.ProcessInput();
 
 		//2. UPDATE GAME
