@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <steam_api.h>
+
 #include "Minigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -77,6 +79,8 @@ dae::Minigin::~Minigin()
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	SDL_Quit();
+
+	SteamAPI_Shutdown();
 }
 
 void dae::Minigin::Run(const std::function<void()>& load)
@@ -105,6 +109,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		//1. PROCESS INPUT
 		time.DeltaTime = delta_time;
+		SteamAPI_RunCallbacks();
 		do_continue = input.ProcessInput();
 
 		//2. UPDATE GAME

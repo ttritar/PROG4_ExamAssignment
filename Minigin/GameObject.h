@@ -1,17 +1,16 @@
 #pragma once
+#include "Observer.h"
+#include "Transform.h"
+#include "BaseComponent.h"
+
 #include <memory>
 #include <vector>
 
-#include "Transform.h"
-#include "BaseComponent.h"
 
 
 
 namespace dae
 {
-	class Texture2D;
-
-	// todo: this should become final.
 	class GameObject final
 	{
 	public:
@@ -30,10 +29,6 @@ namespace dae
 		void FixedUpdate(float fixedStep);
 		void Render() const;
 		Transform GetTransform()const;
-
-		// MOVE
-		void SetSpeed(const float speed);
-		void Move(float dx, float dy);
 
 		// COMPONENTS
 		void AddComponent(std::shared_ptr<BaseComponent> component)
@@ -107,10 +102,25 @@ namespace dae
 		// TRANSFORM
 		void SetPositionDirty();
 		void SetLocalPosition(const glm::vec3& pos);
+		const glm::vec3& GetLocalPosition();
 		const glm::vec3& GetWorldPosition();
 		void UpdateWorldPosition();
 
 		bool m_pendingRemoval = false;
+
+		// OBSERVERS
+		void AddObserver(Observer* observer)
+		{
+			m_observers.emplace_back(observer);
+		}
+		void RemoveObserver(Observer* observer)
+		{
+			m_observers.erase(std::remove(m_observers.begin(), m_observers.end(), observer), m_observers.end());
+		}
+
+
+		void NotifyObservers(Event event);
+
 	private:
 		Transform m_transform{};
 
@@ -123,7 +133,7 @@ namespace dae
 		glm::vec3 m_localPosition{};
 		glm::vec3 m_worldPosition{};
 
-		float m_speed;
+		std::vector<Observer*> m_observers;
 
 	};
 }

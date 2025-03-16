@@ -44,7 +44,6 @@ void dae::Renderer::Render() const
 
 void dae::Renderer::Destroy()
 {
-
 	if (m_renderer != nullptr)
 	{
 		SDL_DestroyRenderer(m_renderer);

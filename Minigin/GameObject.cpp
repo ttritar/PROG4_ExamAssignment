@@ -52,23 +52,6 @@ dae::Transform dae::GameObject::GetTransform() const
 	return m_transform;
 }
 
-// move
-void dae::GameObject::SetSpeed(const float speed)
-{
-	m_speed = speed;
-}
-
-void dae::GameObject::Move(float dx, float dy)
-{
-	auto& time = Time::GetInstance();
-
-	glm::vec3 pos = m_localPosition;
-	pos.x += dx * m_speed * time.DeltaTime;
-	pos.y += dy * m_speed* time.DeltaTime;
-	SetLocalPosition(pos);
-}
-
-
 
 
 
@@ -148,6 +131,11 @@ void dae::GameObject::SetLocalPosition(const glm::vec3& pos)
 	SetPositionDirty();
 }
 
+const glm::vec3& dae::GameObject::GetLocalPosition()
+{
+	return  m_localPosition;
+}
+
 const glm::vec3& dae::GameObject::GetWorldPosition()
 {
 	if (m_positionIsDirty)
@@ -169,4 +157,11 @@ void dae::GameObject::UpdateWorldPosition()
 	m_positionIsDirty = false;
 }
 
+void dae::GameObject::NotifyObservers(Event event)
+{
+	for (auto observer : m_observers)
+	{
+		observer->Notify(event, this);
+	}
+}
 

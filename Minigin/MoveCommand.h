@@ -1,5 +1,6 @@
 #pragma once
 #include "Command.h"
+#include "MovementComponent.h"
 
 namespace dae
 {
@@ -18,7 +19,7 @@ namespace dae
 
 		void Execute() override
 		{
-			GetGameActor()->Move(m_DX, m_DY);
+			GetGameActor()->GetComponent<MovementComponent>()->Move(m_DX, m_DY);
 		}
 	};
 
