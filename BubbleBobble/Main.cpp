@@ -7,8 +7,8 @@
 #endif
 
 #include "Minigin.h"
-
-
+#include "MixerSoundSystem.h"
+#include "ServiceLocator.h"
 
 #include <SDL.h>
 
@@ -193,9 +193,11 @@ void load()
 
 int main(int, char* [])
 {
+	auto& serviceLocator = dae::ServiceLocator::GetInstance();
+	serviceLocator.RegisterSoundSystem(std::make_unique<dae::MixerSoundSystem>());
+
 	dae::Minigin engine("../Data/");
 	engine.Run(load);
-
 
 	return 0;
 }
