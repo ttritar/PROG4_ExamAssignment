@@ -1,6 +1,7 @@
 #pragma once
 #include <vec2.hpp>
 #include <string>
+#include <SDL_rect.h>
 
 struct SDL_Texture;
 namespace dae
@@ -18,11 +19,17 @@ namespace dae
 
 		glm::ivec2 GetSize() const;
 
+		void SetSourceRect(const SDL_Rect& srcRect);
+		const SDL_Rect* GetSourceRect() const;
+
 		Texture2D(const Texture2D &) = delete;
 		Texture2D(Texture2D &&) = delete;
 		Texture2D & operator= (const Texture2D &) = delete;
 		Texture2D & operator= (const Texture2D &&) = delete;
 	private:
 		SDL_Texture* m_texture;
+
+		bool m_UseSourceRect{ false };
+		SDL_Rect m_SourceRect;
 	};
 }

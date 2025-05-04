@@ -8,7 +8,7 @@
 
 #include "Renderer.h"
 #include "ResourceManager.h"
-
+#include "Texture2D.h"
 
 
 namespace dae 
@@ -28,7 +28,20 @@ namespace dae
 		}
 
 
+		void SetSourceRect(SDL_Rect srcRect)
+		{
+			m_texture->SetSourceRect(srcRect);
+		}
 
+		SDL_Rect GetSourceRect() const
+		{
+			SDL_Rect src = GetSourceRect();
+			return src;
+		}
+
+
+		// CTOR & DTOR
+		//-------------
 		TextureComponent(std::shared_ptr<dae::GameObject> owner,const std::string& filename)
 			:BaseComponent(*owner)
 		{

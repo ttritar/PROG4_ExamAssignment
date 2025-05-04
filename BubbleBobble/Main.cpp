@@ -28,27 +28,21 @@
 #include "HealthComponent.h"
 #include "UICommand.h"
 #include "HealthUIComponent.h"
+#include "Level.h"
 #include "ScoreUIComponent.h"
 
 
 void load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	auto level = dae::Level(scene);
+	level.AddLevel("LEVEL 0 PATH === == == MAIN SCREEN?");
+	level.AddLevel("../Data/Levels/1/Level1.tmj");
+	level.LoadLevel(1);
 
-	// add textures
-	auto go = std::make_shared<dae::GameObject>();
-	auto texture1 = std::make_shared<dae::TextureComponent>(go, "background.tga");
-	go->AddComponent(texture1);
-	scene.Add(go);
-
-	go = std::make_shared<dae::GameObject>();
-	auto texture2 = std::make_shared<dae::TextureComponent>(go, "logo.tga");
-	go->SetLocalPosition(glm::vec3{ 216, 180,0 });
-	go->AddComponent(texture2);
-	scene.Add(go);
 
 	// add text
-	go = std::make_shared<dae::GameObject>();
+	auto go = std::make_shared<dae::GameObject>();
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto tc = std::make_shared<dae::TextComponent>(go, "Programming 4 Assignment", font);
 	go->SetLocalPosition(glm::vec3{ 80, 20,0 });

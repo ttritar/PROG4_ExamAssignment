@@ -16,6 +16,18 @@ glm::ivec2 dae::Texture2D::GetSize() const
 	return { dst.w,dst.h };
 }
 
+void dae::Texture2D::SetSourceRect(const SDL_Rect& srcRect)
+{
+	m_SourceRect = srcRect;
+	m_UseSourceRect = true;
+}
+
+const SDL_Rect* dae::Texture2D::GetSourceRect() const
+{
+	if (m_UseSourceRect) return &m_SourceRect;
+	return nullptr;
+}
+
 SDL_Texture* dae::Texture2D::GetSDLTexture() const
 {
 	return m_texture;
