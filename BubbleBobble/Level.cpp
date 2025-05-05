@@ -2,7 +2,8 @@
 #include "../3rdParty/json/tileson.hpp"
 #include <fstream>
 
-#include "HealthComponent.h"
+#include "ColliderComponent.h"
+#include "CollisionSystem.h"
 #include "Texture2D.h"
 #include "TextureComponent.h"
 #include "Transform.h"
@@ -70,6 +71,14 @@ namespace dae
                     auto tex = std::make_shared<TextureComponent>(tileObj, tilesetImagePath);
                     tex->SetSourceRect(srcRect); 
                     tileObj->AddComponent(tex);
+
+					ColliderComponent::ColliderInfo colliderInfo{
+						true, {tileWidth,tileHeight}
+					};
+                    auto col = std::make_shared<ColliderComponent>(tileObj,colliderInfo);
+                    tileObj->AddComponent(tex);
+					CollisionSystem::GetInstance().AddCollider(col.get());
+
 
                     m_Scene.Add(tileObj);
                 }

@@ -154,6 +154,7 @@
     <ClCompile Include="..\Minigin\ScoreUIComponent.cpp" />
     <ClCompile Include="..\Minigin\TextComponent.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
+    <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TileObject.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="..\Minigin\TextureComponent.h" />
     <ClInclude Include="..\Minigin\UICommand.h" />
     <ClInclude Include="ColliderComponent.h" />
+    <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="TileObject.h" />
   </ItemGroup>

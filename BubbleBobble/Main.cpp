@@ -12,6 +12,8 @@
 
 #include <SDL.h>
 
+#include "ColliderComponent.h"
+#include "CollisionSystem.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Scene.h"
@@ -40,29 +42,8 @@ void load()
 	level.AddLevel("../Data/Levels/1/Level1.tmj");
 	level.LoadLevel(1);
 
-
-	// add text
-	auto go = std::make_shared<dae::GameObject>();
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto tc = std::make_shared<dae::TextComponent>(go, "Programming 4 Assignment", font);
-	go->SetLocalPosition(glm::vec3{ 80, 20,0 });
-	go->AddComponent(tc);
-	scene.Add(go);
-
-
-	// FPS COMPONENT
-	//-------------
-	go = std::make_shared<dae::GameObject>();
-	auto fpstc = std::make_shared<dae::TextComponent>(go, "FPS", font);
-	go->AddComponent(fpstc);
-	auto fps = std::make_shared<dae::FPSComponent>(go);
-	go->AddComponent(fps);
-	go->SetLocalPosition(glm::vec3{ 80, 60,0 });
-	scene.Add(go);
-
-
-
-
+	// TUT TEXT
+	//----------
 	auto& inputManager = dae::InputManager::GetInstance();
 
 	auto fontUI = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
@@ -128,6 +109,12 @@ void load()
 	inputManager.BindKeyCommand(SDLK_z, std::make_unique<dae::ScoreCommand>(dae::ScoreCommand(bubblun.get(), 10)));
 	inputManager.BindKeyCommand(SDLK_x, std::make_unique<dae::ScoreCommand>(dae::ScoreCommand(bubblun.get(), 100)));
 
+	dae::ColliderComponent::ColliderInfo bubblunColliderInfo{
+		false, {16.f,16.f}
+	};
+	auto bubblunColl = std::make_shared<dae::ColliderComponent>(bubblun,bubblunColliderInfo);
+	bubblun->AddComponent(bubblunColl);
+	dae::CollisionSystem::GetInstance().AddCollider(bubblunColl.get());
 
 
 	// BOBBLUN
