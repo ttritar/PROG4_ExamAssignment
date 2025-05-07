@@ -163,7 +163,7 @@
     <ClInclude Include="..\Minigin\FPSComponent.h" />
     <ClInclude Include="..\Minigin\HealthComponent.h" />
     <ClInclude Include="..\Minigin\HealthUIComponent.h" />
-    <ClInclude Include="..\Minigin\MoveCommand.h" />
+    <ClInclude Include="..\Minigin\MovementCommand.h" />
     <ClInclude Include="..\Minigin\MovementComponent.h" />
     <ClInclude Include="..\Minigin\RotationComponent.h" />
     <ClInclude Include="..\Minigin\ScoreComponent.h" />

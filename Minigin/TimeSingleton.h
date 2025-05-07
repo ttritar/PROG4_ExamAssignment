@@ -7,8 +7,8 @@ namespace dae
 	{
 		friend class Singleton<Time>;
 
-	public: 
-		float DeltaTime;
+	public:
+		float DeltaTime{};
 	};
 
 }

@@ -41,9 +41,9 @@ namespace dae
 
         int columns = tileset.getColumns();
 
+
         // DRAW AND MAKE EVERYTHING
         //--------------------------
-
         for (auto& layer : map->getLayers()) 
         {
             if (layer.getType() != tson::LayerType::TileLayer)
@@ -68,15 +68,17 @@ namespace dae
                     std::shared_ptr<GameObject> tileObj = std::make_shared<GameObject>();
                     tileObj->SetLocalPosition(glm::vec3(x * tileWidth, y * tileHeight, 0));
 
+                    // texture component
                     auto tex = std::make_shared<TextureComponent>(tileObj, tilesetImagePath);
                     tex->SetSourceRect(srcRect); 
                     tileObj->AddComponent(tex);
 
+                    // collider component
 					ColliderComponent::ColliderInfo colliderInfo{
 						true, {tileWidth,tileHeight}
 					};
                     auto col = std::make_shared<ColliderComponent>(tileObj,colliderInfo);
-                    tileObj->AddComponent(tex);
+                    tileObj->AddComponent(col);
 					CollisionSystem::GetInstance().AddCollider(col.get());
 
 

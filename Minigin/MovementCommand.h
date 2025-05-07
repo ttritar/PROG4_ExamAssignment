@@ -4,6 +4,7 @@
 
 namespace dae
 {
+	// MOVE COMMANDS
 	class MoveCommand : public GameActorCommand
 	{
 	protected:
@@ -56,6 +57,24 @@ namespace dae
 		MoveRightCommand(GameObject* obj)
 			: MoveCommand(obj, 1,0)
 		{
+		}
+	};
+
+	// JUMP COMMAND
+	class JumpCommand : public GameActorCommand
+	{
+	public:
+		JumpCommand(GameObject* obj)
+			: GameActorCommand(obj)
+		{
+		}
+
+		void Execute() override
+		{
+			if (m_buttonState.PressedThisFrame)
+			{
+				GetGameActor()->GetComponent<MovementComponent>()->Jump();
+			}
 		}
 	};
 }

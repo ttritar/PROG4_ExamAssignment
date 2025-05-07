@@ -7,12 +7,17 @@
 #include <vector>
 
 #include "GameObject.h"
-#include "MovementComponent.h"
 
 namespace dae
 {
+	class MovementComponent;
+}
 
-	class CollisionSystem;
+namespace dae
+{
+	// Simple 2D box collision system ...................... frfr
+
+	class CollisionSystem;	
 
     class ColliderComponent final: public BaseComponent
     {
@@ -24,25 +29,6 @@ namespace dae
 			glm::vec2 offset = { 0,0 };
 		};
 
-		// Methods
-		//---------------
-		//void Update(float deltaTime) override;
-		void Render() const override;
-		bool CheckCollision(const ColliderComponent* other) const;
-		void Move(float dx, float dy)
-		{
-			if (m_pMovementComponent && !m_ColliderInfo.isStatic)
-			{
-				m_pMovementComponent->Move(dx, dy);
-			}
-		}
-
-		// Getters & Setters
-		void SetDebugRendering(bool value) { m_IsDebugRendering = value; }
-		bool GetIsStatic() const { return m_ColliderInfo.isStatic; }
-		glm::vec3 GetPosition() const { return GetOwner()->GetLocalPosition() + glm::vec3{m_ColliderInfo.offset, 0}; }
-		glm::vec2 GetSize() const { return m_ColliderInfo.size; }
-
 		// CTOR & DTOR
 		//---------------
 		ColliderComponent(std::shared_ptr<dae::GameObject> owner, ColliderInfo colliderInfo);
@@ -52,10 +38,23 @@ namespace dae
 		ColliderComponent& operator=(const ColliderComponent& other) = delete;
 		ColliderComponent& operator=(ColliderComponent&& other) = delete;
 
+		// Methods
+		//---------------
+		void Update(float deltaTime) override;
+		void Render() const override;
+
+		// Getters & Setters
+		void SetDebugRendering(bool value) { m_IsDebugRendering = value; }
+		bool GetIsStatic() const { return m_ColliderInfo.isStatic; }
+		glm::vec3 GetPosition() const { return GetOwner()->GetLocalPosition() + glm::vec3{m_ColliderInfo.offset, 0}; }
+		glm::vec2 GetSize() const { return m_ColliderInfo.size; }
+
 	private:
 		// Private Methods
 		//---------------
 		void DebugRendering() const;
+		bool CheckCollision(const ColliderComponent* other) const;
+		void ResolveCollision(const ColliderComponent* other) const;
 
 
 		// Private Members

@@ -25,7 +25,7 @@
 
 #include "InputManager.h"
 #include "Command.h"
-#include "MoveCommand.h"
+#include "MovementCommand.h"
 #include "MovementComponent.h"
 #include "HealthComponent.h"
 #include "UICommand.h"
@@ -91,13 +91,15 @@ void load()
 	bubblun->AddComponent(bubblunTexture);
 	bubblun->SetLocalPosition({ 100,100,0 });
 
-	auto bubblunMove = std::make_shared<dae::MovementComponent>(bubblun, 50.f);
+	auto bubblunMove = std::make_shared<dae::MovementComponent>(bubblun, 50.f,250.0f);
 	bubblun->AddComponent(bubblunMove);
 
-	inputManager.BindKeyCommand(SDLK_w, std::make_unique<dae::MoveUpCommand>(dae::MoveUpCommand(bubblun.get())));
-	inputManager.BindKeyCommand(SDLK_s, std::make_unique<dae::MoveDownCommand>(dae::MoveDownCommand(bubblun.get())));
+	//inputManager.BindKeyCommand(SDLK_w, std::make_unique<dae::MoveUpCommand>(dae::MoveUpCommand(bubblun.get())));
+	//inputManager.BindKeyCommand(SDLK_s, std::make_unique<dae::MoveDownCommand>(dae::MoveDownCommand(bubblun.get())));
 	inputManager.BindKeyCommand(SDLK_a, std::make_unique<dae::MoveLeftCommand>(dae::MoveLeftCommand(bubblun.get())));
 	inputManager.BindKeyCommand(SDLK_d, std::make_unique<dae::MoveRightCommand>(dae::MoveRightCommand(bubblun.get())));
+
+	inputManager.BindKeyCommand(SDLK_SPACE, std::make_unique<dae::JumpCommand>(dae::JumpCommand(bubblun.get())));
 
 	auto bubblunHealth = std::make_shared<dae::HealthComponent>(bubblun, 3);
 	bubblun->AddComponent(bubblunHealth);
