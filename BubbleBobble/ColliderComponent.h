@@ -22,8 +22,16 @@ namespace dae
     class ColliderComponent final: public BaseComponent
     {
     public:
+	    enum class ColliderType
+	    {
+		    Solid,
+			TopOnly,
+			Trigger
+	    };
+
 		struct ColliderInfo
 		{
+			ColliderType type = ColliderType::Solid;
 			bool isStatic;
 			glm::vec2 size;
 			glm::vec2 offset = { 0,0 };
@@ -33,6 +41,7 @@ namespace dae
 		//---------------
 		ColliderComponent(std::shared_ptr<dae::GameObject> owner, ColliderInfo colliderInfo);
 		~ColliderComponent() override;
+
 		ColliderComponent(const ColliderComponent& other) = delete;
 		ColliderComponent(ColliderComponent&& other) = delete;
 		ColliderComponent& operator=(const ColliderComponent& other) = delete;

@@ -34,6 +34,7 @@ namespace dae
 		void SetVelocityX(float x) { m_Velocity.x = x; }
 		void SetVelocityY(float y) { m_Velocity.y = y; }
 		void SetVelocity(const glm::vec2& velocity) { m_Velocity = velocity; }
+		glm::vec2 GetVelocity() const { return m_Velocity; }
 
 		void SetIsGrounded(bool isGrounded) { m_IsGrounded = isGrounded; }
 

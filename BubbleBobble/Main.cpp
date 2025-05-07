@@ -112,7 +112,7 @@ void load()
 	inputManager.BindKeyCommand(SDLK_x, std::make_unique<dae::ScoreCommand>(dae::ScoreCommand(bubblun.get(), 100)));
 
 	dae::ColliderComponent::ColliderInfo bubblunColliderInfo{
-		false, {16.f,16.f}
+		dae::ColliderComponent::ColliderType::Solid,false, {16.f,16.f}
 	};
 	auto bubblunColl = std::make_shared<dae::ColliderComponent>(bubblun,bubblunColliderInfo);
 	bubblun->AddComponent(bubblunColl);

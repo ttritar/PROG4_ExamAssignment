@@ -55,6 +55,7 @@ namespace dae
 
 		auto sdlRenderer = Renderer::GetInstance().GetSDLRenderer();
 		SDL_SetRenderDrawColor(sdlRenderer, 255, 0, 0, 1);
+		if (m_ColliderInfo.type==ColliderType::TopOnly)SDL_SetRenderDrawColor(sdlRenderer, 255, 100, 0, 1);
 
 		const SDL_Rect rect = SDL_Rect{
 			static_cast<int> (GetOwner()->GetLocalPosition().x + m_ColliderInfo.offset.x),
@@ -95,6 +96,19 @@ namespace dae
 
 		if (overlapX > 0 && overlapY > 0)
 		{
+			// TopOnly collision
+			//-----------------
+			if (other->m_ColliderInfo.type == ColliderType::TopOnly)
+			{
+				float velocityY = m_pMovementComponent->GetVelocity().y;
+
+				if (velocityY <= 0.0f || (pos.y + size.y) < otherPos.y)
+					return; 
+			}
+
+
+			// Solid collision
+			//-----------------
 			glm::vec3 newPos = pos;
 
 			if (overlapX < overlapY)

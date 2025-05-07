@@ -75,7 +75,7 @@ namespace dae
 
                     // collider component
 					ColliderComponent::ColliderInfo colliderInfo{
-						true, {tileWidth,tileHeight}
+						ColliderComponent::ColliderType::TopOnly,true, {tileWidth,tileHeight}
 					};
                     auto col = std::make_shared<ColliderComponent>(tileObj,colliderInfo);
                     tileObj->AddComponent(col);
