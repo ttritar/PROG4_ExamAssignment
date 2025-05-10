@@ -14,6 +14,7 @@
 
 #include "ColliderComponent.h"
 #include "CollisionSystem.h"
+#include "EnemyAIComponent.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Scene.h"
@@ -28,6 +29,7 @@
 #include "UICommand.h"
 #include "HealthUIComponent.h"
 #include "Level.h"
+#include "MaitaAIComponent.h"
 #include "ScoreUIComponent.h"
 
 
@@ -115,57 +117,32 @@ void load()
 	bubblun->AddComponent(bubblunColl);
 	cat::CollisionSystem::GetInstance().AddCollider(bubblunColl.get());
 
-
-	// BOBBLUN
-	//----------------
-	auto bobblunHealthObserver = std::make_shared<dae::GameObject>();
-	auto textHealthBobblun = std::make_shared<cat::TextComponent>(bobblunHealthObserver, "# lives: 3", fontUI);
-	bobblunHealthObserver->AddComponent(textHealthBobblun);
-	auto uicHealthBobblun = std::make_shared<cat::HealthUIComponent>(bobblunHealthObserver);
-	bobblunHealthObserver->AddComponent(uicHealthBobblun);
-	bobblunHealthObserver->SetLocalPosition({ 20,250,0 });
-	scene.Add(bobblunHealthObserver);
-
-	auto bobblunScoreObserver = std::make_shared<dae::GameObject>();
-	auto textScoreBobblun = std::make_shared<cat::TextComponent>(bobblunScoreObserver, "Score: 0", fontUI);
-	bobblunScoreObserver->AddComponent(textScoreBobblun);
-	auto uicScoreBobblun = std::make_shared<cat::ScoreUIComponent>(bobblunScoreObserver);
-	bobblunScoreObserver->AddComponent(uicScoreBobblun);
-	bobblunScoreObserver->SetLocalPosition({ 20,270,0 });
-	scene.Add(bobblunScoreObserver);
-
-
-
-	auto bobblun = std::make_shared<dae::GameObject>();
-
-	bobblun->AddObserver(uicHealthBobblun.get());
-	bobblun->AddObserver(uicScoreBobblun.get());
-
-	auto bobblunTexture = std::make_shared<cat::TextureComponent>(bobblun, "Bobblun.png");
-	bobblun->AddComponent(bobblunTexture);
-	bobblun->SetLocalPosition({ 20,20,0 });
-
-	auto bobblunMove = std::make_shared<cat::MovementComponent>(bobblun, 100.f);
-	bobblun->AddComponent(bobblunMove);
-
-	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_UP, std::make_unique<cat::MoveUpCommand>(cat::MoveUpCommand(bobblun.get())));
-	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_DOWN, std::make_unique<cat::MoveDownCommand>(cat::MoveDownCommand(bobblun.get())));
-	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<cat::MoveLeftCommand>(cat::MoveLeftCommand(bobblun.get())));
-	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<cat::MoveRightCommand>(cat::MoveRightCommand(bobblun.get())));
-
-	auto bobblunHealth = std::make_shared<cat::HealthComponent>(bobblun, 3);
-	bobblun->AddComponent(bobblunHealth);
-
-	auto bobblunScore = std::make_shared<cat::ScoreComponent>(bobblun);
-	bobblun->AddComponent(bobblunScore);
-
-	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_X, std::make_unique<cat::DamageCommand>(cat::DamageCommand(bobblun.get(), 1)));
-	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_A, std::make_unique<cat::ScoreCommand>(cat::ScoreCommand(bobblun.get(), 10)));
-	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_B, std::make_unique<cat::ScoreCommand>(cat::ScoreCommand(bobblun.get(), 100)));
-
 	scene.Add(bubblun);
-	scene.Add(bobblun);
 
+	// MAITA
+	//----------------
+	auto maita = std::make_shared<dae::GameObject>();
+	maita->SetLocalPosition({ 50, 50,0 });
+
+	auto maitaTexture = std::make_shared<cat::TextureComponent>(maita, "Enemies/Maita.png");
+	maita->AddComponent(maitaTexture);
+
+	auto maitaMove = std::make_shared<cat::MovementComponent>(maita, 30.f);
+	maitaMove->SetUsesGravity(false);
+	maita->AddComponent(maitaMove);
+
+	auto maitaAI = std::make_shared<cat::MaitaAIComponent>(maita);
+	maitaAI->AddPlayer(bubblun);
+	maita->AddComponent(maitaAI);
+
+	cat::ColliderComponent::ColliderInfo maitaColliderInfo{
+		cat::ColliderComponent::ColliderType::Trigger,false, {16.f,16.f}
+	};
+	auto maitaColl = std::make_shared<cat::ColliderComponent>(maita,maitaColliderInfo);
+	cat::CollisionSystem::GetInstance().AddCollider(maitaColl.get());
+	maita->AddComponent(maitaAI);
+
+	scene.Add(maita);
 
 }
 

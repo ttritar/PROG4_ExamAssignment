@@ -10,9 +10,8 @@
 
 namespace cat
 {
-	class MovementComponent;
 	// Simple 2D box collision system ...................... frfr
-
+	class MovementComponent;
 	class CollisionSystem;	
 
     class ColliderComponent final: public dae::BaseComponent
