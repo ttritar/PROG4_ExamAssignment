@@ -2,16 +2,16 @@
 #include "Command.h"
 #include "MovementComponent.h"
 
-namespace dae
+namespace cat
 {
 	// MOVE COMMANDS
-	class MoveCommand : public GameActorCommand
+	class MoveCommand : public dae::GameActorCommand
 	{
 	protected:
 		float m_DX, m_DY;
 
 	public:
-		MoveCommand(GameObject* obj, float dx, float dy)
+		MoveCommand(dae::GameObject* obj, float dx, float dy)
 			: GameActorCommand(obj),
 			m_DX(dx), m_DY(dy)
 		{
@@ -27,7 +27,7 @@ namespace dae
 	class MoveUpCommand : public MoveCommand 
 	{ 
 	public:
-		MoveUpCommand(GameObject* obj)
+		MoveUpCommand(dae::GameObject* obj)
 			: MoveCommand(obj, 0, -1) 
 		{
 		}
@@ -36,7 +36,7 @@ namespace dae
 	class MoveDownCommand : public MoveCommand
 	{
 	public:
-		MoveDownCommand(GameObject* obj) 
+		MoveDownCommand(dae::GameObject* obj) 
 			: MoveCommand(obj, 0, 1)
 		{
 		}
@@ -45,7 +45,7 @@ namespace dae
 	class MoveLeftCommand : public MoveCommand
 	{
 	public:
-		MoveLeftCommand(GameObject* obj)
+		MoveLeftCommand(dae::GameObject* obj)
 			: MoveCommand(obj, -1,0)
 		{
 		}
@@ -54,17 +54,17 @@ namespace dae
 	class MoveRightCommand : public MoveCommand
 	{
 	public:
-		MoveRightCommand(GameObject* obj)
+		MoveRightCommand(dae::GameObject* obj)
 			: MoveCommand(obj, 1,0)
 		{
 		}
 	};
 
 	// JUMP COMMAND
-	class JumpCommand : public GameActorCommand
+	class JumpCommand : public dae::GameActorCommand
 	{
 	public:
-		JumpCommand(GameObject* obj)
+		JumpCommand(dae::GameObject* obj)
 			: GameActorCommand(obj)
 		{
 		}

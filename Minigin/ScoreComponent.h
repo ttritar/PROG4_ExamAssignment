@@ -2,9 +2,9 @@
 #include "BaseComponent.h"
 #include <memory>
 
-namespace dae
+namespace cat
 {
-	class ScoreComponent : public BaseComponent
+	class ScoreComponent : public dae::BaseComponent
 	{
 	public:
 		ScoreComponent(std::shared_ptr<dae::GameObject> owner)

@@ -4,7 +4,7 @@
 
 // Methods
 //---------------
-void dae::MovementComponent::Update(float deltaTime)
+void cat::MovementComponent::Update(float deltaTime)
 {
 	ApplyGravity();
 
@@ -16,9 +16,9 @@ void dae::MovementComponent::Update(float deltaTime)
 
 }
 
-void dae::MovementComponent::Move(float dx, float dy)
+void cat::MovementComponent::Move(float dx, float dy)
 {
-	auto& time = Time::GetInstance();
+	auto& time = dae::Time::GetInstance();
 
 	glm::vec3 pos = GetOwner()->GetLocalPosition();
 	pos.x += dx * m_Speed * time.DeltaTime;
@@ -27,7 +27,7 @@ void dae::MovementComponent::Move(float dx, float dy)
 	GetOwner()->SetLocalPosition(pos);
 }
 
-void dae::MovementComponent::Jump()
+void cat::MovementComponent::Jump()
 {
 	if (m_JumpSpeed == 0) return; // jump "disabled
 
@@ -40,7 +40,7 @@ void dae::MovementComponent::Jump()
 
 // Private Methods
 //---------------
-void dae::MovementComponent::ApplyGravity()
+void cat::MovementComponent::ApplyGravity()
 {
 	if (m_UsesGravity)
 	{

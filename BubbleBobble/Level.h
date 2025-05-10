@@ -2,18 +2,18 @@
 #include <Scene.h>
 #include <filesystem>
 
-namespace dae
+namespace cat
 {
 	class Level
 	{
 	public:
-		Level(Scene& scene);
+		Level(dae::Scene& scene);
 
 		void LoadLevel(int idx);
 		void AddLevel(const std::string& filePath);
 		
 	private:
-		Scene& m_Scene;
+		dae::Scene& m_Scene;
 		std::vector<std::string> m_LevelPaths;
 	};
 }

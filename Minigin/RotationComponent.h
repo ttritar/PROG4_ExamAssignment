@@ -1,9 +1,9 @@
 #pragma once
 #include "GameObject.h"
 
-namespace dae
+namespace cat
 {
-	class RotationComponent final : public BaseComponent
+	class RotationComponent final : public dae::BaseComponent
 	{
 	public:
 		void Update(float deltaTime) override;

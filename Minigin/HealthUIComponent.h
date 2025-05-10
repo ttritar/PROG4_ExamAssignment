@@ -6,9 +6,9 @@
 #include <memory>
 #include <iostream>
 
-namespace dae
+namespace cat
 {
-	class HealthUIComponent : public BaseComponent, public Observer
+	class HealthUIComponent : public dae::BaseComponent, public dae::Observer
 	{
 	public:
 		HealthUIComponent(std::shared_ptr<dae::GameObject> owner)
@@ -26,7 +26,7 @@ namespace dae
 		HealthUIComponent& operator=(const HealthUIComponent& other) = delete;
 		HealthUIComponent& operator=(HealthUIComponent&& other) = delete;
 	private:
-		virtual void Notify(const Event& event, GameObject* object) override;
+		virtual void Notify(const dae::Event& event, dae::GameObject* object) override;
 
 		TextComponent* m_pTextComponent = nullptr;
 	};

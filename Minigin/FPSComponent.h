@@ -2,10 +2,10 @@
 #include "GameObject.h"
 #include "TextComponent.h"
 
-namespace dae
+namespace cat
 {
 
-	class FPSComponent final : public BaseComponent
+	class FPSComponent final : public dae::BaseComponent
 	{
 	public:
 		void Update(float deltaTime) override ;

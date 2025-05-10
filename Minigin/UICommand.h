@@ -4,14 +4,14 @@
 #include "ScoreComponent.h"
 #include "ServiceLocator.h"
 
-namespace dae
+namespace cat
 {
-	class DamageCommand : public GameActorCommand
+	class DamageCommand : public dae::GameActorCommand
 	{
 	protected:
 		int m_damageAmount;
 	public:
-		DamageCommand(GameObject* obj, int dmg)
+		DamageCommand(dae::GameObject* obj, int dmg)
 			: GameActorCommand(obj),
 			m_damageAmount( dmg)
 		{
@@ -28,15 +28,15 @@ namespace dae
 	};
 
 
-	class ScoreCommand : public GameActorCommand
+	class ScoreCommand : public dae::GameActorCommand
 	{
 	protected:
 		int m_scoreAmount;
 	public:
-		ScoreCommand(GameObject* obj, int amount)
+		ScoreCommand(dae::GameObject* obj, int amount)
 			: GameActorCommand(obj),
 			m_scoreAmount(amount),
-			m_ServiceLocator(ServiceLocator::GetInstance())
+			m_ServiceLocator(dae::ServiceLocator::GetInstance())
 		{
 		}
 
@@ -47,7 +47,7 @@ namespace dae
 			{
 				GetGameActor()->GetComponent<ScoreComponent>()->GainScore(m_scoreAmount);
 
-				const dae::sound_id soundId = static_cast<dae::sound_id>( make_sdbm_hash("Attack"));
+				const dae::sound_id soundId = static_cast<dae::sound_id>(dae::make_sdbm_hash("Attack"));
 
 				m_ServiceLocator.GetSoundSystem().LoadSound(soundId, "../Data/Sounds/Attack.wav");
 				m_ServiceLocator.GetSoundSystem().Play(soundId, 100);
@@ -55,7 +55,7 @@ namespace dae
 		}
 
 	private:
-		ServiceLocator& m_ServiceLocator;
+		dae::ServiceLocator& m_ServiceLocator;
 
 	};
 

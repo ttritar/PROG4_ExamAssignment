@@ -1,6 +1,6 @@
 #include "RotationComponent.h"
 
-void dae::RotationComponent::Update(float deltaTime)
+void cat::RotationComponent::Update(float deltaTime)
 {
 	m_elapsedSec += deltaTime;
 

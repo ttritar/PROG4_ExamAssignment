@@ -1,4 +1,5 @@
-{ "columns":1,
+{ "class":"TopOnly",
+ "columns":1,
  "image":"1.jpg",
  "imageheight":8,
  "imagewidth":8,

@@ -4,9 +4,9 @@
 #include <memory>
 
 
-namespace dae
+namespace cat
 {
-	class MovementComponent final : public BaseComponent
+	class MovementComponent final : public dae::BaseComponent
 	{
 	public:
 		// CTORS & DTORS

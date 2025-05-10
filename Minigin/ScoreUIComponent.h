@@ -5,9 +5,9 @@
 #include <memory>
 #include <iostream>
 
-namespace dae
+namespace cat
 {
-	class ScoreUIComponent : public BaseComponent , public Observer
+	class ScoreUIComponent : public dae::BaseComponent , public dae::Observer
 	{
 	public:
 		ScoreUIComponent(std::shared_ptr<dae::GameObject> owner)
@@ -25,7 +25,7 @@ namespace dae
 		ScoreUIComponent& operator=(const ScoreUIComponent& other) = delete;
 		ScoreUIComponent& operator=(ScoreUIComponent&& other) = delete;
 	private:
-		virtual void Notify(const Event& event, GameObject* object) override;
+		virtual void Notify(const dae::Event& event, dae::GameObject* object) override;
 
 		TextComponent* m_pTextComponent = nullptr;
 	};

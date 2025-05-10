@@ -8,13 +8,13 @@
 #include "Texture2D.h"
 
 
-dae::TextComponent::TextComponent(std::shared_ptr<dae::GameObject> owner,const std::string& text, std::shared_ptr<Font> font)
+cat::TextComponent::TextComponent(std::shared_ptr<dae::GameObject> owner,const std::string& text, std::shared_ptr<dae::Font> font)
 	: BaseComponent (*owner)
 	,m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
 {
 }
 
-void dae::TextComponent::Update( float )
+void cat::TextComponent::Update( float )
 {
 
 	if (m_needsUpdate)
@@ -25,28 +25,28 @@ void dae::TextComponent::Update( float )
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 		}
-		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
+		auto texture = SDL_CreateTextureFromSurface(dae::Renderer::GetInstance().GetSDLRenderer(), surf);
 		if (texture == nullptr) 
 		{
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
 		SDL_FreeSurface(surf);
-		m_textTexture = std::make_shared<Texture2D>(texture);
+		m_textTexture = std::make_shared<dae::Texture2D>(texture);
 		m_needsUpdate = false;
 	}
 }
 
-void dae::TextComponent::Render() const
+void cat::TextComponent::Render() const
 {
 	if (m_textTexture != nullptr)
 	{
 		const auto& pos = GetOwner()->GetWorldPosition();
-		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
+		dae::Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }
 
 // This implementation uses the "dirty flag" pattern
-void dae::TextComponent::SetText(const std::string& text)
+void cat::TextComponent::SetText(const std::string& text)
 {
 	m_text = text;
 	m_needsUpdate = true;

@@ -2,15 +2,16 @@
 #include "GameObject.h"
 #include <iostream>
 
-void dae::HealthComponent::TakeDamage(int damageAmount)
+
+void cat::HealthComponent::TakeDamage(int damageAmount)
 {
-	 m_currentHealth -= damageAmount;
+	m_currentHealth -= damageAmount;
 
-	 if (m_currentHealth <= 0)
-	 {
-		 m_currentHealth = 0;
-	 }
+	if (m_currentHealth <= 0)
+	{
+		m_currentHealth = 0;
+	}
 
-	 Event e(make_sdbm_hash("PlayerDied"));
-	 GetOwner()->NotifyObservers(e);
+	dae::Event e(dae::make_sdbm_hash("PlayerDied"));
+	GetOwner()->NotifyObservers(e);
 }

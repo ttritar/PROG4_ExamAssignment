@@ -5,9 +5,9 @@
 #include "Observer.h"
 
 
-namespace dae
+namespace cat
 {
-	class HealthComponent : public BaseComponent
+	class HealthComponent : public dae::BaseComponent
 	{
 	public:
 		HealthComponent(std::shared_ptr<dae::GameObject> owner,const int health)

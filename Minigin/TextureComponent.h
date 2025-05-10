@@ -11,9 +11,9 @@
 #include "Texture2D.h"
 
 
-namespace dae 
+namespace cat
 {
-	class TextureComponent final : public BaseComponent
+	class TextureComponent final : public dae::BaseComponent
 	{
 	public:
 
@@ -24,7 +24,7 @@ namespace dae
 		void Render() const override
 		{	
 			const auto& pos = GetOwner()->GetWorldPosition();
-			Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+			dae::Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
 		}
 
 
@@ -45,7 +45,7 @@ namespace dae
 		TextureComponent(std::shared_ptr<dae::GameObject> owner,const std::string& filename)
 			:BaseComponent(*owner)
 		{
-			m_texture = ResourceManager::GetInstance().LoadTexture(filename);
+			m_texture = dae::ResourceManager::GetInstance().LoadTexture(filename);
 		};
 		virtual ~TextureComponent() = default;
 		TextureComponent(const TextureComponent& other) = delete;
@@ -54,6 +54,6 @@ namespace dae
 		TextureComponent& operator=(TextureComponent&& other) = delete;
 
 	private:
-		std::shared_ptr<Texture2D> m_texture{};
+		std::shared_ptr<dae::Texture2D> m_texture{};
 	};
 }

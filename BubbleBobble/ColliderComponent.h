@@ -8,25 +8,21 @@
 
 #include "GameObject.h"
 
-namespace dae
+namespace cat
 {
 	class MovementComponent;
-}
-
-namespace dae
-{
 	// Simple 2D box collision system ...................... frfr
 
 	class CollisionSystem;	
 
-    class ColliderComponent final: public BaseComponent
+    class ColliderComponent final: public dae::BaseComponent
     {
     public:
 	    enum class ColliderType
 	    {
-		    Solid,
-			TopOnly,
-			Trigger
+		    Solid=0,
+			TopOnly=1,
+			Trigger=2
 	    };
 
 		struct ColliderInfo

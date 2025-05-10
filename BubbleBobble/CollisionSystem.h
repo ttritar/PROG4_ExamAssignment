@@ -3,11 +3,11 @@
 
 #include "Singleton.h"
 
-namespace dae
+namespace cat
 {
 	class ColliderComponent;
 
-	class CollisionSystem : public Singleton<CollisionSystem>
+	class CollisionSystem : public dae::Singleton<CollisionSystem>
 	{
 	public:
 		std::vector<ColliderComponent*> GetColliders()const;
