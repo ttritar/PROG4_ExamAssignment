@@ -2,7 +2,6 @@
 
 #include <memory>
 #include "EnemyAIComponent.h"
-#include "MovementComponent.h"
 
 // WanderingState
 //------------------

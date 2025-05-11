@@ -3,9 +3,9 @@
 void cat::MaitaAIComponent::Wander(float deltaTime)
 {
     // check timer
-    m_WanderTimer -= deltaTime;
+    m_WanderTimer += deltaTime;
 
-    if (m_WanderTimer <= 0.f)
+    if (m_WanderTimer >= m_WanderDuration)
     {
         // goes to random direction
         m_Dx = (rand() % 2 == 0 ? 1 : -1) * 0.5f;
@@ -19,6 +19,8 @@ void cat::MaitaAIComponent::Wander(float deltaTime)
             m_Dx /= magnitude;
             m_Dy /= magnitude;
         }
+
+		m_WanderTimer = 0.f;
     }
 
     m_MovementComponent->Move(m_Dx, m_Dy);
