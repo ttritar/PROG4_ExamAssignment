@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="32" height="28" tilewidth="8" tileheight="8" infinite="0" nextlayerid="3" nextobjectid="8">
- <editorsettings>
-  <export format="json"/>
- </editorsettings>
- <tileset firstgid="1" source="1.tsj"/>
- <tileset firstgid="2" source="2.tsj"/>
+ <tileset firstgid="1" name="TopOnly" tilewidth="8" tileheight="8" tilecount="1" columns="1">
+  <properties>
+   <property name="col" type="int" value="1"/>
+  </properties>
+  <image source="1.jpg" width="8" height="8"/>
+  <tile id="0">
+   <properties>
+    <property name="col" type="int" value="1"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="2" name="Solid" tilewidth="8" tileheight="8" tilecount="1" columns="1">
+  <properties>
+   <property name="col" type="int" value="0"/>
+  </properties>
+  <image source="1.jpg" width="8" height="8"/>
+  <tile id="0">
+   <properties>
+    <property name="col" type="int" value="0"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="3" name="None" tilewidth="8" tileheight="8" tilecount="1" columns="1">
+  <image source="1.jpg" width="8" height="8"/>
+ </tileset>
  <layer id="1" name="Tile Layer 1" width="32" height="28">
   <properties>
    <property name="type" type="int" value="1"/>
   </properties>
   <data encoding="csv">
-0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,2,2,0,
-0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
-0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
-0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
-0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,
 0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
 0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
 0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
@@ -37,22 +55,24 @@
 0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
 0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
 0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,
-0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,0
+0,2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="2" name="ZenChan" x="128" y="8"/>
-  <object id="4" name="player" x="52" y="200">
+  <object id="2" name="ZenChan" x="128" y="24.5"/>
+  <object id="4" name="player" x="51.75" y="185.75">
    <properties>
     <property name="playerNr" type="int" value="1"/>
    </properties>
   </object>
-  <object id="5" name="player" x="204" y="200">
+  <object id="5" name="player" x="203.75" y="185.75">
    <properties>
     <property name="playerNr" type="int" value="2"/>
    </properties>
   </object>
-  <object id="6" name="ZenChan" x="128" y="-13"/>
-  <object id="7" name="ZenChan" x="128" y="-35"/>
+  <object id="6" name="ZenChan" x="128" y="3.5"/>
+  <object id="7" name="ZenChan" x="128" y="-18.5"/>
  </objectgroup>
 </map>

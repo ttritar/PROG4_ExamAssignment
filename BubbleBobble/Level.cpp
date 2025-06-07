@@ -25,7 +25,7 @@ void cat::Level::LoadLevel(int idx)
 		return;
 	}
 
-	const auto& tilesets = map->getTilesets();
+	auto& tilesets = map->getTilesets();
 	if (tilesets.empty())
 	{
 		std::cerr << "No tilesets found!" << std::endl;
@@ -50,15 +50,18 @@ void cat::Level::LoadLevel(int idx)
 				if (gid == 0) continue;
 
 				// Determine which tileset the gid corresponds to
-				const tson::Tileset* activeTileset = nullptr;
-				for (const auto& tileset : tilesets) {
-					if (gid >= tileset.getFirstgid() && gid < (tileset.getFirstgid() + tileset.getTileCount())) {
+				tson::Tileset* activeTileset = nullptr;
+				for (auto& tileset : tilesets)
+				{
+					if (gid >= tileset.getFirstgid() && gid < (tileset.getFirstgid() + tileset.getTileCount()))
+					{
 						activeTileset = &tileset;
 						break;
 					}
 				}
 
-				if (!activeTileset) {
+				if (!activeTileset)
+				{
 					std::cerr << "Failed to find a matching tileset for gid: " << gid << std::endl;
 					continue;
 				}
@@ -73,7 +76,34 @@ void cat::Level::LoadLevel(int idx)
 				int srcY = (localId / columns) * tileHeight;
 				SDL_Rect srcRect{ srcX, srcY, tileWidth, tileHeight };
 
-				// Create the tile GameObject
+
+				// PROPERTIES
+				//----------------
+				int collisionType = -1;
+
+				auto colProp = tile->getProp("col");
+				if (colProp)
+				{
+					collisionType = colProp->getValue<int>();
+				}
+				else
+				{
+					// If not found in layer tile, check the tileset's tile definition
+					tson::Tile* tilesetTile = activeTileset->getTile(localId);
+					if (tilesetTile)
+					{
+						auto tilesetColProp = tilesetTile->getProp("col");
+						if (tilesetColProp)
+						{
+							collisionType = tilesetColProp->getValue<int>();
+						}
+					}
+				}
+
+
+
+				// CREATE TILE GAMEOBJECT
+				//--------------------------
 				std::shared_ptr<dae::GameObject> tileObj = std::make_shared<dae::GameObject>();
 				tileObj->SetLocalPosition(glm::vec3(x * tileWidth, y * tileHeight, 0));
 
@@ -85,14 +115,26 @@ void cat::Level::LoadLevel(int idx)
 
 				// collider component
 				ColliderComponent::ColliderInfo colliderInfo{};
-				//if (tile->getProp("type"))
-				colliderInfo.type = ColliderComponent::ColliderType::TopOnly;
-				colliderInfo.isStatic = true;
-				colliderInfo.size = { tileWidth, tileHeight };
+				if (collisionType != -1)
+				{
+					switch (collisionType)
+					{
+					case 0: // Solid
+						colliderInfo.type = ColliderComponent::ColliderType::Solid;
+						break;
+					case 1: // TopOnly
+						colliderInfo.type = ColliderComponent::ColliderType::TopOnly;
+						break;
+					default:;
+					}
+					colliderInfo.isStatic = true;
+					colliderInfo.size = { tileWidth, tileHeight };
 
-				auto col = std::make_shared<ColliderComponent>(tileObj, colliderInfo);
-				tileObj->AddComponent(col);
-				CollisionSystem::GetInstance().AddCollider(col.get());
+					auto col = std::make_shared<ColliderComponent>(tileObj, colliderInfo);
+					tileObj->AddComponent(col);
+					CollisionSystem::GetInstance().AddCollider(col.get());
+				}
+
 
 				m_Scene.Add(tileObj);
 			}
