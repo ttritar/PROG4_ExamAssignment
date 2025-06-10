@@ -1,30 +1,68 @@
 #pragma once
-#include "EnemyAIComponent.h"
+
+#include "MaitaState.h"
+
+// std
+#include <memory>
+
 
 namespace cat
 {
-	class MaitaAIComponent : public EnemyAIComponent
+	class MaitaAIComponent : public dae::BaseComponent
 	{
 	public:
 		// CTORS & DTORS
 		//---------------
 		MaitaAIComponent(std::shared_ptr<dae::GameObject> owner)
-			: EnemyAIComponent(owner)
+			:BaseComponent(*owner)
 		{
-			m_MovementComponent = GetOwner()->GetComponent<MovementComponent>();
+			m_CurrentState = std::make_unique<WanderingState>();
+			m_CurrentState->OnEnter(this);
 		}
+
+		virtual ~MaitaAIComponent() = default;
+		MaitaAIComponent(const MaitaAIComponent& other) = delete;
+		MaitaAIComponent(MaitaAIComponent&& other) = delete;
+		MaitaAIComponent& operator=(const MaitaAIComponent& other) = delete;
+		MaitaAIComponent& operator=(MaitaAIComponent&& other) = delete;
 
 
 		// Methods
 		//---------------
-		void Wander(float deltaTime) override;
-		void Chase(float deltaTime) override;
+		void Update(float deltaTime);
+
+		void ChangeState(std::unique_ptr<MaitaState> newState);
+
+
+		// Getters & Setters
+		void AddPlayer(std::shared_ptr<dae::GameObject> player)
+		{
+			if (player == nullptr) return;
+			m_pPlayers.push_back(player);
+		}
+
+		void SetDetectionRadius(float radius) { m_DetectionRadius = radius; }
+
+		std::shared_ptr<dae::GameObject> GetTarget() const { return m_pTarget; }
+		bool GetIsPlayerSeen() const { return m_IsPlayerSeen; }
+
+
+		bool IsDead = false;
+		bool IsTrapped = false;
 
 	private:
-		MovementComponent* m_MovementComponent;
+		// Private Methods
+		//---------------
+		void UpdatePlayerVisibility();
 
-		float m_WanderTimer = 0.f;
-		float m_WanderDuration = 1.5f;
-		float m_Dx = 0.f, m_Dy = 0.f;   
+		// Private Members
+		//---------------
+		MovementComponent* m_MovementComponent = nullptr;
+		std::shared_ptr<dae::GameObject> m_pTarget = nullptr;
+		std::unique_ptr<MaitaState> m_CurrentState;
+
+		bool m_IsPlayerSeen = false;
+		std::vector<std::shared_ptr<dae::GameObject>> m_pPlayers;
+		float m_DetectionRadius = 50.0f;
 	};
 }

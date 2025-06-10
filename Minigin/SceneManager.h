@@ -11,6 +11,9 @@ namespace dae
 	{
 	public:
 		Scene& CreateScene(const std::string& name);
+		Scene& GetActiveScene() const { return *m_Scenes.back(); }
+		Scene* GetScene(const std::string& name) const;
+		bool SetActiveScene(const std::string& name);
 
 		void Update(float deltaTime);
 		void FixedUpdate(float fixedStep);
@@ -19,6 +22,8 @@ namespace dae
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
-		std::vector<std::shared_ptr<Scene>> m_scenes;
+
+		std::vector<std::shared_ptr<Scene>> m_Scenes;
+		std::shared_ptr<Scene> m_ActiveScene{ nullptr };
 	};
 }

@@ -3,6 +3,8 @@
 #include "BaseComponent.h"
 #include <memory>
 
+#include "TextureComponent.h"
+
 
 namespace cat
 {
@@ -11,10 +13,11 @@ namespace cat
 	public:
 		// CTORS & DTORS
 		//---------------
-		MovementComponent(std::shared_ptr<dae::GameObject> owner, float moveSpeed, float jumpSpeed = 0)
+		MovementComponent(std::shared_ptr<dae::GameObject> owner, float moveSpeed = 0, float jumpSpeed = 0)
 			:BaseComponent(*owner), m_Speed(moveSpeed), m_JumpSpeed(jumpSpeed)
 		{
-		};
+			m_pTextureComponent = owner->GetComponent<TextureComponent>(); // is ok if it doesnt have ig, just always check
+		}
 		virtual ~MovementComponent() = default;
 		MovementComponent(const MovementComponent& other) = delete;
 		MovementComponent(MovementComponent&& other) = delete;
@@ -24,22 +27,29 @@ namespace cat
 		// Methods
 		//---------------
 		void Update(float deltaTime) override;
-		void Move(float dx, float dy) ;
-		void Jump() ;
+		void Move(float dx, float dy);
+		void Jump();
 
 		// Getters & Setters
 		void SetSpeed(float speed) { m_Speed = speed; }
 		void SetJumpSpeed(float jumpSpeed) { m_JumpSpeed = jumpSpeed; }
 
-		void SetVelocityX(float x) { m_Velocity.x = x; }
-		void SetVelocityY(float y) { m_Velocity.y = y; }
-		void SetVelocity(const glm::vec2& velocity) { m_Velocity = velocity; }
-		glm::vec2 GetVelocity() const { return m_Velocity; }
-
 		void SetIsGrounded(bool isGrounded) { m_IsGrounded = isGrounded; }
 
 		void SetUsesGravity(bool usesGravity) { m_UsesGravity = usesGravity; }
 		void SetGravitationalConstant(float gravitationalConstant) { m_GravitationalConstant = gravitationalConstant; }
+
+		glm::vec2 GetDirection() const { return m_Direction; }
+		glm::vec2 GetVelocity() const { return m_Velocity; }
+
+		struct MoveLimits
+		{
+			bool left = true;
+			bool right = true;
+			bool up = true;
+			bool down = true;
+		};
+		MoveLimits MoveLimits{};
 	private:
 		// Private Methods
 		//---------------
@@ -54,8 +64,11 @@ namespace cat
 		float m_GravitationalConstant = -9.81f;
 
 		glm::vec2 m_Velocity = { 0,0 };
+		glm::vec2 m_Direction = { -1,0 };
 
 		bool m_IsGrounded = false;
+
+		TextureComponent* m_pTextureComponent = nullptr;
 	};
 
 }

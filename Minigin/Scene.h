@@ -8,6 +8,8 @@ namespace dae
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
+		const std::string& GetName() const { return m_name; }
+
 		void Add(std::shared_ptr<GameObject> object);
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();

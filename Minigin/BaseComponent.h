@@ -21,11 +21,12 @@ namespace dae
 		BaseComponent& operator=(BaseComponent&& other) = delete;
 
 
+		virtual GameObject* GetOwner() const { return m_pOwner; }
+
 		bool pendingRemove = false;
 
 	protected:
 		BaseComponent(dae::GameObject& owner) { m_pOwner = &owner; };
-		virtual GameObject* GetOwner() const { return m_pOwner; }
 
 	private:
 		GameObject* m_pOwner{ nullptr };	// REQUIRED

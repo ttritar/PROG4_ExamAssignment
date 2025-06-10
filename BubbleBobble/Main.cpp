@@ -14,20 +14,15 @@
 
 #include "ColliderComponent.h"
 #include "CollisionSystem.h"
-#include "EnemyAIComponent.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Scene.h"
-#include "TextComponent.h"
 #include "TextureComponent.h"
 #include "GameObject.h"
+#include "HealthUIComponent.h"
 
 #include "InputManager.h"
-#include "MovementCommand.h"
 #include "MovementComponent.h"
-#include "HealthComponent.h"
-#include "UICommand.h"
-#include "HealthUIComponent.h"
 #include "Level.h"
 #include "MaitaAIComponent.h"
 #include "ScoreUIComponent.h"
@@ -35,114 +30,67 @@
 
 void load()
 {
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
-	auto level = cat::Level(scene);
-	level.AddLevel("LEVEL 0 PATH === == == MAIN SCREEN?");
-	level.AddLevel("../Data/Levels/1/Level1.tmj");
-	level.LoadLevel(1);
+	auto& scene1 = dae::SceneManager::GetInstance().CreateScene("Level1");
+	auto level = cat::Level(scene1,1, "../Data/Levels/Level1.tmj");
+
+	//auto& scene2 = dae::SceneManager::GetInstance().CreateScene("Level2");
+	//auto level2 = cat::Level(scene2, 2, "../Data/Levels/Level2.tmj");
 
 	// TUT TEXT
 	//----------
-	auto& inputManager = dae::InputManager::GetInstance();
 
-	auto fontUI = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
-
-	auto tutTextBubblun = std::make_shared<dae::GameObject>();
-	tutTextBubblun->SetLocalPosition({ 20, 130, 0 });
-	auto text0 = std::make_shared<cat::TextComponent>(tutTextBubblun, "Use WASD to move Bubblun, C to inflict damage, Z and X to pick up pellets.", fontUI);
-	tutTextBubblun->AddComponent(text0);
-	scene.Add(tutTextBubblun);
-
-	auto tutTextBobblun = std::make_shared<dae::GameObject>();
-	tutTextBobblun->SetLocalPosition({ 20, 150, 0 });
-	auto text1 = std::make_shared<cat::TextComponent>(tutTextBobblun, "Use the D-Pad to move Bobblun, X to inflict damage, A and B to pick up pellets.", fontUI);
-	tutTextBobblun->AddComponent(text1);
-	scene.Add(tutTextBobblun);
+	//auto fontUI = dae::ResourceManager::GetInstance().LoadFont("font.ttf",20);
 
 
-
-	// BUBBLUN
-	//----------------
-	auto bubblunHealthObserver = std::make_shared<dae::GameObject>();
-	auto textHealthBubblun = std::make_shared<cat::TextComponent>(bubblunHealthObserver, "# lives: 3", fontUI);
-	bubblunHealthObserver->AddComponent(textHealthBubblun);
-	auto uicHealthBubblun = std::make_shared<cat::HealthUIComponent>(bubblunHealthObserver);
-	bubblunHealthObserver->AddComponent(uicHealthBubblun);
-	bubblunHealthObserver->SetLocalPosition({ 20,200,0 });
-	scene.Add(bubblunHealthObserver);
-
-	auto bubblunScoreObserver = std::make_shared<dae::GameObject>();
-	auto textScoreBubblun = std::make_shared<cat::TextComponent>(bubblunScoreObserver, "Score: 0", fontUI);
-	bubblunScoreObserver->AddComponent(textScoreBubblun);
-	auto uicScoreBubblun = std::make_shared<cat::ScoreUIComponent>(bubblunScoreObserver);
-	bubblunScoreObserver->AddComponent(uicScoreBubblun);
-	bubblunScoreObserver->SetLocalPosition({ 20,220,0 });
-	scene.Add(bubblunScoreObserver);
-
+	//// BUBBLUN
+	////----------------
+	// auto bubblunHealthObserver = std::make_shared<dae::GameObject>();
+	// auto textHealthBubblun = std::make_shared<cat::TextComponent>(bubblunHealthObserver, "3", fontUI);
+	// bubblunHealthObserver->AddComponent(textHealthBubblun);
+	// auto uicHealthBubblun = std::make_shared<cat::HealthUIComponent>(bubblunHealthObserver);
+	// bubblunHealthObserver->AddComponent(uicHealthBubblun);
+	// bubblunHealthObserver->SetLocalPosition({ 50,600,0 });
+	// scene1.Add(bubblunHealthObserver);
+	// 
+	// auto bubblunScoreObserver = std::make_shared<dae::GameObject>();
+	// auto textScoreBubblun = std::make_shared<cat::TextComponent>(bubblunScoreObserver, "90700", fontUI);
+	// bubblunScoreObserver->AddComponent(textScoreBubblun);
+	// auto uicScoreBubblun = std::make_shared<cat::ScoreUIComponent>(bubblunScoreObserver);
+	// bubblunScoreObserver->AddComponent(uicScoreBubblun);
+	// bubblunScoreObserver->SetLocalPosition({ 100,20,0 });
+	// scene1.Add(bubblunScoreObserver);
 
 
-	auto bubblun = std::make_shared<dae::GameObject>();
+	//// bubblun->AddObserver(uicHealthBubblun.get());
+	//// bubblun->AddObserver(uicScoreBubblun.get());
 
-	bubblun->AddObserver(uicHealthBubblun.get());
-	bubblun->AddObserver(uicScoreBubblun.get());
+	////auto bubblunScore = std::make_shared<cat::ScoreComponent>(bubblun);
+	////bubblun->AddComponent(bubblunScore);
 
-	auto bubblunTexture = std::make_shared<cat::TextureComponent>(bubblun, "Bubblun.png");
-	bubblun->AddComponent(bubblunTexture);
-	bubblun->SetLocalPosition({ 100,100,0 });
+	//// MAITA
+	////----------------
+	//auto maita = std::make_shared<dae::GameObject>();
+	//maita->SetLocalPosition({ 50, 50,0 });
 
-	auto bubblunMove = std::make_shared<cat::MovementComponent>(bubblun, 50.f,250.0f);
-	bubblun->AddComponent(bubblunMove);
+	//auto maitaTexture = std::make_shared<cat::TextureComponent>(maita, "Enemies/Maita.png");
+	//maita->AddComponent(maitaTexture);
 
-	//inputManager.BindKeyCommand(SDLK_w, std::make_unique<dae::MoveUpCommand>(dae::MoveUpCommand(bubblun.get())));
-	//inputManager.BindKeyCommand(SDLK_s, std::make_unique<dae::MoveDownCommand>(dae::MoveDownCommand(bubblun.get())));
-	inputManager.BindKeyCommand(SDLK_a, std::make_unique<cat::MoveLeftCommand>(cat::MoveLeftCommand(bubblun.get())));
-	inputManager.BindKeyCommand(SDLK_d, std::make_unique<cat::MoveRightCommand>(cat::MoveRightCommand(bubblun.get())));
+	//auto maitaMove = std::make_shared<cat::MovementComponent>(maita, 90.f);
+	//maitaMove->SetUsesGravity(false);
+	//maita->AddComponent(maitaMove);
 
-	inputManager.BindKeyCommand(SDLK_SPACE, std::make_unique<cat::JumpCommand>(cat::JumpCommand(bubblun.get())));
+	//auto maitaAI = std::make_shared<cat::MaitaAIComponent>(maita);
+	////maitaAI->AddPlayer(bubblun);
+	//maita->AddComponent(maitaAI);
 
-	auto bubblunHealth = std::make_shared<cat::HealthComponent>(bubblun, 3);
-	bubblun->AddComponent(bubblunHealth);
+	//cat::ColliderComponent::ColliderInfo maitaColliderInfo{
+	//	cat::ColliderComponent::ColliderType::Trigger,false, {48.f,48.f}
+	//};
+	//auto maitaColl = std::make_shared<cat::ColliderComponent>(maita,maitaColliderInfo);
+	//cat::CollisionSystem::GetInstance().AddCollider(maitaColl.get());
+	//maita->AddComponent(maitaAI);
 
-	auto bubblunScore = std::make_shared<cat::ScoreComponent>(bubblun);
-	bubblun->AddComponent(bubblunScore);
-
-	inputManager.BindKeyCommand(SDLK_c, std::make_unique<cat::DamageCommand>(cat::DamageCommand(bubblun.get(), 1)));
-	inputManager.BindKeyCommand(SDLK_z, std::make_unique<cat::ScoreCommand>(cat::ScoreCommand(bubblun.get(), 10)));
-	inputManager.BindKeyCommand(SDLK_x, std::make_unique<cat::ScoreCommand>(cat::ScoreCommand(bubblun.get(), 100)));
-
-	cat::ColliderComponent::ColliderInfo bubblunColliderInfo{
-		cat::ColliderComponent::ColliderType::Solid,false, {16.f,16.f}
-	};
-	auto bubblunColl = std::make_shared<cat::ColliderComponent>(bubblun,bubblunColliderInfo);
-	bubblun->AddComponent(bubblunColl);
-	cat::CollisionSystem::GetInstance().AddCollider(bubblunColl.get());
-
-	scene.Add(bubblun);
-
-	// MAITA
-	//----------------
-	auto maita = std::make_shared<dae::GameObject>();
-	maita->SetLocalPosition({ 50, 50,0 });
-
-	auto maitaTexture = std::make_shared<cat::TextureComponent>(maita, "Enemies/Maita.png");
-	maita->AddComponent(maitaTexture);
-
-	auto maitaMove = std::make_shared<cat::MovementComponent>(maita, 30.f);
-	maitaMove->SetUsesGravity(false);
-	maita->AddComponent(maitaMove);
-
-	auto maitaAI = std::make_shared<cat::MaitaAIComponent>(maita);
-	maitaAI->AddPlayer(bubblun);
-	maita->AddComponent(maitaAI);
-
-	cat::ColliderComponent::ColliderInfo maitaColliderInfo{
-		cat::ColliderComponent::ColliderType::Trigger,false, {16.f,16.f}
-	};
-	auto maitaColl = std::make_shared<cat::ColliderComponent>(maita,maitaColliderInfo);
-	cat::CollisionSystem::GetInstance().AddCollider(maitaColl.get());
-	maita->AddComponent(maitaAI);
-
-	scene.Add(maita);
+	//scene1.Add(maita);
 
 }
 
@@ -150,11 +98,16 @@ void load()
 
 int main(int, char* [])
 {
-	auto& serviceLocator = dae::ServiceLocator::GetInstance();
-	serviceLocator.RegisterSoundSystem(std::make_unique<dae::MixerSoundSystem>());
+	{
 
-	dae::Minigin engine("../Data/");
-	engine.Run(load);
+		auto& serviceLocator = dae::ServiceLocator::GetInstance();
+		serviceLocator.RegisterSoundSystem(std::make_unique<dae::MixerSoundSystem>());
+
+		dae::Minigin engine("../Data/");
+		engine.Run(load);
+	}
+
+	VLDReportLeaks();
 
 	return 0;
 }

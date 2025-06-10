@@ -5,8 +5,9 @@
 
 #include  "CollisionSystem.h"
 #include "GameObject.h"
+#include "MovementComponent.h"
 #include "Renderer.h"
-#include <MovementCommand.h>
+#include <iostream>
 
 cat::ColliderComponent::ColliderComponent(std::shared_ptr<dae::GameObject> owner, ColliderInfo colliderInfo)
 	:BaseComponent(*owner),
@@ -34,6 +35,7 @@ void cat::ColliderComponent::Update(float)
 
 	for (auto& coll : colliders)
 	{
+
 		if (coll == this) continue;
 		if (CheckCollision(coll))
 		{
@@ -94,37 +96,55 @@ void cat::ColliderComponent::ResolveCollision(const ColliderComponent* other) co
 
 	if (overlapX > 0 && overlapY > 0)
 	{
-		// TopOnly collision
-		//-----------------
-		if (other->m_ColliderInfo.type == ColliderType::TopOnly)
+		switch (other->m_ColliderInfo.type)
 		{
-			float velocityY = m_pMovementComponent->GetVelocity().y;
-
-			if (velocityY <= 0.0f || (pos.y + size.y) < otherPos.y)
-				return;
-		}
-
-
-		// Solid collision
-		//-----------------
-		glm::vec3 newPos = pos;
-
-		if (overlapX < overlapY)
-		{
-			newPos.x += (dx < 0 ? -overlapX : overlapX);
-			if (m_pMovementComponent) m_pMovementComponent->SetVelocityX(0.0f); // Stop hor movement
-		}
-		else
-		{
-			newPos.y += (dy < 0 ? -overlapY : overlapY);
-			if (m_pMovementComponent)
+		case ColliderType::TopOnly:
 			{
-				m_pMovementComponent->SetVelocityY(0.0f); // Stop vert movement
-				m_pMovementComponent->SetIsGrounded(true); // Set grounded
+				float velocityY = m_pMovementComponent->GetVelocity().y;
+
+				if (velocityY <= 0.0f || (pos.y + size.y) < otherPos.y)
+					break;
 			}
 
-		}
+		case ColliderType::Solid:
+			{
+				glm::vec3 newPos = pos;
 
-		GetOwner()->SetLocalPosition(newPos);
+				if (overlapX < overlapY)
+				{
+					if (dx < 0){
+						newPos.x -= overlapX;
+						m_pMovementComponent->MoveLimits.right = false;
+					}
+					else{
+						newPos.x += overlapX;
+						m_pMovementComponent->MoveLimits.left = false;
+					}
+				}
+				else
+				{
+					if (dy < 0){
+						newPos.y -= overlapY;
+						m_pMovementComponent->MoveLimits.down = false;
+						m_pMovementComponent->SetIsGrounded(true);
+					}
+					else{
+						newPos.y += overlapY;
+						m_pMovementComponent->MoveLimits.up = false;
+					}
+				}
+
+				GetOwner()->SetLocalPosition(newPos);
+			}
+			break;
+
+		case ColliderType::Trigger:
+			{
+				
+			}
+			break;
+
+		}
+		
 	}
 }

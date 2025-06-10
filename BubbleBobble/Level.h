@@ -7,14 +7,12 @@ namespace cat
 	class Level
 	{
 	public:
-		Level(dae::Scene& scene);
-
-		void LoadLevel(int idx);
-		void AddLevel(const std::string& filePath);
+		Level(dae::Scene& scene, int levelNr, const std::string& filePath);
+		void LoadLevel();
 		
 	private:
 		dae::Scene& m_Scene;
-		std::vector<std::string> m_LevelPaths;
+		const std::string m_LevelPath;
 	};
 }
 

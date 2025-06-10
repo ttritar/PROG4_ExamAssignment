@@ -69,9 +69,9 @@
                  "name":"player",
                  "properties":[
                         {
-                         "name":"playerNr",
-                         "type":"int",
-                         "value":1
+                         "name":"isPlayerOne",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"",
@@ -86,9 +86,9 @@
                  "name":"player",
                  "properties":[
                         {
-                         "name":"playerNr",
-                         "type":"int",
-                         "value":2
+                         "name":"isPlayerOne",
+                         "type":"bool",
+                         "value":false
                         }],
                  "rotation":0,
                  "type":"",

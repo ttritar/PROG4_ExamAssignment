@@ -64,12 +64,12 @@
   <object id="2" name="ZenChan" x="128" y="24.5"/>
   <object id="4" name="player" x="51.75" y="185.75">
    <properties>
-    <property name="playerNr" type="int" value="1"/>
+    <property name="isPlayerOne" type="bool" value="true"/>
    </properties>
   </object>
   <object id="5" name="player" x="203.75" y="185.75">
    <properties>
-    <property name="playerNr" type="int" value="2"/>
+    <property name="isPlayerOne" type="bool" value="false"/>
    </properties>
   </object>
   <object id="6" name="ZenChan" x="128" y="3.5"/>

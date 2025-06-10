@@ -13,47 +13,41 @@
 
 namespace cat
 {
+	static float g_SCALE{ 3.f };
+
 	class TextureComponent final : public dae::BaseComponent
 	{
 	public:
 
-		void Update(float ) override
-		{
-		}
-
-		void Render() const override
-		{	
-			const auto& pos = GetOwner()->GetWorldPosition();
-			dae::Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
-		}
-
+		void Update(float) override;
+		void Render() const override;
 
 		void SetSourceRect(SDL_Rect srcRect)
 		{
-			m_texture->SetSourceRect(srcRect);
+			m_pTexture->SetSourceRect(srcRect);
 		}
-
 		SDL_Rect GetSourceRect() const
 		{
-			SDL_Rect src = GetSourceRect();
-			return src;
+			return *m_pTexture->GetSourceRect();
 		}
 
 
 		// CTOR & DTOR
 		//-------------
-		TextureComponent(std::shared_ptr<dae::GameObject> owner,const std::string& filename)
-			:BaseComponent(*owner)
-		{
-			m_texture = dae::ResourceManager::GetInstance().LoadTexture(filename);
-		};
+		TextureComponent(std::shared_ptr<dae::GameObject> owner, const std::string& filename);
 		virtual ~TextureComponent() = default;
+
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent(TextureComponent&& other) = delete;
 		TextureComponent& operator=(const TextureComponent& other) = delete;
 		TextureComponent& operator=(TextureComponent&& other) = delete;
 
+		// Members
+		//-------------
+		SDL_RendererFlip FlipFlag = SDL_FLIP_NONE;
+
 	private:
-		std::shared_ptr<dae::Texture2D> m_texture{};
+		dae::Texture2D* m_pTexture{};
+		glm::vec2 m_DestSize{};
 	};
 }

@@ -22,12 +22,16 @@ namespace dae
 		void SetSourceRect(const SDL_Rect& srcRect);
 		const SDL_Rect* GetSourceRect() const;
 
+
 		Texture2D(const Texture2D &) = delete;
 		Texture2D(Texture2D &&) = delete;
 		Texture2D & operator= (const Texture2D &) = delete;
 		Texture2D & operator= (const Texture2D &&) = delete;
+
+
 	private:
 		SDL_Texture* m_texture;
+
 
 		bool m_UseSourceRect{ false };
 		SDL_Rect m_SourceRect;

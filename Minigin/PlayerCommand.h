@@ -1,10 +1,11 @@
 #pragma once
 #include "Command.h"
-#include "MovementComponent.h"
+#include "../BubbleBobble/AttackComponent.h"
 
 namespace cat
 {
-	// MOVE COMMANDS
+#pragma region Movement Commands
+	// MOVEMENT COMMANDS
 	class MoveCommand : public dae::GameActorCommand
 	{
 	protected:
@@ -77,5 +78,26 @@ namespace cat
 			}
 		}
 	};
+# pragma endregion
+
+#pragma region Attack Command
+	// ATTACK COMMAND
+	class AttackCommand : public dae::GameActorCommand
+	{
+	public:
+		AttackCommand(dae::GameObject* obj)
+			: GameActorCommand(obj)
+		{
+		}
+		void Execute() override
+		{
+			if (m_buttonState.PressedThisFrame)
+			{
+				GetGameActor()->GetComponent<AttackComponent>()->Attack();
+			}
+		}
+	};
+#pragma endregion
+
 }
 
