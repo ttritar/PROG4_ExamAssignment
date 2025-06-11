@@ -1,13 +1,11 @@
 #pragma once
 #include <vector>
 
-#include "Singleton.h"
-
-namespace cat
+namespace dae
 {
 	class ColliderComponent;
 
-	class CollisionSystem : public dae::Singleton<CollisionSystem>
+	class CollisionSystem
 	{
 	public:
 		std::vector<ColliderComponent*> GetColliders()const;

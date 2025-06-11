@@ -30,9 +30,9 @@ void load()
 int main(int, char* [])
 {
 	{
-
 		auto& serviceLocator = dae::ServiceLocator::GetInstance();
 		serviceLocator.RegisterSoundSystem(std::make_unique<dae::MixerSoundSystem>());
+		serviceLocator.RegisterCollisionSystem(std::make_unique<dae::CollisionSystem>());
 
 		dae::Minigin engine("../Data/");
 		engine.Run(load);

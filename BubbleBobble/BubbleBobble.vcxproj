@@ -178,7 +178,6 @@
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="BubbleComponent.h" />
     <ClInclude Include="BubbleState.h" />
-    <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="MaitaState.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MaitaAIComponent.h" />

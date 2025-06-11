@@ -2,10 +2,25 @@
 
 namespace dae
 {
+	// SOUND SYSTEM
+	//---------------------------
     std::unique_ptr<SoundSystem> ServiceLocator::_ss_instance = nullptr;
     
     void ServiceLocator::RegisterSoundSystem(std::unique_ptr<SoundSystem>&& ss)
     {
         _ss_instance = std::move(ss);
     }
+
+
+	// COLLISION SYSTEM
+	//---------------------------
+    std::unique_ptr<CollisionSystem> ServiceLocator::_cs_instance = nullptr;
+
+    void ServiceLocator::RegisterCollisionSystem(std::unique_ptr<dae::CollisionSystem>&& cs)
+    {
+		_cs_instance = std::move(cs);
+    }
+
+
+
 }

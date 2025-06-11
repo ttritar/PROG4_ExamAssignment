@@ -3,35 +3,34 @@
 #include <SDL_rect.h>
 #include <SDL_render.h>
 
-#include  "CollisionSystem.h"
-#include "GameObject.h"
 #include "MovementComponent.h"
+#include "GameObject.h"
 #include "Renderer.h"
-#include <iostream>
+#include "ServiceLocator.h"
 
-cat::ColliderComponent::ColliderComponent(dae::GameObject& owner, ColliderInfo colliderInfo)
+dae::ColliderComponent::ColliderComponent(dae::GameObject& owner, ColliderInfo colliderInfo)
 	:BaseComponent(owner),
 	m_ColliderInfo(colliderInfo)
 {
-	CollisionSystem::GetInstance().AddCollider(this);
+	ServiceLocator::GetInstance().GetCollisionSystem().AddCollider(this);
 
 	if (!m_ColliderInfo.isStatic)
 	{
-		m_pMovementComponent = GetOwner()->GetComponent<MovementComponent>();
+		m_pMovementComponent = GetOwner()->GetComponent<cat::MovementComponent>();
 	}
 }
 
-cat::ColliderComponent::~ColliderComponent()
+dae::ColliderComponent::~ColliderComponent()
 {
-	CollisionSystem::GetInstance().RemoveCollider(this);
+	ServiceLocator::GetInstance().GetCollisionSystem().RemoveCollider(this);
 }
 
 
-void cat::ColliderComponent::Update(float)
+void dae::ColliderComponent::Update(float)
 {
 	if (m_ColliderInfo.isStatic) return;
 
-	auto colliders = CollisionSystem::GetInstance().GetColliders();
+	auto colliders = ServiceLocator::GetInstance().GetCollisionSystem().GetColliders();
 
 	for (auto& coll : colliders)
 	{
@@ -44,12 +43,12 @@ void cat::ColliderComponent::Update(float)
 	}
 }
 
-void cat::ColliderComponent::Render() const
+void dae::ColliderComponent::Render() const
 {
 	DebugRendering();
 }
 
-void cat::ColliderComponent::DebugRendering() const
+void dae::ColliderComponent::DebugRendering() const
 {
 	if (!m_IsDebugRendering)return;
 
@@ -67,7 +66,7 @@ void cat::ColliderComponent::DebugRendering() const
 }
 
 
-bool cat::ColliderComponent::CheckCollision(const ColliderComponent* other) const
+bool dae::ColliderComponent::CheckCollision(const ColliderComponent* other) const
 {
 	glm::vec2 pos = glm::vec2{ GetOwner()->GetLocalPosition().x,GetOwner()->GetLocalPosition().y } + m_ColliderInfo.offset;
 	glm::vec2 otherPos = glm::vec2{ other->GetOwner()->GetLocalPosition().x,other->GetOwner()->GetLocalPosition().y } + other->m_ColliderInfo.offset;
@@ -80,7 +79,7 @@ bool cat::ColliderComponent::CheckCollision(const ColliderComponent* other) cons
 		);
 }
 
-void cat::ColliderComponent::ResolveCollision(const ColliderComponent* other) const
+void dae::ColliderComponent::ResolveCollision(const ColliderComponent* other) const
 {
 	if (m_ColliderInfo.isStatic || !m_pMovementComponent) return;
 

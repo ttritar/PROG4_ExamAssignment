@@ -4,10 +4,10 @@
 #include "AnimationComponent.h"
 #include "AttackComponent.h"
 #include "BubbleComponent.h"
+#include "ColliderComponent.h"
 #include "MovementComponent.h"
 #include "TextureComponent.h"
 #include "HealthComponent.h"
-#include "ColliderComponent.h"
 
 #include "InputManager.h"
 #include "PlayerCommand.h"
@@ -45,10 +45,10 @@ namespace cat
 			auto playerHealth = std::make_unique<HealthComponent>(*player, 3);
 			player->AddComponent(std::move(playerHealth));
 
-			cat::ColliderComponent::ColliderInfo bubblunColliderInfo{
-				cat::ColliderComponent::ColliderType::Solid,false, {48.f,48.f}
+			dae::ColliderComponent::ColliderInfo bubblunColliderInfo{
+				dae::ColliderComponent::ColliderType::Solid,false, {48.f,48.f}
 			};
-			auto playerCollider = std::make_unique<ColliderComponent>(*player, bubblunColliderInfo);
+			auto playerCollider = std::make_unique<dae::ColliderComponent>(*player, bubblunColliderInfo);
 			player->AddComponent(std::move(playerCollider));
 
 			// INPUT
@@ -89,8 +89,8 @@ namespace cat
 				AnimationComponent::FrameData{ 16, 16, 3, 0.2f, rowIdx});
 			bubble->AddComponent(std::move(bubbleAnimation));
 
-			auto bubbleCol = std::make_unique<ColliderComponent>(*bubble,
-				ColliderComponent::ColliderInfo{ ColliderComponent::ColliderType::Trigger, false, { 48.f, 48.f } });
+			auto bubbleCol = std::make_unique<dae::ColliderComponent>(*bubble,
+				dae::ColliderComponent::ColliderInfo{ dae::ColliderComponent::ColliderType::Trigger, false, { 48.f, 48.f } });
 			bubble->AddComponent(std::move(bubbleCol));
 
 			auto bubbleMovement = std::make_unique<MovementComponent>(*bubble);

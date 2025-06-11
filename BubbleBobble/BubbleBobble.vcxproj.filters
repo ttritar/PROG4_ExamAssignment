@@ -119,9 +119,6 @@
     <ClInclude Include="..\Minigin\TextureComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ColliderComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Level.h">
       <Filter>Header Files</Filter>
     </ClInclude>

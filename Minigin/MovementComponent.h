@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.h"
 #include "BaseComponent.h"
-#include <memory>
 
 #include "TextureComponent.h"
 

@@ -1,7 +1,6 @@
 #include "Level.h"
 #include "../3rdParty/json/tileson.hpp"
 
-#include "CollisionSystem.h"
 #include "ColliderComponent.h"
 #include "TextureComponent.h"
 #include "TextComponent.h"
@@ -133,24 +132,23 @@ void cat::Level::LoadLevel()
 					tileObj->AddComponent(std::move(tex));
 
 					// collider component
-					ColliderComponent::ColliderInfo colliderInfo{};
+					dae::ColliderComponent::ColliderInfo colliderInfo{};
 					if (collisionType != -1)
 					{
 						switch (collisionType)
 						{
 						case 0: // Solid
-							colliderInfo.type = ColliderComponent::ColliderType::Solid;
+							colliderInfo.type = dae::ColliderComponent::ColliderType::Solid;
 							break;
 						case 1: // TopOnly
-							colliderInfo.type = ColliderComponent::ColliderType::TopOnly;
+							colliderInfo.type = dae::ColliderComponent::ColliderType::TopOnly;
 							break;
 						default:;
 						}
 						colliderInfo.isStatic = true;
 						colliderInfo.size = { tileWidth * g_SCALE, tileHeight * g_SCALE };
 
-						auto col = std::make_unique<ColliderComponent>(*tileObj, colliderInfo);
-						CollisionSystem::GetInstance().AddCollider(col.get());
+						auto col = std::make_unique<dae::ColliderComponent>(*tileObj, colliderInfo);
 						tileObj->AddComponent(std::move(col));
 					}
 

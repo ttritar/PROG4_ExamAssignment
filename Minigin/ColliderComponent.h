@@ -1,18 +1,19 @@
 #pragma once
 
 #include "BaseComponent.h"
+#include "GameObject.h"
 
 //std
-#include <memory>
-#include <vector>
 
-#include "GameObject.h"
 
 namespace cat
 {
-	// Simple 2D box collision system ...................... frfr
 	class MovementComponent;
-	class CollisionSystem;	
+}
+
+namespace dae
+{
+	// Simple 2D box collision system ...................... frfr
 
     class ColliderComponent final: public dae::BaseComponent
     {
@@ -65,6 +66,6 @@ namespace cat
 		//---------------
 		bool m_IsDebugRendering{1};
 		ColliderInfo m_ColliderInfo{};
-		MovementComponent* m_pMovementComponent{ nullptr };
+		cat::MovementComponent* m_pMovementComponent{ nullptr };
     };
 }
