@@ -13,10 +13,10 @@ namespace cat
 	public:
 		// CTORS & DTORS
 		//---------------
-		MovementComponent(std::shared_ptr<dae::GameObject> owner, float moveSpeed = 0, float jumpSpeed = 0)
-			:BaseComponent(*owner), m_Speed(moveSpeed), m_JumpSpeed(jumpSpeed)
+		MovementComponent(dae::GameObject& owner, float moveSpeed = 0, float jumpSpeed = 0)
+			:BaseComponent(owner), m_Speed(moveSpeed), m_JumpSpeed(jumpSpeed)
 		{
-			m_pTextureComponent = owner->GetComponent<TextureComponent>(); // is ok if it doesnt have ig, just always check
+			m_pTextureComponent = owner.GetComponent<TextureComponent>(); // is ok if it doesnt have ig, just always check
 		}
 		virtual ~MovementComponent() = default;
 		MovementComponent(const MovementComponent& other) = delete;

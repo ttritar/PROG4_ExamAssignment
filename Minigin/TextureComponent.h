@@ -34,7 +34,7 @@ namespace cat
 
 		// CTOR & DTOR
 		//-------------
-		TextureComponent(std::shared_ptr<dae::GameObject> owner, const std::string& filename);
+		TextureComponent(dae::GameObject& owner, const std::string& filename);
 		virtual ~TextureComponent() = default;
 
 		TextureComponent(const TextureComponent& other) = delete;

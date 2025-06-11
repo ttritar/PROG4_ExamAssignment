@@ -63,13 +63,7 @@
     <ClCompile Include="..\Minigin\TextComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ColliderComponent.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Level.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MaitaState.cpp">
@@ -129,9 +123,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Level.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MaitaState.h">

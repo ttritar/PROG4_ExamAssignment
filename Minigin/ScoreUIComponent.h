@@ -10,10 +10,10 @@ namespace cat
 	class ScoreUIComponent : public dae::BaseComponent , public dae::Observer
 	{
 	public:
-		ScoreUIComponent(std::shared_ptr<dae::GameObject> owner)
-			:BaseComponent(*owner) 
+		ScoreUIComponent(dae::GameObject& owner)
+			:BaseComponent(owner) 
 		{
-			m_pTextComponent = owner->GetComponent<TextComponent>();
+			m_pTextComponent = owner.GetComponent<TextComponent>();
 			if (!m_pTextComponent) 
 			{
 				std::cerr << "ScoreUIComponent::ScoreUIComponent() > Error: No TextComponent found on GameObject\n";

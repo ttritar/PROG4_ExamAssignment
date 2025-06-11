@@ -14,8 +14,8 @@ void cat::TextureComponent::Render() const
 	dae::Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, m_DestSize.x, m_DestSize.y, FlipFlag);
 }
 
-cat::TextureComponent::TextureComponent(std::shared_ptr<dae::GameObject> owner, const std::string& filename)
-	:BaseComponent(*owner)
+cat::TextureComponent::TextureComponent(dae::GameObject& owner, const std::string& filename )
+	:BaseComponent(owner)
 {
 	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(filename);
 	SetSourceRect({

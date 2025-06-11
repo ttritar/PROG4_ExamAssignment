@@ -13,8 +13,8 @@ namespace cat
 
 		float GetFPS() const { return m_fps; }
 
-		FPSComponent(std::shared_ptr<dae::GameObject> owner)
-			:BaseComponent(*owner) {
+		FPSComponent(dae::GameObject& owner)
+			:BaseComponent(owner) {
 			m_pTextComponent = GetOwner()->GetComponent<TextComponent>();
 		};
 		virtual ~FPSComponent() = default;

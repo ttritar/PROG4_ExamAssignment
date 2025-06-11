@@ -9,8 +9,8 @@
 #include "Renderer.h"
 #include <iostream>
 
-cat::ColliderComponent::ColliderComponent(std::shared_ptr<dae::GameObject> owner, ColliderInfo colliderInfo)
-	:BaseComponent(*owner),
+cat::ColliderComponent::ColliderComponent(dae::GameObject& owner, ColliderInfo colliderInfo)
+	:BaseComponent(owner),
 	m_ColliderInfo(colliderInfo)
 {
 	CollisionSystem::GetInstance().AddCollider(this);

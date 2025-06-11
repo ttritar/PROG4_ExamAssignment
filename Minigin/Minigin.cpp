@@ -74,7 +74,9 @@ dae::Minigin::Minigin(const std::string &dataPath)
 
 dae::Minigin::~Minigin()
 {
+	ResourceManager::GetInstance().UnloadAll();
 	Renderer::GetInstance().Destroy();
+
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	SDL_Quit();

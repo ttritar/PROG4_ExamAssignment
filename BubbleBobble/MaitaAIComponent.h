@@ -13,8 +13,8 @@ namespace cat
 	public:
 		// CTORS & DTORS
 		//---------------
-		MaitaAIComponent(std::shared_ptr<dae::GameObject> owner)
-			:BaseComponent(*owner)
+		MaitaAIComponent(dae::GameObject& owner)
+			:BaseComponent(owner)
 		{
 			m_CurrentState = std::make_unique<WanderingState>();
 			m_CurrentState->OnEnter(this);
@@ -35,7 +35,7 @@ namespace cat
 
 
 		// Getters & Setters
-		void AddPlayer(std::shared_ptr<dae::GameObject> player)
+		void AddPlayer(dae::GameObject* player)
 		{
 			if (player == nullptr) return;
 			m_pPlayers.push_back(player);
@@ -43,7 +43,7 @@ namespace cat
 
 		void SetDetectionRadius(float radius) { m_DetectionRadius = radius; }
 
-		std::shared_ptr<dae::GameObject> GetTarget() const { return m_pTarget; }
+		dae::GameObject* GetTarget() const { return m_pTarget; }
 		bool GetIsPlayerSeen() const { return m_IsPlayerSeen; }
 
 
@@ -58,11 +58,11 @@ namespace cat
 		// Private Members
 		//---------------
 		MovementComponent* m_MovementComponent = nullptr;
-		std::shared_ptr<dae::GameObject> m_pTarget = nullptr;
+		dae::GameObject* m_pTarget = nullptr;
 		std::unique_ptr<MaitaState> m_CurrentState;
 
 		bool m_IsPlayerSeen = false;
-		std::vector<std::shared_ptr<dae::GameObject>> m_pPlayers;
+		std::vector<dae::GameObject*> m_pPlayers;
 		float m_DetectionRadius = 50.0f;
 	};
 }

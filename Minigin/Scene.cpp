@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "GameObject.h"
 
 #include <algorithm>
 
@@ -11,12 +10,12 @@ Scene::Scene(const std::string& name) : m_name(name) {}
 
 Scene::~Scene() = default;
 
-void Scene::Add(std::shared_ptr<GameObject> object)
+void Scene::Add(std::unique_ptr<GameObject> object)
 {
 	m_objects.emplace_back(std::move(object));
 }
 
-void Scene::Remove(std::shared_ptr<GameObject> object)
+void Scene::Remove(std::unique_ptr<GameObject> object)
 {
 	m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
 }
@@ -39,7 +38,7 @@ void Scene::Update(float deltaTime)
 	}
 
 	auto iterator = std::remove_if(m_objects.begin(), m_objects.end(),	// evrything that should be removed is put on the back of the vector
-		[](const std::shared_ptr<GameObject>& object) { return object->m_pendingRemoval; });
+		[](const std::unique_ptr<GameObject>& object) { return object->m_pendingRemoval; });
 	m_objects.erase(iterator, m_objects.end());
 }
 

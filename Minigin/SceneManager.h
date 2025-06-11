@@ -4,9 +4,12 @@
 #include <memory>
 #include "Singleton.h"
 
+
+
 namespace dae
 {
 	class Scene;
+
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
@@ -24,6 +27,6 @@ namespace dae
 		SceneManager() = default;
 
 		std::vector<std::shared_ptr<Scene>> m_Scenes;
-		std::shared_ptr<Scene> m_ActiveScene{ nullptr };
+		Scene* m_ActiveScene{ nullptr };
 	};
 }

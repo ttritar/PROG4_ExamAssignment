@@ -10,8 +10,8 @@ namespace cat
 	class HealthComponent : public dae::BaseComponent
 	{
 	public:
-		HealthComponent(std::shared_ptr<dae::GameObject> owner,const int health)
-			:BaseComponent(*owner),
+		HealthComponent(dae::GameObject& owner,const int health)
+			:BaseComponent(owner),
 			m_currentHealth(health), m_maxHealth(health)
 		{
 		};

@@ -5,12 +5,12 @@
 
 #include "Renderer.h"
 #include "Font.h"
-#include "Texture2D.h"
+#include "FPSComponent.h"
 
 
-cat::TextComponent::TextComponent(std::shared_ptr<dae::GameObject> owner,const std::string& text, std::shared_ptr<dae::Font> font)
-	: BaseComponent (*owner)
-	,m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
+cat::TextComponent::TextComponent(dae::GameObject& owner,const std::string& text, dae::Font* font)
+	: BaseComponent (owner)
+	,m_needsUpdate(true), m_text(text), m_font(font), m_textTexture(nullptr)
 {
 }
 
@@ -31,7 +31,7 @@ void cat::TextComponent::Update( float )
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
 		SDL_FreeSurface(surf);
-		m_textTexture = std::make_shared<dae::Texture2D>(texture);
+		m_textTexture = std::make_unique< dae::Texture2D>(texture);
 		m_needsUpdate = false;
 	}
 }

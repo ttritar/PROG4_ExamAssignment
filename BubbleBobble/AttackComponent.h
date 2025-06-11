@@ -8,7 +8,7 @@ namespace cat
 	public:
 		// CTOR & DTOR
 		//-------------
-		AttackComponent(std::shared_ptr<dae::GameObject> owner, bool isBobblon);
+		AttackComponent(dae::GameObject& owner, bool isBobblon);
 
 		virtual ~AttackComponent() = default;
 		AttackComponent(const AttackComponent& other) = delete;

@@ -34,7 +34,7 @@ namespace cat
 
 		// CTOR & DTOR
 		//---------------
-		ColliderComponent(std::shared_ptr<dae::GameObject> owner, ColliderInfo colliderInfo);
+	    ColliderComponent(dae::GameObject& owner, ColliderInfo colliderInfo);
 		~ColliderComponent() override;
 
 		ColliderComponent(const ColliderComponent& other) = delete;

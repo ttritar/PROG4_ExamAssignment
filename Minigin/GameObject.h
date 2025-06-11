@@ -31,9 +31,9 @@ namespace dae
 		Transform GetTransform()const;
 
 		// COMPONENTS
-		void AddComponent(std::shared_ptr<BaseComponent> component)
+		void AddComponent(std::unique_ptr<BaseComponent> component)
 		{
-			m_components.push_back(component);
+			m_components.emplace_back(std::move(component));
 		}
 		template <typename T>	void RemoveComponent()
 		{
@@ -124,7 +124,7 @@ namespace dae
 	private:
 		Transform m_transform{};
 
-		std::vector<std::shared_ptr<BaseComponent>> m_components{};
+		std::vector<std::unique_ptr<BaseComponent>> m_components{};
 
 		GameObject* m_parent{};
 		std::vector<GameObject*> m_children{};

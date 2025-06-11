@@ -156,8 +156,6 @@
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttackComponent.cpp" />
     <ClCompile Include="BubbleState.cpp" />
-    <ClCompile Include="ColliderComponent.cpp" />
-    <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="MaitaState.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -181,7 +179,6 @@
     <ClInclude Include="BubbleComponent.h" />
     <ClInclude Include="BubbleState.h" />
     <ClInclude Include="ColliderComponent.h" />
-    <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="MaitaState.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MaitaAIComponent.h" />

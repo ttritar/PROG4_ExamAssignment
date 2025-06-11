@@ -32,6 +32,8 @@ namespace dae
 	private:
 		SDL_Texture* m_texture;
 
+		std::string m_path;
+
 
 		bool m_UseSourceRect{ false };
 		SDL_Rect m_SourceRect;

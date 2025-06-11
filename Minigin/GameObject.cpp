@@ -18,7 +18,7 @@ void dae::GameObject::Update(float deltaTime)
 	}
 
 	auto iterator = std::remove_if(m_components.begin(), m_components.end(),	// evrything that should be removed is put on the back of the vector
-		[](const std::shared_ptr<BaseComponent>& component) { return component->pendingRemove; });
+		[](const std::unique_ptr<BaseComponent>& component) { return component->pendingRemove; });
 	m_components.erase(iterator, m_components.end());
 }
 

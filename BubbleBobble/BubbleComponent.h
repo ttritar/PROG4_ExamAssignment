@@ -10,8 +10,8 @@ namespace cat
 	public:
 		// CTOR & DTOR
 		//-------------
-		BubbleComponent(std::shared_ptr<dae::GameObject> owner)
-			: BaseComponent(*owner)
+		BubbleComponent(dae::GameObject& owner)
+			: BaseComponent(owner)
 		{
 			m_CurrentState = std::make_unique<ShootingState>();
 			m_CurrentState->OnEnter(this);

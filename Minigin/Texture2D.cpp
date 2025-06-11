@@ -6,7 +6,7 @@
 
 dae::Texture2D::~Texture2D()
 {
-	//if (m_texture)
+	if (m_texture)
  		SDL_DestroyTexture(m_texture);
 	//m_texture = nullptr;
 }
@@ -37,6 +37,7 @@ SDL_Texture* dae::Texture2D::GetSDLTexture() const
 
 dae::Texture2D::Texture2D(const std::string &fullPath)
 {
+	m_path = fullPath;
 	m_texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
 	if (m_texture == nullptr)
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());

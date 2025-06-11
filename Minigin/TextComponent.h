@@ -20,7 +20,7 @@ namespace cat
 
 		void SetText(const std::string& text);
 
-		TextComponent(std::shared_ptr<dae::GameObject> owner, const std::string& text, std::shared_ptr<dae::Font> font);
+		TextComponent(dae::GameObject& owner, const std::string& text, dae::Font* font);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -30,7 +30,7 @@ namespace cat
 	private:
 		bool m_needsUpdate;
 		std::string m_text;
-		std::shared_ptr<dae::Font> m_font;
-		std::shared_ptr<dae::Texture2D> m_textTexture;
+		dae::Font* m_font;
+		std::unique_ptr<dae::Texture2D> m_textTexture;
 	};
 }

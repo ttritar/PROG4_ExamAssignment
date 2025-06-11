@@ -7,8 +7,8 @@ namespace cat
 	class ScoreComponent : public dae::BaseComponent
 	{
 	public:
-		ScoreComponent(std::shared_ptr<dae::GameObject> owner)
-			:BaseComponent(*owner)
+		ScoreComponent(dae::GameObject& owner)
+			:BaseComponent(owner)
 		{
 		};
 

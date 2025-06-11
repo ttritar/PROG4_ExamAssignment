@@ -1,3 +1,4 @@
+#include "SceneManager.h"
 #include "Scene.h"
 
 
@@ -17,7 +18,7 @@ bool dae::SceneManager::SetActiveScene(const std::string& name)
 	{
 		if (scene->GetName() == name)
 		{
-			m_ActiveScene = scene;
+			m_ActiveScene = scene.get();
 			return true;
 		}
 	}
@@ -48,11 +49,11 @@ void dae::SceneManager::Render()
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
-	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
+	auto scene = std::shared_ptr<Scene>(new Scene(name));
 	m_Scenes.push_back(scene);
 
 	if (!m_ActiveScene)
-		m_ActiveScene = scene;
+		m_ActiveScene = scene.get();
 
 	return *scene;
 }

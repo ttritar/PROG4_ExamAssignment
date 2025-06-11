@@ -13,17 +13,20 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{3649c8ff-578f-40d4-95bc-15bc519c30cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Singletons">
+      <UniqueIdentifier>{93549d22-7c57-47c9-bfe5-2e4b64912434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Singletons\Scene">
+      <UniqueIdentifier>{d7d05fd8-af07-48ba-afd9-c93f1db98094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Singletons\Sound">
+      <UniqueIdentifier>{c1c7acf0-8227-4560-950d-06f01cedde32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Texture2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -33,46 +36,58 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Minigin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TimeSingleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Gamepad.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SoundSystem.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="BaseComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Singletons\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Singletons\Scene</Filter>
     </ClInclude>
     <ClInclude Include="ServiceLocator.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Singletons</Filter>
     </ClInclude>
-    <ClInclude Include="MixerSoundSystem.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeSingleton.h">
+      <Filter>Header Files\Singletons</Filter>
     </ClInclude>
     <ClInclude Include="LoggingSoundSystem.h">
+      <Filter>Header Files\Singletons\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="MixerSoundSystem.h">
+      <Filter>Header Files\Singletons\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystem.h">
+      <Filter>Header Files\Singletons\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files\Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BubbleBobble\CollisionSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -120,6 +135,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BubbleBobble\ColliderComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BubbleBobble\CollisionSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -24,10 +24,10 @@ namespace cat
 
 		// CTOR & DTOR
 		//-------------
-		AnimationComponent(std::shared_ptr<dae::GameObject> owner, const FrameData& frameData)
-			:BaseComponent(*owner), m_FrameData(frameData)
+		AnimationComponent(dae::GameObject& owner, const FrameData& frameData)
+			:BaseComponent(owner), m_FrameData(frameData)
 		{
-			m_pTextureComponent = owner->GetComponent<TextureComponent>();
+			m_pTextureComponent = owner.GetComponent<TextureComponent>();
 			if (!m_pTextureComponent) throw std::runtime_error("AnimationComponent requires a TextureComponent to function.");
 			m_pTextureComponent->SetSourceRect({
 				0, 0,

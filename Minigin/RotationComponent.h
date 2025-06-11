@@ -8,8 +8,8 @@ namespace cat
 	public:
 		void Update(float deltaTime) override;
 
-		RotationComponent(std::shared_ptr<dae::GameObject> owner, float speed, float radius)
-			:BaseComponent(*owner) , m_radius(radius), m_speed(speed)
+		RotationComponent(dae::GameObject& owner, float speed, float radius)
+			:BaseComponent(owner) , m_radius(radius), m_speed(speed)
 		{
 		};
 
