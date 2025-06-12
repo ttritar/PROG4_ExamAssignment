@@ -11,6 +11,7 @@ namespace dae
 		virtual void LateUpdate(float ) {  };
 		virtual void FixedUpdate(float ) {  };
 		virtual void Render() const {};
+		virtual void DebugRendering()const {};
 
 
 		virtual ~BaseComponent()=default;

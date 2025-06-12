@@ -40,10 +40,10 @@ void dae::GameObject::FixedUpdate(float fixedStep)
 
 void dae::GameObject::Render() const
 {
-
 	for (const auto& component : m_components)
 	{
 		component->Render();
+		if (IS_DEBUG_RENDERING) component->DebugRendering();
 	}
 }
 

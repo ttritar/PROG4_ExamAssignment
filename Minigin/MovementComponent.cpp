@@ -13,6 +13,20 @@ void cat::MovementComponent::Update(float deltaTime)
 	// Move based on the velocity (gets changed by commands and gravity and shit)
 	glm::vec3 pos = GetOwner()->GetLocalPosition();
 
+	// simple ass jump buffer voor jouw isgrounded bullshit en da werkt 5 uur van mijn leven gone ong frfr
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// sleep time :) ily
+	m_timeSinceJumpPress += deltaTime;
+	if (m_IsGrounded && m_timeSinceJumpPress < MAX_JUMP_BUFFER) // NO JUMPIN IN AIR ???
+	{
+		m_timeSinceJumpPress = FLT_MAX;
+		m_IsGrounded = false;
+
+		m_Velocity.y -= m_JumpSpeed;
+	}
+
+
 	if ((m_Velocity.x < 0 && MoveLimits.left) || (m_Velocity.x > 0 && MoveLimits.right))
 		pos.x += m_Velocity.x * deltaTime;
 	if ((m_Velocity.y < 0 && MoveLimits.up) || (m_Velocity.y > 0 && MoveLimits.down))
@@ -20,21 +34,22 @@ void cat::MovementComponent::Update(float deltaTime)
 	GetOwner()->SetLocalPosition(pos);
 
 	MoveLimits = { true, true, true, true };
-
+	m_Velocity.x = 0.f;
 }
 
 void cat::MovementComponent::Move(float dx, float dy)
 {
-	auto& time = dae::Time::GetInstance();
+	//auto& time = dae::Time::GetInstance();
 
 	if ((dx < 0 && !MoveLimits.left) || (dx > 0 && !MoveLimits.right)) dx = 0;
 	if ((dy < 0 && !MoveLimits.up) || (dy > 0 && !MoveLimits.down)) dy = 0;
 
 	glm::vec3 pos = GetOwner()->GetLocalPosition();
-	pos.x += dx * m_Speed * time.DeltaTime;
-	pos.y += dy * m_Speed * time.DeltaTime;
+	m_Velocity.x = dx * m_Speed;
+	/*pos.x += dx * m_Speed * dx * ime.DeltaTime;
+	pos.y += dy * m_Speed * time.DeltaTime;*/
 
-	GetOwner()->SetLocalPosition(pos);
+	/*GetOwner()->SetLocalPosition(pos);*/
 
 
 	// handle tex dir
@@ -57,10 +72,8 @@ void cat::MovementComponent::Jump()
 {
 	if (m_JumpSpeed == 0) return; // jump "disabled
 
-	if (!m_IsGrounded) return; // NO JUMPIN IN AIR ???
-	m_IsGrounded = false;
-
-	m_Velocity.y -= m_JumpSpeed;
+	m_timeSinceJumpPress = 0.f; // reset jump press time
+	
 }
 
 
@@ -74,7 +87,7 @@ void cat::MovementComponent::ApplyGravity()
 		{
 			m_Velocity.y = 0; 
 		}
-		else
+		//else
 		{
 			m_Velocity.y -= m_GravitationalConstant; 
 		}

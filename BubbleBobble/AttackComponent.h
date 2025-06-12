@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+
 #include "MovementComponent.h"
 
 namespace cat
@@ -19,6 +21,12 @@ namespace cat
 		// METHODS
 		//-------------
 		void Attack();
+		void Update(float ) override
+		{
+			/*auto pos = GetOwner()->GetWorldPosition();
+			std::cout << "AttackComponent Update: " << pos.x << ", " << pos.y << std::endl;*/
+
+		}
 
 	private:
 		MovementComponent* m_pMovementComponent{ nullptr };

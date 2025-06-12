@@ -5,7 +5,10 @@
 #include <unordered_map>
 #include <iostream>
 #include <algorithm>
+#include <imgui.h>
+
 #include "Gamepad.h"
+#include "backends/imgui_impl_sdl2.h"
 
 namespace dae
 {
@@ -240,9 +243,14 @@ namespace dae
         {
             if (e.type == SDL_QUIT) return false;
 
-            if (e.type == SDL_KEYDOWN)
-            {
+            // ImGui
+            ImGui_ImplSDL2_ProcessEvent(&e);
+            if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE &&
+                e.window.windowID == SDL_GetWindowID(Renderer::GetInstance().GetSDLWindow())) {
+                return false;
             }
+
+
         }
 
 

@@ -41,6 +41,7 @@ namespace cat
 		glm::vec2 GetDirection() const { return m_Direction; }
 		glm::vec2 GetVelocity() const { return m_Velocity; }
 
+		glm::vec2 m_Velocity = { 0,0 };
 		struct MoveLimits
 		{
 			bool left = true;
@@ -62,10 +63,11 @@ namespace cat
 		bool m_UsesGravity = true;
 		float m_GravitationalConstant = -9.81f;
 
-		glm::vec2 m_Velocity = { 0,0 };
 		glm::vec2 m_Direction = { -1,0 };
 
 		bool m_IsGrounded = false;
+		float m_timeSinceJumpPress = FLT_MAX;
+		const float MAX_JUMP_BUFFER = 1.f;
 
 		TextureComponent* m_pTextureComponent = nullptr;
 	};

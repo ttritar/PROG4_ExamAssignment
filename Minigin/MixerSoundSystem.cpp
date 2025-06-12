@@ -4,6 +4,7 @@
 //std
 #include <queue>
 #include <mutex>
+#include <SDL.h>
 #include <unordered_map>
 
 namespace dae
@@ -34,6 +35,7 @@ namespace dae
 
 			Mix_CloseAudio();
 			Mix_Quit();
+			SDL_QuitSubSystem(SDL_INIT_AUDIO);
 		}
 
 

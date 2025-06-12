@@ -27,7 +27,7 @@ void cat::Level::LoadLevel()
 {
 	const dae::sound_id soundId = static_cast<dae::sound_id>(dae::make_sdbm_hash("MainTheme"));
 	dae::ServiceLocator::GetInstance().GetSoundSystem().LoadSound(soundId, "../Data/Levels/MainTheme.mp3");
-	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(soundId, 100);
+	//dae::ServiceLocator::GetInstance().GetSoundSystem().Play(soundId, 100);
 
 	// LOAD
 	//----------
@@ -162,12 +162,10 @@ void cat::Level::LoadLevel()
 			// OBJECTS
 			case tson::LayerType::ObjectGroup:
 			{
-				bool spawn = true;
 				for (auto& object : layer.getObjects())
 				{
-					if (object.getName() == "player" && spawn)
+					if (object.getName() == "player")
 					{
-						spawn = false; // only spawn one player
 						glm::vec3 pos{ object.getPosition().x * g_SCALE, object.getPosition().y * g_SCALE, 0 };
 						PlayerPreset player = { object.getProp("isPlayerOne")->getValue<bool>() };
 						player.SpawnPlayer(m_Scene, pos);

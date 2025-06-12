@@ -7,10 +7,10 @@
 #include <vector>
 
 
-
-
 namespace dae
 {
+	inline bool IS_DEBUG_RENDERING = false;
+
 	class GameObject final
 	{
 	public:

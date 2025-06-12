@@ -13,8 +13,15 @@ namespace cat
 
 namespace dae
 {
-	// Simple 2D box collision system ...................... frfr
+	struct CollisionResult
+	{
+		bool hit{ false };
+		float time{ 0.0f };
+		glm::vec2 position{ 0.0f, 0.0f };
+		glm::vec2 normal{ 0.0f, 0.0f };
+	};
 
+	// swept AABB 
     class ColliderComponent final: public dae::BaseComponent
     {
     public:
@@ -46,25 +53,31 @@ namespace dae
 		// Methods
 		//---------------
 		void Update(float deltaTime) override;
-		void Render() const override;
+		void FixedUpdate(float) override;
+	    void DebugRendering() const override;
+		CollisionResult RayRectCollisionCheck(const glm::vec2& rayOrigin, const glm::vec2& rayDirection, const glm::vec2& rectOrigin, const glm::vec2& rectSize);
+		CollisionResult RectRectCollisionCheck(const glm::vec2& rect1Origin, const glm::vec2& rect1Size,const glm::vec2& rect1Velocity ,const glm::vec2& rect2Origin, const glm::vec2& rect2Size, float deltaTime);
 
-		// Getters & Setters
-		void SetDebugRendering(bool value) { m_IsDebugRendering = value; }
+	    // Getters & Setters
 		bool GetIsStatic() const { return m_ColliderInfo.isStatic; }
 		glm::vec3 GetPosition() const { return GetOwner()->GetLocalPosition() + glm::vec3{m_ColliderInfo.offset, 0}; }
 		glm::vec2 GetSize() const { return m_ColliderInfo.size; }
 
 	private:
+	    struct CollisionInfo
+	    {
+			bool hit;
+			float time;
+			glm::vec2 normal;
+	    };
 		// Private Methods
 		//---------------
-		void DebugRendering() const;
 		bool CheckCollision(const ColliderComponent* other) const;
 		void ResolveCollision(const ColliderComponent* other) const;
-
+		CollisionInfo SweptAABB(const ColliderComponent* other, const glm::vec2& velocity) const;
 
 		// Private Members
 		//---------------
-		bool m_IsDebugRendering{1};
 		ColliderInfo m_ColliderInfo{};
 		cat::MovementComponent* m_pMovementComponent{ nullptr };
     };
