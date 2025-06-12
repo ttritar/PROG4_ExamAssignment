@@ -156,6 +156,8 @@
     <ClCompile Include="MaitaAIComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreUIComponent.cpp" />
+    <ClCompile Include="ZenChanAIComponent.cpp" />
+    <ClCompile Include="ZenChanState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Minigin\UICommand.h" />
@@ -172,6 +174,8 @@
     <ClInclude Include="Presets.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreUIComponent.h" />
+    <ClInclude Include="ZenChanAIComponent.h" />
+    <ClInclude Include="ZenChanState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

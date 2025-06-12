@@ -22,5 +22,12 @@ namespace dae
     }
 
 
+	// PLAYER SYSTEM
+	//---------------------------
+	std::unique_ptr<PlayerSystem> ServiceLocator::_ps_instance = nullptr;
 
+    void ServiceLocator::RegisterPlayerSystem(std::unique_ptr<dae::PlayerSystem>&& ps)
+    {
+		_ps_instance = std::move(ps);
+    }
 }

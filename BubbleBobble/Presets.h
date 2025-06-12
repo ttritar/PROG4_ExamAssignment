@@ -8,9 +8,11 @@
 #include "MovementComponent.h"
 #include "TextureComponent.h"
 #include "HealthComponent.h"
+#include "ZenChanAIComponent.h"
 
 #include "InputManager.h"
 #include "PlayerCommand.h"
+#include "ServiceLocator.h"
 
 namespace cat
 {
@@ -46,7 +48,8 @@ namespace cat
 			player->AddComponent(std::move(playerHealth));
 
 			dae::ColliderComponent::ColliderInfo bubblunColliderInfo{
-				dae::ColliderComponent::ColliderType::Solid,false, {48.f,48.f}
+				dae::ColliderComponent::ColliderType::Solid,false, {48.f,48.f},{},
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player), static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level)
 			};
 			auto playerCollider = std::make_unique<dae::ColliderComponent>(*player, bubblunColliderInfo);
 			player->AddComponent(std::move(playerCollider));
@@ -63,6 +66,7 @@ namespace cat
 			// SPAWN
 			//----------------
 			player->SetLocalPosition(pos);
+			dae::ServiceLocator::GetInstance().GetPlayerSystem().RegisterPlayer(playerIdx, player.get());
 			scene.Add(std::move(player));
 		}
 	};
@@ -89,10 +93,14 @@ namespace cat
 				AnimationComponent::FrameData{ 16, 16, 3, 0.2f, rowIdx});
 			bubble->AddComponent(std::move(bubbleAnimation));
 
-			//auto bubbleCol = std::make_unique<dae::ColliderComponent>(*bubble,
-			//	dae::ColliderComponent::ColliderInfo{ dae::ColliderComponent::ColliderType::Trigger, false, { 48.f, 48.f } });
-			//bubble->AddComponent(std::move(bubbleCol));
-			//
+			// COLLIDER
+			auto colInfo = dae::ColliderComponent::ColliderInfo{
+				dae::ColliderComponent::ColliderType::Trigger, false, { 48.f, 48.f },{},
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Projectile), static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy)
+			};
+			auto bubbleCol = std::make_unique<dae::ColliderComponent>(*bubble,colInfo);
+			bubble->AddComponent(std::move(bubbleCol));
+			
 			auto bubbleMovement = std::make_unique<dae::MovementComponent>(*bubble);
 			bubbleMovement->SetUsesGravity(false);
 			bubble->AddComponent(std::move(bubbleMovement));
@@ -113,22 +121,52 @@ namespace cat
 	//----------------
 	struct ZenChanPreset
 	{
+		std::vector<dae::GameObject> m_pPlayers;
+
 		void SpawnZenChan(dae::Scene& scene, const glm::vec3 pos)
 		{
 			auto zenChan = std::make_unique<dae::GameObject>();
 
 
+			// TEXTURE
 			auto zenTexture = std::make_unique<dae::TextureComponent>(*zenChan, "Enemies/ZenChan.png");
 			zenChan->AddComponent(std::move(zenTexture));
 
+			// ANIMATION
 			auto zenAnimation = std::make_unique<AnimationComponent>(*zenChan,
 				AnimationComponent::FrameData{ 16, 16, 4, 0.2f });
 
-			auto zenCol = std::make_unique<dae::ColliderComponent>(*zenChan,
-				dae::ColliderComponent::ColliderInfo{ dae::ColliderComponent::ColliderType::Solid, false, { 48.f, 48.f } });
-			zenChan->AddComponent(std::move(zenCol));
+
+			// COLLIDER
+			auto colInfo = dae::ColliderComponent::ColliderInfo{
+					dae::ColliderComponent::ColliderType::Solid,false, { 48.f, 48.f }, {},
+					static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy) , static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level)
+			};
+
+			auto zenSolidCol = std::make_unique<dae::ColliderComponent>(*zenChan, colInfo);
+			zenChan->AddComponent(std::move(zenSolidCol));
+
+			colInfo.collisionFilter = static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player);
+			auto zenTriggerCol = std::make_unique<dae::ColliderComponent>(*zenChan,colInfo);
+			zenChan->AddComponent(std::move(zenTriggerCol));
 
 
+			// MOVEMENT
+			auto zenMovement = std::make_unique<dae::MovementComponent>(*zenChan, 100.f, 200.f);
+			zenChan->AddComponent(std::move(zenMovement));
+
+			// AI COMPONENT
+			auto zenAI = std::make_unique<ZenChanAIComponent>(*zenChan);
+			for (const auto& player : dae::ServiceLocator::GetInstance().GetPlayerSystem().GetPlayers())
+			{
+				if (player)
+				{
+					zenAI->AddPlayer(player);
+				}
+			}
+			zenChan->AddComponent(std::move(zenAI));
+
+				
 			zenChan->SetLocalPosition(pos);
 			scene.Add(std::move(zenChan));
 		}

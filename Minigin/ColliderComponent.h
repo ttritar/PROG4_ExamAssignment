@@ -10,18 +10,22 @@ namespace dae
 {
 	class MovementComponent;
 
-	struct CollisionResult
-	{
-		bool hit{ false };
-		float time{ 0.0f };
-		glm::vec2 position{ 0.0f, 0.0f };
-		glm::vec2 normal{ 0.0f, 0.0f };
-	};
+
 
 	// swept AABB 
     class ColliderComponent final: public dae::BaseComponent
     {
     public:
+		enum class ColliderTag : uint32_t {
+			None = 0,
+
+			Player = 1 << 0,
+			Enemy = 1 << 1,
+			Projectile = 1 << 2,
+			Level = 1 << 3,
+			Tag_04 = 1 << 4,
+		};
+
 	    enum class ColliderType
 	    {
 		    Solid=0,
@@ -32,10 +36,14 @@ namespace dae
 		struct ColliderInfo
 		{
 			ColliderType type = ColliderType::Solid;
-			bool isStatic;
+			bool isStatic = false;
 			glm::vec2 size;
 			glm::vec2 offset = { 0,0 };
+
+			uint32_t tag = 0;
+			uint32_t collisionFilter = 0xFFFFFFFF; // everything -> just think of flags, it kinda works like that
 		};
+
 
 		// CTOR & DTOR
 		//---------------
@@ -52,30 +60,23 @@ namespace dae
 		void Update(float deltaTime) override;
 		void FixedUpdate(float) override;
 	    void DebugRendering() const override;
-		CollisionResult RayRectCollisionCheck(const glm::vec2& rayOrigin, const glm::vec2& rayDirection, const glm::vec2& rectOrigin, const glm::vec2& rectSize);
-		CollisionResult RectRectCollisionCheck(const glm::vec2& rect1Origin, const glm::vec2& rect1Size,const glm::vec2& rect1Velocity ,const glm::vec2& rect2Origin, const glm::vec2& rect2Size, float deltaTime);
-
+		
 	    // Getters & Setters
-		bool GetIsStatic() const { return m_ColliderInfo.isStatic; }
-		glm::vec3 GetPosition() const { return GetOwner()->GetLocalPosition() + glm::vec3{m_ColliderInfo.offset, 0}; }
-		glm::vec2 GetSize() const { return m_ColliderInfo.size; }
+		glm::vec3 GetPosition() const { return GetOwner()->GetLocalPosition() + glm::vec3{Info.offset, 0}; }
 
+		
+		ColliderInfo Info{};
 	private:
-	    struct CollisionInfo
-	    {
-			bool hit;
-			float time;
-			glm::vec2 normal;
-	    };
 		// Private Methods
 		//---------------
+		bool CanCollideWith(const ColliderComponent* other) const;
 		bool CheckCollision(const ColliderComponent* other) const;
 		void ResolveCollision(const ColliderComponent* other) const;
-		CollisionInfo SweptAABB(const ColliderComponent* other, const glm::vec2& velocity) const;
+
 
 		// Private Members
 		//---------------
-		ColliderInfo m_ColliderInfo{};
 		dae::MovementComponent* m_pMovementComponent{ nullptr };
+
     };
 }

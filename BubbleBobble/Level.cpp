@@ -27,7 +27,7 @@ void cat::Level::LoadLevel()
 {
 	const dae::sound_id soundId = static_cast<dae::sound_id>(dae::make_sdbm_hash("MainTheme"));
 	dae::ServiceLocator::GetInstance().GetSoundSystem().LoadSound(soundId, "../Data/Levels/MainTheme.mp3");
-	//dae::ServiceLocator::GetInstance().GetSoundSystem().Play(soundId, 100);
+	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(soundId, 100);
 
 	// LOAD
 	//----------
@@ -128,7 +128,6 @@ void cat::Level::LoadLevel()
 					// texture component
 					std::string tilesetImagePath = "../Data/Levels/" + activeTileset->getImagePath().string();
 					auto tex = std::make_unique<dae::TextureComponent>(*tileObj, tilesetImagePath);
-					//tex->SetSourceRect(srcRect);
 					tileObj->AddComponent(std::move(tex));
 
 					// collider component
@@ -147,6 +146,8 @@ void cat::Level::LoadLevel()
 						}
 						colliderInfo.isStatic = true;
 						colliderInfo.size = { tileWidth * dae::g_SCALE, tileHeight * dae::g_SCALE };
+
+						colliderInfo.tag = static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level);
 
 						auto col = std::make_unique<dae::ColliderComponent>(*tileObj, colliderInfo);
 						tileObj->AddComponent(std::move(col));

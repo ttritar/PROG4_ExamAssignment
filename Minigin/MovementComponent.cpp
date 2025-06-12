@@ -13,22 +13,28 @@ void dae::MovementComponent::Update(float deltaTime)
 	// Move based on the velocity (gets changed by commands and gravity and shit)
 	glm::vec3 pos = GetOwner()->GetLocalPosition();
 
-	m_timeSinceJumpPress += deltaTime;
-	if (m_IsGrounded && m_timeSinceJumpPress < m_MAX_JUMP_BUFFER) // NO JUMPIN IN AIR ???
-	{
-		m_timeSinceJumpPress = FLT_MAX;
-		m_IsGrounded = false;
 
-		Velocity.y -= m_JumpSpeed;
+	// JUMPING
+	if (m_JumpSpeed !=0)
+	{
+		m_timeSinceJumpPress += deltaTime;
+		if (m_IsGrounded && m_timeSinceJumpPress < m_MAX_JUMP_BUFFER) // NO JUMPIN IN AIR ???
+		{
+			m_timeSinceJumpPress = FLT_MAX;
+			m_IsGrounded = false;
+
+			Velocity.y -= m_JumpSpeed;
+		}
 	}
 
-
+	// ALL MOVEMENT
 	if ((Velocity.x < 0 && MoveLimits.left) || (Velocity.x > 0 && MoveLimits.right))
 		pos.x += Velocity.x * deltaTime;
 	if ((Velocity.y < 0 && MoveLimits.up) || (Velocity.y > 0 && MoveLimits.down))
 		pos.y += Velocity.y * deltaTime;
 	GetOwner()->SetLocalPosition(pos);
 
+	// RESETS
 	MoveLimits = { true, true, true, true };
 	Velocity.x = 0.f;
 }
@@ -63,9 +69,9 @@ void dae::MovementComponent::Move(float dx, float dy)
 
 void dae::MovementComponent::Jump()
 {
-	if (m_JumpSpeed == 0) return; // jump "disabled
+	if (m_JumpSpeed == 0) return; 
 
-	m_timeSinceJumpPress = 0.f; // reset jump press time
+	m_timeSinceJumpPress = 0.f; 
 	
 }
 
