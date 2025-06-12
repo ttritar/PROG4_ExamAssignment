@@ -24,6 +24,9 @@ void dae::MovementComponent::Update(float deltaTime)
 			m_IsGrounded = false;
 
 			Velocity.y -= m_JumpSpeed;
+
+			Event event{ dae::make_sdbm_hash("PlayerJumped") };
+			GetOwner()->NotifyObservers(event);
 		}
 	}
 

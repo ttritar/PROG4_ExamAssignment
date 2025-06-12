@@ -1,6 +1,5 @@
 #pragma once
 #include "Command.h"
-#include "ServiceLocator.h"
 #include "../BubbleBobble/AttackComponent.h"
 
 namespace cat
@@ -75,13 +74,7 @@ namespace cat
 		{
 			if (m_buttonState.PressedThisFrame)
 			{
-				if (GetGameActor()->GetComponent<dae::MovementComponent>()->Jump())
-				{
-					auto& soundSystem = dae::ServiceLocator::GetSoundSystem();
-					auto soundId = static_cast<dae::sound_id>(dae::make_sdbm_hash("Attack"));
-					soundSystem.LoadSound(soundId, "../Data/Players/Attack.wav");
-					soundSystem.Play(soundId, 100);
-				}
+				GetGameActor()->GetComponent<dae::MovementComponent>()->Jump();
 			}
 		}
 	};
@@ -101,11 +94,6 @@ namespace cat
 			if (m_buttonState.PressedThisFrame)
 			{
 				GetGameActor()->GetComponent<AttackComponent>()->Attack();
-
-				auto& soundSystem = dae::ServiceLocator::GetSoundSystem();
-				auto soundId = static_cast<dae::sound_id>(dae::make_sdbm_hash("Attack"));
-				soundSystem.LoadSound(soundId, "../Data/Players/Attack.wav");
-				soundSystem.Play(soundId, 100);
 			}
 		}
 	};

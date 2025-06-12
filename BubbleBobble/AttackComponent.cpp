@@ -19,4 +19,7 @@ void cat::AttackComponent::Attack()
 		m_pMovementComponent->GetDirection(),
 	};
 	bubblePreset.SpawnBubble(dae::SceneManager::GetInstance().GetActiveScene(), GetOwner()->GetWorldPosition());
+
+	dae::Event event{ dae::make_sdbm_hash("PlayerAttacked") };
+	GetOwner()->NotifyObservers(event);
 }

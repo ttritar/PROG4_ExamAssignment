@@ -12,6 +12,7 @@
 
 #include "InputManager.h"
 #include "PlayerCommand.h"
+#include "PlayerSoundObserver.h"
 #include "ServiceLocator.h"
 
 namespace cat
@@ -62,6 +63,12 @@ namespace cat
 			inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<cat::MoveRightCommand>(cat::MoveRightCommand(player.get())));
 			inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_A, std::make_unique<cat::JumpCommand>(cat::JumpCommand(player.get())));
 			inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_B, std::make_unique<cat::AttackCommand>(cat::AttackCommand(player.get()))); 
+
+
+			// OBSERVERS
+			//----------------
+			PlayerSoundObserver* playerObserver =new PlayerSoundObserver();
+			player->AddObserver(playerObserver);
 
 			// SPAWN
 			//----------------

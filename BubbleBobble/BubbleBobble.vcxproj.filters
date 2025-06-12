@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Characters">
       <UniqueIdentifier>{1e7a376f-4a3d-4260-96a8-bdbf70652feb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Observers">
+      <UniqueIdentifier>{955c302b-bfc1-4c49-9d92-2a6b8061fd53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="ZenChanState.h">
       <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSoundObserver.h">
+      <Filter>Header Files\Observers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
