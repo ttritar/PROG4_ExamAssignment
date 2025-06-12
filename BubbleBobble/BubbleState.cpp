@@ -1,5 +1,7 @@
 #include "BubbleState.h"
 
+#include <random>
+
 #include "BubbleComponent.h"
 
 
@@ -44,13 +46,14 @@ std::unique_ptr<cat::BubbleState> cat::RisingState::Update(float )
 	auto owner = m_pBubbleComponent->GetOwner();
 
 	
-	auto toDir = owner->GetWorldPosition() - m_TargetPosition;
+	auto toDir = m_TargetPosition - owner->GetWorldPosition();
+	toDir = glm::normalize(toDir);
 	m_pMovementComponent->Move(toDir.x, toDir.y);
 	
 
 	// STATE CHANGE
 	//-----------------
-	if (owner->GetWorldPosition().y >= m_TargetPosition.y)
+	if (glm::distance(owner->GetWorldPosition(), m_TargetPosition) < 5.0f)
 	{
 		return std::make_unique<cat::StillState>();
 	}
@@ -66,10 +69,21 @@ void cat::RisingState::OnEnter(BubbleComponent* pBubble)
 	{
 		throw std::runtime_error("RisingState requires a MovementComponent on the Bubble's GameObject.");
 	}
+
+	// random target within area
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<float> distX(300.f, 400.f);
+	std::uniform_real_distribution<float> distY(100.f, 160.f);
+
+	m_TargetPosition = glm::vec3(distX(gen), distY(gen), 0.f);
 }
 
 void cat::RisingState::OnExit()
 {
+	m_pMovementComponent->SetSpeed(0);
+	m_pMovementComponent->m_Velocity = { 0,0 };
+	m_pMovementComponent->MoveLimits = { true, true, true, true }; 
 }
 #pragma endregion
 

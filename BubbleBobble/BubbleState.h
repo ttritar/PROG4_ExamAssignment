@@ -46,7 +46,7 @@ namespace cat
 		BubbleComponent* m_pBubbleComponent = nullptr;
 		MovementComponent* m_pMovementComponent = nullptr;
 
-		glm::vec3 m_TargetPosition = { 360 ,80,0};
+		glm::vec3 m_TargetPosition{0};
 
 		float m_RiseSpeed = 100.f; 
 	};

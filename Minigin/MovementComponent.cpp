@@ -39,17 +39,14 @@ void cat::MovementComponent::Update(float deltaTime)
 
 void cat::MovementComponent::Move(float dx, float dy)
 {
-	//auto& time = dae::Time::GetInstance();
-
 	if ((dx < 0 && !MoveLimits.left) || (dx > 0 && !MoveLimits.right)) dx = 0;
 	if ((dy < 0 && !MoveLimits.up) || (dy > 0 && !MoveLimits.down)) dy = 0;
 
-	glm::vec3 pos = GetOwner()->GetLocalPosition();
-	m_Velocity.x = dx * m_Speed;
-	/*pos.x += dx * m_Speed * dx * ime.DeltaTime;
-	pos.y += dy * m_Speed * time.DeltaTime;*/
+	if (dx != 0)
+		m_Velocity.x = dx * m_Speed;
+	if (dy != 0)
+		m_Velocity.y = dy * m_Speed;
 
-	/*GetOwner()->SetLocalPosition(pos);*/
 
 
 	// handle tex dir
@@ -87,9 +84,7 @@ void cat::MovementComponent::ApplyGravity()
 		{
 			m_Velocity.y = 0; 
 		}
-		//else
-		{
-			m_Velocity.y -= m_GravitationalConstant; 
-		}
+		else
+		m_Velocity.y -= m_GravitationalConstant; 
 	}
 }

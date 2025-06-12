@@ -89,10 +89,10 @@ namespace cat
 				AnimationComponent::FrameData{ 16, 16, 3, 0.2f, rowIdx});
 			bubble->AddComponent(std::move(bubbleAnimation));
 
-			auto bubbleCol = std::make_unique<dae::ColliderComponent>(*bubble,
-				dae::ColliderComponent::ColliderInfo{ dae::ColliderComponent::ColliderType::Trigger, false, { 48.f, 48.f } });
-			bubble->AddComponent(std::move(bubbleCol));
-
+			//auto bubbleCol = std::make_unique<dae::ColliderComponent>(*bubble,
+			//	dae::ColliderComponent::ColliderInfo{ dae::ColliderComponent::ColliderType::Trigger, false, { 48.f, 48.f } });
+			//bubble->AddComponent(std::move(bubbleCol));
+			//
 			auto bubbleMovement = std::make_unique<MovementComponent>(*bubble);
 			bubbleMovement->SetUsesGravity(false);
 			bubble->AddComponent(std::move(bubbleMovement));
