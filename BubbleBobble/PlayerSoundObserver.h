@@ -6,6 +6,7 @@ namespace cat
 {
 	class PlayerSoundObserver final : public dae::Observer
 	{
+	public:
 		void Notify(const dae::Event& event, dae::GameObject* ) override
 		{
 			//----- JUMP -----

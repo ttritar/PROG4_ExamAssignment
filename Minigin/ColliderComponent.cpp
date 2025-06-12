@@ -28,28 +28,33 @@ dae::ColliderComponent::~ColliderComponent()
 }
 
 
-void dae::ColliderComponent::Update(float )
-{
-	
-}
 
-void dae::ColliderComponent::FixedUpdate(float )
+void dae::ColliderComponent::FixedUpdate(float)
 {
 	if (Info.isStatic) return;
-	if (!m_pMovementComponent) return;
 
-	auto colliders = ServiceLocator::GetInstance().GetCollisionSystem().GetColliders();
+	auto physColliders = ServiceLocator::GetInstance().GetCollisionSystem().GetPhysicsColliders();
+	auto triggerColliders = ServiceLocator::GetInstance().GetCollisionSystem().GetTriggerColliders();
 
-
-	m_pMovementComponent->SetIsGrounded(false);
-	for (auto& coll : colliders)
+	for (auto& coll : triggerColliders)
 	{
-		if (coll == this) continue;
+		if (coll->GetOwner() == GetOwner()) continue;
+		if (!CanCollideWith(coll)) continue;
+		if (CheckCollision(coll))
+		{
+			HandleTriggerCollision(coll);
+		}
+	}
+
+	if (m_pMovementComponent) m_pMovementComponent->SetIsGrounded(false);
+	for (auto& coll : physColliders)
+	{
+		if (coll->GetOwner() == GetOwner()) continue;
 		if (!CanCollideWith(coll)) continue;
 
 		if (CheckCollision(coll))
 		{
-			ResolveCollision(coll);
+			HandlePhysicalCollision(coll);
 		}
 	}
 }
@@ -57,8 +62,10 @@ void dae::ColliderComponent::FixedUpdate(float )
 void dae::ColliderComponent::DebugRendering() const
 {
 	auto sdlRenderer = dae::Renderer::GetInstance().GetSDLRenderer();
-	SDL_SetRenderDrawColor(sdlRenderer, 255, 0, 0, 1);
-	if (Info.type == ColliderType::TopOnly)SDL_SetRenderDrawColor(sdlRenderer, 255, 100, 0, 1);
+
+	if (Info.type == ColliderType::TopOnly) SDL_SetRenderDrawColor(sdlRenderer, 255, 100, 0, 1);
+	if (Info.type == ColliderType::Solid) SDL_SetRenderDrawColor(sdlRenderer, 255, 0, 0, 1);
+	if (Info.type == ColliderType::Trigger) SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 0, 1);
 
 	const SDL_Rect rect = SDL_Rect{
 		static_cast<int> (GetOwner()->GetLocalPosition().x + Info.offset.x),
@@ -66,6 +73,8 @@ void dae::ColliderComponent::DebugRendering() const
 		static_cast<int> (Info.size.x),
 		static_cast<int> (Info.size.y)
 	};
+	SDL_RenderDrawRect(sdlRenderer, &rect);
+
 }
 
 bool dae::ColliderComponent::CanCollideWith(const ColliderComponent* other) const
@@ -88,7 +97,8 @@ bool dae::ColliderComponent::CheckCollision(const ColliderComponent* other) cons
 		);
 }
 
-void dae::ColliderComponent::ResolveCollision(const ColliderComponent* other) const
+
+void dae::ColliderComponent::HandlePhysicalCollision(const ColliderComponent* other)
 {
 	if (Info.isStatic || !m_pMovementComponent) return;
 
@@ -106,62 +116,67 @@ void dae::ColliderComponent::ResolveCollision(const ColliderComponent* other) co
 	{
 		switch (other->Info.type)
 		{
+
 		case ColliderType::TopOnly:
+		{
+			float velocityY = m_pMovementComponent->GetVelocity().y;
+
+			if (velocityY > 0.0f && (pos.y + size.y) > otherPos.y)
 			{
-				float velocityY = m_pMovementComponent->GetVelocity().y;
 
-				if (velocityY > 0.0f && (pos.y + size.y) > otherPos.y)
-				{
+				GetOwner()->SetLocalPosition({ pos.x, pos.y - overlapY,0 });
+				m_pMovementComponent->MoveLimits.down = false;
+				m_pMovementComponent->SetIsGrounded(true);
+			}
+			else
+				m_pMovementComponent->SetIsGrounded(false);
 
-					GetOwner()->SetLocalPosition({ pos.x, pos.y - overlapY,0 });
+		}
+		break;
+
+		case ColliderType::Solid:
+		{
+			glm::vec3 newPos = pos;
+
+			if (overlapX < overlapY)
+			{
+				if (dx < 0) {
+					newPos.x -= overlapX;
+					m_pMovementComponent->MoveLimits.right = false;
+				}
+				else {
+					newPos.x += overlapX;
+					m_pMovementComponent->MoveLimits.left = false;
+				}
+			}
+			else
+			{
+				if (dy < 0) {
+					newPos.y -= overlapY;
 					m_pMovementComponent->MoveLimits.down = false;
 					m_pMovementComponent->SetIsGrounded(true);
 				}
-				else
+				else {
+					newPos.y += overlapY;
+					m_pMovementComponent->MoveLimits.up = false;
 					m_pMovementComponent->SetIsGrounded(false);
-
-			}
-			break;
-		case ColliderType::Solid:
-			{
-				glm::vec3 newPos = pos;
-
-				if (overlapX < overlapY)
-				{
-					if (dx < 0){
-						newPos.x -= overlapX;
-						m_pMovementComponent->MoveLimits.right = false;
-					}
-					else{
-						newPos.x += overlapX;
-						m_pMovementComponent->MoveLimits.left = false;
-					}
 				}
-				else
-				{
-					if (dy < 0){
-						newPos.y -= overlapY;
-						m_pMovementComponent->MoveLimits.down = false;
-						m_pMovementComponent->SetIsGrounded(true);
-					}
-					else{
-						newPos.y += overlapY;
-						m_pMovementComponent->MoveLimits.up = false;
-						m_pMovementComponent->SetIsGrounded(false);
-					}
-				}
-
-				GetOwner()->SetLocalPosition(newPos);
 			}
-			break;
 
-		case ColliderType::Trigger:
-			{
-				
-			}
-			break;
+			GetOwner()->SetLocalPosition(newPos);
+		}
+		break;
 
 		}
-		
+
 	}
 }
+
+void dae::ColliderComponent::HandleTriggerCollision(const ColliderComponent* other)
+{
+	if (Info.isStatic) return;
+
+	Event event = Event{ dae::make_sdbm_hash("TriggerEnter"), GetOwner() };
+	other->GetOwner()->NotifyObservers(event);
+}
+

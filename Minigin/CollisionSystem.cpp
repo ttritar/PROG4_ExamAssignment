@@ -1,19 +1,33 @@
 #include "CollisionSystem.h"
 
+#include "ColliderComponent.h"
 
-std::vector<dae::ColliderComponent*> dae::CollisionSystem::GetColliders() const
-{
-	return m_Colliders;
-}
+
 
 void dae::CollisionSystem::AddCollider(ColliderComponent* collider)
 {
-	m_Colliders.emplace_back(collider);
+	if (collider->Info.type == ColliderComponent::ColliderType::Trigger)
+	{
+		m_TriggerColliders.push_back(collider);
+	}
+	else
+	{
+		m_PhysicsColliders.push_back(collider);
+	}
 }
 
 void dae::CollisionSystem::RemoveCollider(ColliderComponent* collider)
 {
-	if (m_Colliders.empty())return;
-	auto it = std::remove(m_Colliders.begin(), m_Colliders.end(), collider);
-	m_Colliders.erase(it, m_Colliders.end());
+	if (collider->Info.type == ColliderComponent::ColliderType::Trigger)
+	{
+		if (m_TriggerColliders.empty())return;
+		auto it = std::remove(m_TriggerColliders.begin(), m_TriggerColliders.end(), collider);
+		m_TriggerColliders.erase(it, m_TriggerColliders.end());
+	}
+	else
+	{
+		if (m_PhysicsColliders.empty())return;
+		auto it = std::remove(m_PhysicsColliders.begin(), m_PhysicsColliders.end(), collider);
+		m_PhysicsColliders.erase(it, m_PhysicsColliders.end());
+	}
 }

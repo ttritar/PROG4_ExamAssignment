@@ -57,7 +57,6 @@ namespace dae
 
 		// Methods
 		//---------------
-		void Update(float deltaTime) override;
 		void FixedUpdate(float) override;
 	    void DebugRendering() const override;
 		
@@ -72,7 +71,8 @@ namespace dae
 		bool CanCollideWith(const ColliderComponent* other) const;
 		bool CheckCollision(const ColliderComponent* other) const;
 		void ResolveCollision(const ColliderComponent* other) const;
-
+		void HandleTriggerCollision(const ColliderComponent* other);
+		void HandlePhysicalCollision(const ColliderComponent* other);
 
 		// Private Members
 		//---------------

@@ -8,13 +8,19 @@ namespace dae
 	class CollisionSystem
 	{
 	public:
-		std::vector<ColliderComponent*> GetColliders()const;
+		std::vector<ColliderComponent*> GetPhysicsColliders() const { return m_PhysicsColliders; }
+		std::vector<ColliderComponent*> GetTriggerColliders() const { return m_TriggerColliders; }
 		void AddCollider(ColliderComponent* collider);
 		void RemoveCollider(ColliderComponent* collider);
-		void ClearColliders() { m_Colliders.clear(); }
+		void ClearColliders()
+		{
+			m_PhysicsColliders.clear();
+			m_TriggerColliders.clear();
+		}
 
 	private:
 
-		std::vector<ColliderComponent*> m_Colliders{};
+		std::vector<ColliderComponent*> m_PhysicsColliders{};
+		std::vector<ColliderComponent*> m_TriggerColliders{}; 
 	};	
 }

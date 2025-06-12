@@ -131,6 +131,9 @@
     <ClInclude Include="PlayerSoundObserver.h">
       <Filter>Header Files\Observers</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyCollisionObserver.h">
+      <Filter>Header Files\Observers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

@@ -50,7 +50,8 @@ namespace cat
 
 			dae::ColliderComponent::ColliderInfo bubblunColliderInfo{
 				dae::ColliderComponent::ColliderType::Solid,false, {48.f,48.f},{},
-				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player), static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level)
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player),
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level)
 			};
 			auto playerCollider = std::make_unique<dae::ColliderComponent>(*player, bubblunColliderInfo);
 			player->AddComponent(std::move(playerCollider));
@@ -128,8 +129,6 @@ namespace cat
 	//----------------
 	struct ZenChanPreset
 	{
-		std::vector<dae::GameObject> m_pPlayers;
-
 		void SpawnZenChan(dae::Scene& scene, const glm::vec3 pos)
 		{
 			auto zenChan = std::make_unique<dae::GameObject>();
@@ -143,24 +142,27 @@ namespace cat
 			auto zenAnimation = std::make_unique<AnimationComponent>(*zenChan,
 				AnimationComponent::FrameData{ 16, 16, 4, 0.2f });
 
-
-			// COLLIDER
-			auto colInfo = dae::ColliderComponent::ColliderInfo{
-					dae::ColliderComponent::ColliderType::Solid,false, { 48.f, 48.f }, {},
-					static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy) , static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level)
-			};
-
-			auto zenSolidCol = std::make_unique<dae::ColliderComponent>(*zenChan, colInfo);
-			zenChan->AddComponent(std::move(zenSolidCol));
-
-			colInfo.collisionFilter = static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player);
-			auto zenTriggerCol = std::make_unique<dae::ColliderComponent>(*zenChan,colInfo);
-			zenChan->AddComponent(std::move(zenTriggerCol));
-
-
 			// MOVEMENT
 			auto zenMovement = std::make_unique<dae::MovementComponent>(*zenChan, 100.f, 200.f);
 			zenChan->AddComponent(std::move(zenMovement));
+
+
+			// COLLIDER
+			dae::ColliderComponent::ColliderInfo colTriggerInfo{
+			dae::ColliderComponent::ColliderType::Trigger,false, {80.f,80.f},{-16.f,-16.f},
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy),
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player)
+			};
+			auto zenTriggerCol = std::make_unique<dae::ColliderComponent>(*zenChan, colTriggerInfo);
+			zenChan->AddComponent(std::move(zenTriggerCol));
+
+			dae::ColliderComponent::ColliderInfo colSolidInfo{
+			dae::ColliderComponent::ColliderType::Solid,false, {48.f,48.f},{},
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy),
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level)
+			};
+			auto zenSolidCol = std::make_unique<dae::ColliderComponent>(*zenChan, colSolidInfo);
+			zenChan->AddComponent(std::move(zenSolidCol));
 
 			// AI COMPONENT
 			auto zenAI = std::make_unique<ZenChanAIComponent>(*zenChan);

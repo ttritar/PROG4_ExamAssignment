@@ -165,6 +165,7 @@
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="BubbleComponent.h" />
     <ClInclude Include="BubbleState.h" />
+    <ClInclude Include="EnemyCollisionObserver.h" />
     <ClInclude Include="PlayerSoundObserver.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthUIComponent.h" />

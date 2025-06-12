@@ -54,10 +54,10 @@ void cat::Level::LoadLevel()
 		switch (layer.getType())
 		{
 
-			// TILES
+			//----- TILES -----
 			case tson::LayerType::TileLayer:
-		{
-			for (int y = 0; y < layer.getSize().y; ++y)
+			{
+				for (int y = 0; y < layer.getSize().y; ++y)
 			{
 				for (int x = 0; x < layer.getSize().x; ++x)
 				{
@@ -157,24 +157,39 @@ void cat::Level::LoadLevel()
 					m_Scene.Add(std::move(tileObj));
 				}
 			}
-		}
+			}
 			break;
 
-			// OBJECTS
+			//----- OBJECTS -----
 			case tson::LayerType::ObjectGroup:
 			{
 				for (auto& object : layer.getObjects())
 				{
+					glm::vec3 pos{ object.getPosition().x * dae::g_SCALE, object.getPosition().y * dae::g_SCALE, 0 };
+
+					// PLAYER
 					if (object.getName() == "player")
 					{
-						glm::vec3 pos{ object.getPosition().x * dae::g_SCALE, object.getPosition().y * dae::g_SCALE, 0 };
 						PlayerPreset player = { object.getProp("isPlayerOne")->getValue<bool>() };
 						player.SpawnPlayer(m_Scene, pos);
 					}
+					// ZENCHAN
+					else if (object.getName() == "ZenChan")
+					{
+						ZenChanPreset zenChan{};
+						zenChan.SpawnZenChan(m_Scene, pos);
+					}
+					// MAITA
+					else if (object.getName() == "Maita")
+					{
+						//MaitaPreset maita{};
+						//maita.SpawnMaita(m_Scene, pos);
+					}
 				}
-				break;
-
 			}
+			break;
+
+			
 
 		}
 
