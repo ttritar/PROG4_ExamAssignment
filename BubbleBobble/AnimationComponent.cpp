@@ -9,7 +9,7 @@ void cat::AnimationComponent::Update(float deltaTime)
 		m_ElapsedTime = 0.0f;
 		SDL_Rect srcRect{
 			m_CurrentFrame * m_FrameData.frameWidth,
-			0,
+			m_FrameData.frameHeight * m_FrameData.row,
 			m_FrameData.frameWidth,
 			m_FrameData.frameHeight
 		};

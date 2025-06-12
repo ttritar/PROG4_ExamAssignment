@@ -72,13 +72,13 @@ namespace cat
 	//----------------
 	struct BubblePreset
 	{
-		bool isBobblon;
+		bool isPlayerOne;
 		glm::vec2 direction;
 
 		void SpawnBubble(dae::Scene& scene, const glm::vec3 pos)
 		{
 			auto bubble = std::make_unique<dae::GameObject>();
-			int rowIdx = isBobblon ? 0 : 1;
+			int rowIdx = isPlayerOne;
 
 			// COMPONENTS
 			//----------------

@@ -18,23 +18,23 @@ void cat::MovementComponent::Update(float deltaTime)
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// sleep time :) ily
 	m_timeSinceJumpPress += deltaTime;
-	if (m_IsGrounded && m_timeSinceJumpPress < MAX_JUMP_BUFFER) // NO JUMPIN IN AIR ???
+	if (m_IsGrounded && m_timeSinceJumpPress < m_MAX_JUMP_BUFFER) // NO JUMPIN IN AIR ???
 	{
 		m_timeSinceJumpPress = FLT_MAX;
 		m_IsGrounded = false;
 
-		m_Velocity.y -= m_JumpSpeed;
+		Velocity.y -= m_JumpSpeed;
 	}
 
 
-	if ((m_Velocity.x < 0 && MoveLimits.left) || (m_Velocity.x > 0 && MoveLimits.right))
-		pos.x += m_Velocity.x * deltaTime;
-	if ((m_Velocity.y < 0 && MoveLimits.up) || (m_Velocity.y > 0 && MoveLimits.down))
-		pos.y += m_Velocity.y * deltaTime;
+	if ((Velocity.x < 0 && MoveLimits.left) || (Velocity.x > 0 && MoveLimits.right))
+		pos.x += Velocity.x * deltaTime;
+	if ((Velocity.y < 0 && MoveLimits.up) || (Velocity.y > 0 && MoveLimits.down))
+		pos.y += Velocity.y * deltaTime;
 	GetOwner()->SetLocalPosition(pos);
 
 	MoveLimits = { true, true, true, true };
-	m_Velocity.x = 0.f;
+	Velocity.x = 0.f;
 }
 
 void cat::MovementComponent::Move(float dx, float dy)
@@ -43,9 +43,9 @@ void cat::MovementComponent::Move(float dx, float dy)
 	if ((dy < 0 && !MoveLimits.up) || (dy > 0 && !MoveLimits.down)) dy = 0;
 
 	if (dx != 0)
-		m_Velocity.x = dx * m_Speed;
+		Velocity.x = dx * m_Speed;
 	if (dy != 0)
-		m_Velocity.y = dy * m_Speed;
+		Velocity.y = dy * m_Speed;
 
 
 
@@ -82,9 +82,9 @@ void cat::MovementComponent::ApplyGravity()
 	{
 		if (m_IsGrounded)
 		{
-			m_Velocity.y = 0; 
+			Velocity.y = 0; 
 		}
 		else
-		m_Velocity.y -= m_GravitationalConstant; 
+		Velocity.y -= m_GravitationalConstant; 
 	}
 }

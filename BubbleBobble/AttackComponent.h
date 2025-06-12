@@ -10,7 +10,7 @@ namespace cat
 	public:
 		// CTOR & DTOR
 		//-------------
-		AttackComponent(dae::GameObject& owner, bool isBobblon);
+		AttackComponent(dae::GameObject& owner, bool isPlayerOne);
 
 		virtual ~AttackComponent() = default;
 		AttackComponent(const AttackComponent& other) = delete;
@@ -24,6 +24,6 @@ namespace cat
 
 	private:
 		MovementComponent* m_pMovementComponent{ nullptr };
-		bool m_IsBobblon{ false };
+		bool m_IsPlayerOne{ false };
 	};
 }

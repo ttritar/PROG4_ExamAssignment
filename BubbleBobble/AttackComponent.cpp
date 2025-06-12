@@ -2,8 +2,8 @@
 
 #include "Presets.h"
 
-cat::AttackComponent::AttackComponent(dae::GameObject& owner, bool isBobblon)
-	: BaseComponent(owner), m_IsBobblon(isBobblon)
+cat::AttackComponent::AttackComponent(dae::GameObject& owner, bool isPlayerOne)
+	: BaseComponent(owner), m_IsPlayerOne(isPlayerOne)
 {
 	m_pMovementComponent = owner.GetComponent<MovementComponent>();
 	if (!m_pMovementComponent)
@@ -15,7 +15,7 @@ cat::AttackComponent::AttackComponent(dae::GameObject& owner, bool isBobblon)
 void cat::AttackComponent::Attack()
 {
 	cat::BubblePreset bubblePreset = {
-		m_IsBobblon,
+		m_IsPlayerOne,
 		m_pMovementComponent->GetDirection(),
 	};
 	bubblePreset.SpawnBubble(dae::SceneManager::GetInstance().GetActiveScene(), GetOwner()->GetWorldPosition());

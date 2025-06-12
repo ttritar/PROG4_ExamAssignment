@@ -39,9 +39,13 @@ namespace cat
 		void SetGravitationalConstant(float gravitationalConstant) { m_GravitationalConstant = gravitationalConstant; }
 
 		glm::vec2 GetDirection() const { return m_Direction; }
-		glm::vec2 GetVelocity() const { return m_Velocity; }
+		glm::vec2 GetVelocity() const { return Velocity; }
 
-		glm::vec2 m_Velocity = { 0,0 };
+
+		// Public Members
+		//---------------
+		glm::vec2 Velocity = { 0,0 };
+
 		struct MoveLimits
 		{
 			bool left = true;
@@ -50,6 +54,7 @@ namespace cat
 			bool down = true;
 		};
 		MoveLimits MoveLimits{};
+
 	private:
 		// Private Methods
 		//---------------
@@ -67,7 +72,7 @@ namespace cat
 
 		bool m_IsGrounded = false;
 		float m_timeSinceJumpPress = FLT_MAX;
-		const float MAX_JUMP_BUFFER = 1.f;
+		const float m_MAX_JUMP_BUFFER = 1.f;
 
 		TextureComponent* m_pTextureComponent = nullptr;
 	};

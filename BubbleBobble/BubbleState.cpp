@@ -82,7 +82,7 @@ void cat::RisingState::OnEnter(BubbleComponent* pBubble)
 void cat::RisingState::OnExit()
 {
 	m_pMovementComponent->SetSpeed(0);
-	m_pMovementComponent->m_Velocity = { 0,0 };
+	m_pMovementComponent->Velocity = { 0,0 };
 	m_pMovementComponent->MoveLimits = { true, true, true, true }; 
 }
 #pragma endregion
