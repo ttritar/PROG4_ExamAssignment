@@ -5,6 +5,7 @@
 #include "AttackComponent.h"
 #include "BubbleComponent.h"
 #include "ColliderComponent.h"
+#include "EnemyCollisionObserver.h"
 #include "MovementComponent.h"
 #include "TextureComponent.h"
 #include "HealthComponent.h"
@@ -68,8 +69,7 @@ namespace cat
 
 			// OBSERVERS
 			//----------------
-			PlayerSoundObserver* playerObserver =new PlayerSoundObserver();
-			player->AddObserver(playerObserver);
+			player->AddObserver(new PlayerSoundObserver);
 
 			// SPAWN
 			//----------------
@@ -148,33 +148,30 @@ namespace cat
 
 
 			// COLLIDER
-			dae::ColliderComponent::ColliderInfo colTriggerInfo{
+		/*	dae::ColliderComponent::ColliderInfo colTriggerInfo{
 			dae::ColliderComponent::ColliderType::Trigger,false, {80.f,80.f},{-16.f,-16.f},
 				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy),
 				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player)
 			};
 			auto zenTriggerCol = std::make_unique<dae::ColliderComponent>(*zenChan, colTriggerInfo);
-			zenChan->AddComponent(std::move(zenTriggerCol));
+			zenChan->AddComponent(std::move(zenTriggerCol));*/
 
 			dae::ColliderComponent::ColliderInfo colSolidInfo{
 			dae::ColliderComponent::ColliderType::Solid,false, {48.f,48.f},{},
 				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy),
-				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level)
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level) | static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player)
 			};
 			auto zenSolidCol = std::make_unique<dae::ColliderComponent>(*zenChan, colSolidInfo);
 			zenChan->AddComponent(std::move(zenSolidCol));
 
 			// AI COMPONENT
 			auto zenAI = std::make_unique<ZenChanAIComponent>(*zenChan);
-			for (const auto& player : dae::ServiceLocator::GetInstance().GetPlayerSystem().GetPlayers())
-			{
-				if (player)
-				{
-					zenAI->AddPlayer(player);
-				}
-			}
 			zenChan->AddComponent(std::move(zenAI));
 
+
+			// OBSERVERS
+			//-----------------
+			zenChan->AddObserver(new EnemyCollisionObserver);
 				
 			zenChan->SetLocalPosition(pos);
 			scene.Add(std::move(zenChan));

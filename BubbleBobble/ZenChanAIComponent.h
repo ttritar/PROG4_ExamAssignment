@@ -32,11 +32,9 @@ namespace cat
 
 		void ChangeState(std::unique_ptr<ZenChanState> newState);
 
-		void AddPlayer(dae::GameObject* player)
-		{
-			if (player == nullptr) return;
-			m_pPlayers.push_back(player);
-		}
+		void AddPlayer(dae::GameObject* player);
+
+		dae::GameObject* GetTarget() const { return m_pTarget; }
 
 	private:
 		std::unique_ptr<ZenChanState> m_CurrentState;

@@ -114,6 +114,12 @@ void dae::ColliderComponent::HandlePhysicalCollision(const ColliderComponent* ot
 
 	if (overlapX > 0 && overlapY > 0)
 	{
+		Event eventOther = Event{ dae::make_sdbm_hash("ColliderEnter"), static_cast<void*>(GetOwner()) };
+		other->GetOwner()->NotifyObservers(eventOther);
+
+		Event eventThis = Event{ dae::make_sdbm_hash("ColliderEnter"), static_cast<void*>(other->GetOwner()) };
+		GetOwner()->NotifyObservers(eventThis);
+
 		switch (other->Info.type)
 		{
 
@@ -176,7 +182,7 @@ void dae::ColliderComponent::HandleTriggerCollision(const ColliderComponent* oth
 {
 	if (Info.isStatic) return;
 
-	Event event = Event{ dae::make_sdbm_hash("TriggerEnter"), GetOwner() };
+	Event event = Event{ dae::make_sdbm_hash("TriggerEnter"), static_cast<void*>(this) };
 	other->GetOwner()->NotifyObservers(event);
 }
 
