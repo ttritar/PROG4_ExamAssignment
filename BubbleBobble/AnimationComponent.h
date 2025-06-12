@@ -27,7 +27,7 @@ namespace cat
 		AnimationComponent(dae::GameObject& owner, const FrameData& frameData)
 			:BaseComponent(owner), m_FrameData(frameData)
 		{
-			m_pTextureComponent = owner.GetComponent<TextureComponent>();
+			m_pTextureComponent = owner.GetComponent<dae::TextureComponent>();
 			if (!m_pTextureComponent) throw std::runtime_error("AnimationComponent requires a TextureComponent to function.");
 			m_pTextureComponent->SetSourceRect({
 				0, 0,
@@ -54,7 +54,7 @@ namespace cat
 		// Private Members
 		//-----------------
 		FrameData m_FrameData;
-		TextureComponent* m_pTextureComponent;
+		dae::TextureComponent* m_pTextureComponent;
 
 		int m_CurrentFrame{ 0 };
 		float m_ElapsedTime{ 0.0f };

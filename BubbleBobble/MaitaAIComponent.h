@@ -57,7 +57,7 @@ namespace cat
 
 		// Private Members
 		//---------------
-		MovementComponent* m_MovementComponent = nullptr;
+		dae::MovementComponent* m_MovementComponent = nullptr;
 		dae::GameObject* m_pTarget = nullptr;
 		std::unique_ptr<MaitaState> m_CurrentState;
 

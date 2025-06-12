@@ -132,9 +132,12 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="LoggingSoundSystem.h" />
     <ClInclude Include="MixerSoundSystem.h" />
+    <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="SoundSystem.h" />
+    <ClInclude Include="TextComponent.h" />
+    <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="TimeSingleton.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Minigin.h" />
@@ -163,13 +166,16 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClCompile Include="LoggingSoundSystem.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MixerSoundSystem.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
+    <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>

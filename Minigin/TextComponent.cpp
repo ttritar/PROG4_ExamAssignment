@@ -5,16 +5,14 @@
 
 #include "Renderer.h"
 #include "Font.h"
-#include "FPSComponent.h"
 
-
-cat::TextComponent::TextComponent(dae::GameObject& owner,const std::string& text, dae::Font* font)
+dae::TextComponent::TextComponent(dae::GameObject& owner,const std::string& text, dae::Font* font)
 	: BaseComponent (owner)
 	,m_needsUpdate(true), m_text(text), m_font(font), m_textTexture(nullptr)
 {
 }
 
-void cat::TextComponent::Update( float )
+void dae::TextComponent::Update( float )
 {
 
 	if (m_needsUpdate)
@@ -36,7 +34,7 @@ void cat::TextComponent::Update( float )
 	}
 }
 
-void cat::TextComponent::Render() const
+void dae::TextComponent::Render() const
 {
 	if (m_textTexture != nullptr)
 	{
@@ -46,7 +44,7 @@ void cat::TextComponent::Render() const
 }
 
 // This implementation uses the "dirty flag" pattern
-void cat::TextComponent::SetText(const std::string& text)
+void dae::TextComponent::SetText(const std::string& text)
 {
 	m_text = text;
 	m_needsUpdate = true;

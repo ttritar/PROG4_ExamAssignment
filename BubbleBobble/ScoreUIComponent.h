@@ -13,7 +13,7 @@ namespace cat
 		ScoreUIComponent(dae::GameObject& owner)
 			:BaseComponent(owner) 
 		{
-			m_pTextComponent = owner.GetComponent<TextComponent>();
+			m_pTextComponent = owner.GetComponent<dae::TextComponent>();
 			if (!m_pTextComponent) 
 			{
 				std::cerr << "ScoreUIComponent::ScoreUIComponent() > Error: No TextComponent found on GameObject\n";
@@ -27,7 +27,7 @@ namespace cat
 	private:
 		virtual void Notify(const dae::Event& event, dae::GameObject* object) override;
 
-		TextComponent* m_pTextComponent = nullptr;
+		dae::TextComponent* m_pTextComponent = nullptr;
 	};
 }
 

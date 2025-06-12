@@ -16,7 +16,7 @@ cat::Level::Level(dae::Scene& scene, int levelNr, const std::string& filePath)
 
 	auto level = std::make_unique<dae::GameObject>();
 	level->SetLocalPosition({ 360,50,0 });
-	auto textLevel = std::make_unique<cat::TextComponent>(*level, std::format("{:02}", levelNr), fontUI);
+	auto textLevel = std::make_unique<dae::TextComponent>(*level, std::format("{:02}", levelNr), fontUI);
 	level->AddComponent(std::move(textLevel));
 	m_Scene.Add(std::move(level));
 
@@ -123,11 +123,11 @@ void cat::Level::LoadLevel()
 					// CREATE TILE GAMEOBJECT
 					//--------------------------
 					std::unique_ptr<dae::GameObject> tileObj = std::make_unique<dae::GameObject>();
-					tileObj->SetLocalPosition(glm::vec3(x * tileWidth * g_SCALE, y * tileHeight * g_SCALE, 0));
+					tileObj->SetLocalPosition(glm::vec3(x * tileWidth * dae::g_SCALE, y * tileHeight * dae::g_SCALE, 0));
 
 					// texture component
 					std::string tilesetImagePath = "../Data/Levels/" + activeTileset->getImagePath().string();
-					auto tex = std::make_unique<TextureComponent>(*tileObj, tilesetImagePath);
+					auto tex = std::make_unique<dae::TextureComponent>(*tileObj, tilesetImagePath);
 					//tex->SetSourceRect(srcRect);
 					tileObj->AddComponent(std::move(tex));
 
@@ -146,7 +146,7 @@ void cat::Level::LoadLevel()
 						default:;
 						}
 						colliderInfo.isStatic = true;
-						colliderInfo.size = { tileWidth * g_SCALE, tileHeight * g_SCALE };
+						colliderInfo.size = { tileWidth * dae::g_SCALE, tileHeight * dae::g_SCALE };
 
 						auto col = std::make_unique<dae::ColliderComponent>(*tileObj, colliderInfo);
 						tileObj->AddComponent(std::move(col));
@@ -166,7 +166,7 @@ void cat::Level::LoadLevel()
 				{
 					if (object.getName() == "player")
 					{
-						glm::vec3 pos{ object.getPosition().x * g_SCALE, object.getPosition().y * g_SCALE, 0 };
+						glm::vec3 pos{ object.getPosition().x * dae::g_SCALE, object.getPosition().y * dae::g_SCALE, 0 };
 						PlayerPreset player = { object.getProp("isPlayerOne")->getValue<bool>() };
 						player.SpawnPlayer(m_Scene, pos);
 					}

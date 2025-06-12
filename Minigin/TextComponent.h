@@ -7,7 +7,7 @@
 #include "Font.h"
 #include "Texture2D.h"
 
-namespace cat
+namespace dae
 {
 	class Font;
 	class Texture2D;

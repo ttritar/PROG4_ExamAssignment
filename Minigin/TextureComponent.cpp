@@ -1,6 +1,6 @@
-#include "TextureComponent.h"
+#include "../Minigin/TextureComponent.h"
 
-void cat::TextureComponent::Update(float )
+void dae::TextureComponent::Update(float )
 {
 	m_DestSize = {
 		static_cast<int>(m_pTexture->GetSourceRect()->w * g_SCALE),
@@ -8,13 +8,13 @@ void cat::TextureComponent::Update(float )
 	};
 }
 
-void cat::TextureComponent::Render() const
+void dae::TextureComponent::Render() const
 {
 	const auto& pos = GetOwner()->GetWorldPosition();
 	dae::Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, m_DestSize.x, m_DestSize.y, FlipFlag);
 }
 
-cat::TextureComponent::TextureComponent(dae::GameObject& owner, const std::string& filename )
+dae::TextureComponent::TextureComponent(dae::GameObject& owner, const std::string& filename )
 	:BaseComponent(owner)
 {
 	m_pTexture = dae::ResourceManager::GetInstance().LoadTexture(filename);

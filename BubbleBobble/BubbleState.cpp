@@ -26,7 +26,7 @@ void cat::ShootingState::OnEnter(BubbleComponent* pBubble)
 {
 	m_pBubbleComponent = pBubble;
 
-	m_pMovementComponent = m_pBubbleComponent->GetOwner()->GetComponent<MovementComponent>();
+	m_pMovementComponent = m_pBubbleComponent->GetOwner()->GetComponent < dae::MovementComponent > ();
 	if (!m_pMovementComponent)
 	{
 		throw std::runtime_error("ShootingState requires a MovementComponent on the Bubble's GameObject.");
@@ -44,27 +44,37 @@ std::unique_ptr<cat::BubbleState> cat::RisingState::Update(float )
 {
 	m_pMovementComponent->SetSpeed(m_RiseSpeed);
 	auto owner = m_pBubbleComponent->GetOwner();
+	auto pos = owner->GetWorldPosition();
 
-	
-	auto toDir = m_TargetPosition - owner->GetWorldPosition();
-	toDir = glm::normalize(toDir);
-	m_pMovementComponent->Move(toDir.x, toDir.y);
-	
+	// V
+	if (pos.y > m_TargetPosition.y + 1.0f) 
+	{
+		m_pMovementComponent->Move(0.f, -1.f);
+		return nullptr;
+	}
+
+	// H
+	if (std::abs(pos.x - m_TargetPosition.x) > 1.0f)
+	{
+		m_pMovementComponent->Velocity.y = 0;
+		m_pMovementComponent->MoveLimits.up = true;
+
+
+		float dir = (m_TargetPosition.x > pos.x) ? 1.f : -1.f;
+		m_pMovementComponent->Move(dir, 0.f);
+		return nullptr;
+	}
 
 	// STATE CHANGE
 	//-----------------
-	if (glm::distance(owner->GetWorldPosition(), m_TargetPosition) < 5.0f)
-	{
-		return std::make_unique<cat::StillState>();
-	}
-	return nullptr;
+	return std::make_unique<cat::StillState>();
 }
 
 void cat::RisingState::OnEnter(BubbleComponent* pBubble)
 {
 	m_pBubbleComponent = pBubble;
 
-	m_pMovementComponent = m_pBubbleComponent->GetOwner()->GetComponent<MovementComponent>();
+	m_pMovementComponent = m_pBubbleComponent->GetOwner()->GetComponent<dae::MovementComponent>();
 	if (!m_pMovementComponent)
 	{
 		throw std::runtime_error("RisingState requires a MovementComponent on the Bubble's GameObject.");

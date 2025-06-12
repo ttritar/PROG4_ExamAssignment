@@ -5,7 +5,7 @@
 cat::AttackComponent::AttackComponent(dae::GameObject& owner, bool isPlayerOne)
 	: BaseComponent(owner), m_IsPlayerOne(isPlayerOne)
 {
-	m_pMovementComponent = owner.GetComponent<MovementComponent>();
+	m_pMovementComponent = owner.GetComponent<dae::MovementComponent>();
 	if (!m_pMovementComponent)
 	{
 		throw std::runtime_error("AttackComponent requires a MovementComponent on the GameObject.");

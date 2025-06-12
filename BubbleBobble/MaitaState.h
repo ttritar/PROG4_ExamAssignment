@@ -29,7 +29,7 @@ namespace cat
 
 	private:
 		MaitaAIComponent* m_pAIComponent = nullptr;
-		MovementComponent* m_pMovementComponent = nullptr;
+		dae::MovementComponent* m_pMovementComponent = nullptr;
 
 		float m_WanderTimer = 0.f;
 		float m_Dx = 0.f;
@@ -46,7 +46,7 @@ namespace cat
 
 	private:
 		MaitaAIComponent* m_pAIComponent = nullptr;
-		MovementComponent* m_pMovementComponent = nullptr;
+		dae::MovementComponent* m_pMovementComponent = nullptr;
 	};
 
 	class TrappedState : public MaitaState

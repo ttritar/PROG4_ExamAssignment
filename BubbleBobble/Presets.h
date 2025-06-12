@@ -27,16 +27,16 @@ namespace cat
 
 			// COMPONENTS
 			//----------------
-			std::unique_ptr<TextureComponent> playerTexture;
-			if (isPlayerOne) playerTexture = std::make_unique<TextureComponent>(*player, "Players/Bubblun.png");
-			else playerTexture = std::make_unique<TextureComponent>(*player, "Players/Bobblun.png");
+			std::unique_ptr<dae::TextureComponent> playerTexture;
+			if (isPlayerOne) playerTexture = std::make_unique<dae::TextureComponent>(*player, "Players/Bubblun.png");
+			else playerTexture = std::make_unique<dae::TextureComponent>(*player, "Players/Bobblun.png");
 			player->AddComponent(std::move(playerTexture));
 
 			auto playerAnimation = std::make_unique<AnimationComponent>(*player,
 			AnimationComponent::FrameData{ 16, 16, 7, 0.2f });
 			player->AddComponent(std::move(playerAnimation));
 
-			auto playerMovement = std::make_unique<MovementComponent>(*player, 150.f, 400.f);
+			auto playerMovement = std::make_unique<dae::MovementComponent>(*player, 150.f, 400.f);
 			player->AddComponent(std::move(playerMovement));
 
 			auto playerAttack = std::make_unique<AttackComponent>(*player, isPlayerOne);
@@ -82,7 +82,7 @@ namespace cat
 
 			// COMPONENTS
 			//----------------
-			auto bubbleTexture = std::make_unique<TextureComponent>(*bubble, "Players/Bubble.png");
+			auto bubbleTexture = std::make_unique<dae::TextureComponent>(*bubble, "Players/Bubble.png");
 			bubble->AddComponent(std::move(bubbleTexture));
 
 			auto bubbleAnimation = std::make_unique<AnimationComponent>(*bubble,
@@ -93,7 +93,7 @@ namespace cat
 			//	dae::ColliderComponent::ColliderInfo{ dae::ColliderComponent::ColliderType::Trigger, false, { 48.f, 48.f } });
 			//bubble->AddComponent(std::move(bubbleCol));
 			//
-			auto bubbleMovement = std::make_unique<MovementComponent>(*bubble);
+			auto bubbleMovement = std::make_unique<dae::MovementComponent>(*bubble);
 			bubbleMovement->SetUsesGravity(false);
 			bubble->AddComponent(std::move(bubbleMovement));
 
@@ -106,5 +106,31 @@ namespace cat
 		}
 	};
 
-	
+
+
+
+	// ZEN-CHAN
+	//----------------
+	struct ZenChanPreset
+	{
+		void SpawnZenChan(dae::Scene& scene, const glm::vec3 pos)
+		{
+			auto zenChan = std::make_unique<dae::GameObject>();
+
+
+			auto zenTexture = std::make_unique<dae::TextureComponent>(*zenChan, "Enemies/ZenChan.png");
+			zenChan->AddComponent(std::move(zenTexture));
+
+			auto zenAnimation = std::make_unique<AnimationComponent>(*zenChan,
+				AnimationComponent::FrameData{ 16, 16, 4, 0.2f });
+
+			auto zenCol = std::make_unique<dae::ColliderComponent>(*zenChan,
+				dae::ColliderComponent::ColliderInfo{ dae::ColliderComponent::ColliderType::Solid, false, { 48.f, 48.f } });
+			zenChan->AddComponent(std::move(zenCol));
+
+
+			zenChan->SetLocalPosition(pos);
+			scene.Add(std::move(zenChan));
+		}
+	};
 }

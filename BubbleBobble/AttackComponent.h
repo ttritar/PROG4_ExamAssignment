@@ -23,7 +23,7 @@ namespace cat
 		void Attack();
 
 	private:
-		MovementComponent* m_pMovementComponent{ nullptr };
+		dae::MovementComponent* m_pMovementComponent{ nullptr };
 		bool m_IsPlayerOne{ false };
 	};
 }

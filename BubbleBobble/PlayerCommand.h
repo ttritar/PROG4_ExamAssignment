@@ -21,7 +21,7 @@ namespace cat
 
 		void Execute() override
 		{
-			GetGameActor()->GetComponent<MovementComponent>()->Move(m_DX, m_DY);
+			GetGameActor()->GetComponent<dae::MovementComponent>()->Move(m_DX, m_DY);
 		}
 	};
 
@@ -74,7 +74,7 @@ namespace cat
 		{
 			if (m_buttonState.PressedThisFrame)
 			{
-				GetGameActor()->GetComponent<MovementComponent>()->Jump();
+				GetGameActor()->GetComponent<dae::MovementComponent>()->Jump();
 			}
 		}
 	};

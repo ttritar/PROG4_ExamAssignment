@@ -6,13 +6,10 @@
 //std
 
 
-namespace cat
-{
-	class MovementComponent;
-}
-
 namespace dae
 {
+	class MovementComponent;
+
 	struct CollisionResult
 	{
 		bool hit{ false };
@@ -79,6 +76,6 @@ namespace dae
 		// Private Members
 		//---------------
 		ColliderInfo m_ColliderInfo{};
-		cat::MovementComponent* m_pMovementComponent{ nullptr };
+		dae::MovementComponent* m_pMovementComponent{ nullptr };
     };
 }

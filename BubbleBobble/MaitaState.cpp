@@ -58,7 +58,7 @@ void cat::WanderingState::OnEnter(cat::MaitaAIComponent* ai)
 	m_Dy = 0.f;
 	m_WanderDuration = 2.f + static_cast<float>(rand() % 3);
 
-	m_pMovementComponent = ai->GetOwner()->GetComponent<MovementComponent>();
+	m_pMovementComponent = ai->GetOwner()->GetComponent<dae::MovementComponent>();
 	if (!m_pMovementComponent)
 	{
 		throw std::runtime_error("WanderingState requires a MovementComponent");
@@ -111,7 +111,7 @@ void cat::ChasingState::OnEnter(cat::MaitaAIComponent* ai)
 {
 	m_pAIComponent = ai;
 
-	m_pMovementComponent = ai->GetOwner()->GetComponent<MovementComponent>();
+	m_pMovementComponent = ai->GetOwner()->GetComponent<dae::MovementComponent>();
 	if (!m_pMovementComponent)
 	{
 		throw std::runtime_error("ChasingState requires a MovementComponent");

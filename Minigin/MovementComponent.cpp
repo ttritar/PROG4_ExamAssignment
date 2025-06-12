@@ -6,17 +6,13 @@
 
 // Methods
 //---------------
-void cat::MovementComponent::Update(float deltaTime)
+void dae::MovementComponent::Update(float deltaTime)
 {
 	ApplyGravity();
 
 	// Move based on the velocity (gets changed by commands and gravity and shit)
 	glm::vec3 pos = GetOwner()->GetLocalPosition();
 
-	// simple ass jump buffer voor jouw isgrounded bullshit en da werkt 5 uur van mijn leven gone ong frfr
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// sleep time :) ily
 	m_timeSinceJumpPress += deltaTime;
 	if (m_IsGrounded && m_timeSinceJumpPress < m_MAX_JUMP_BUFFER) // NO JUMPIN IN AIR ???
 	{
@@ -37,7 +33,7 @@ void cat::MovementComponent::Update(float deltaTime)
 	Velocity.x = 0.f;
 }
 
-void cat::MovementComponent::Move(float dx, float dy)
+void dae::MovementComponent::Move(float dx, float dy)
 {
 	if ((dx < 0 && !MoveLimits.left) || (dx > 0 && !MoveLimits.right)) dx = 0;
 	if ((dy < 0 && !MoveLimits.up) || (dy > 0 && !MoveLimits.down)) dy = 0;
@@ -65,7 +61,7 @@ void cat::MovementComponent::Move(float dx, float dy)
 	}
 }
 
-void cat::MovementComponent::Jump()
+void dae::MovementComponent::Jump()
 {
 	if (m_JumpSpeed == 0) return; // jump "disabled
 
@@ -76,7 +72,7 @@ void cat::MovementComponent::Jump()
 
 // Private Methods
 //---------------
-void cat::MovementComponent::ApplyGravity()
+void dae::MovementComponent::ApplyGravity()
 {
 	if (m_UsesGravity)
 	{

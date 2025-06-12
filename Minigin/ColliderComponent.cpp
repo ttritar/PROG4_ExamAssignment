@@ -18,7 +18,7 @@ dae::ColliderComponent::ColliderComponent(dae::GameObject& owner, ColliderInfo c
 
 	if (!m_ColliderInfo.isStatic)
 	{
-		m_pMovementComponent = GetOwner()->GetComponent<cat::MovementComponent>();
+		m_pMovementComponent = GetOwner()->GetComponent<dae::MovementComponent>();
 	}
 }
 

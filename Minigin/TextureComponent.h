@@ -11,7 +11,7 @@
 #include "Texture2D.h"
 
 
-namespace cat
+namespace dae
 {
 	static float g_SCALE{ 3.f };
 

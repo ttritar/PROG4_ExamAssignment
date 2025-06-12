@@ -28,7 +28,7 @@ namespace cat
 		void OnExit() override;
 	private:
 		BubbleComponent* m_pBubbleComponent = nullptr;
-		MovementComponent* m_pMovementComponent = nullptr;
+		dae::MovementComponent* m_pMovementComponent = nullptr;
 
 		float m_ShootTimer = 0.f;
 		float m_ShootDuration = 0.5f;
@@ -44,7 +44,7 @@ namespace cat
 		void OnExit() override;
 	private:
 		BubbleComponent* m_pBubbleComponent = nullptr;
-		MovementComponent* m_pMovementComponent = nullptr;
+		dae::MovementComponent* m_pMovementComponent = nullptr;
 
 		glm::vec3 m_TargetPosition{0};
 

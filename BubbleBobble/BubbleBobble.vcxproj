@@ -145,43 +145,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Minigin\FPSComponent.cpp" />
-    <ClCompile Include="..\Minigin\HealthComponent.cpp" />
-    <ClCompile Include="..\Minigin\HealthUIComponent.cpp" />
-    <ClCompile Include="..\Minigin\MovementComponent.cpp" />
-    <ClCompile Include="..\Minigin\RotationComponent.cpp" />
-    <ClCompile Include="..\Minigin\ScoreComponent.cpp" />
-    <ClCompile Include="..\Minigin\ScoreUIComponent.cpp" />
-    <ClCompile Include="..\Minigin\TextComponent.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttackComponent.cpp" />
     <ClCompile Include="BubbleState.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="HealthUIComponent.cpp" />
     <ClCompile Include="MaitaState.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MaitaAIComponent.cpp" />
-    <ClCompile Include="TextureComponent.cpp" />
+    <ClCompile Include="ScoreComponent.cpp" />
+    <ClCompile Include="ScoreUIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Minigin\FPSComponent.h" />
-    <ClInclude Include="..\Minigin\HealthComponent.h" />
-    <ClInclude Include="..\Minigin\HealthUIComponent.h" />
-    <ClInclude Include="..\Minigin\PlayerCommand.h" />
-    <ClInclude Include="..\Minigin\MovementComponent.h" />
-    <ClInclude Include="..\Minigin\RotationComponent.h" />
-    <ClInclude Include="..\Minigin\ScoreComponent.h" />
-    <ClInclude Include="..\Minigin\ScoreUIComponent.h" />
-    <ClInclude Include="..\Minigin\TextComponent.h" />
-    <ClInclude Include="..\Minigin\TextureComponent.h" />
     <ClInclude Include="..\Minigin\UICommand.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="BubbleComponent.h" />
     <ClInclude Include="BubbleState.h" />
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HealthUIComponent.h" />
     <ClInclude Include="MaitaState.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MaitaAIComponent.h" />
+    <ClInclude Include="PlayerCommand.h" />
     <ClInclude Include="Presets.h" />
+    <ClInclude Include="ScoreComponent.h" />
+    <ClInclude Include="ScoreUIComponent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="imgui.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
