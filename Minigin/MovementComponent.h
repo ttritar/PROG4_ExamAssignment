@@ -65,7 +65,7 @@ namespace dae
 		float m_JumpSpeed;
 
 		bool m_UsesGravity = true;
-		float m_GravitationalConstant = -4.f;
+		float m_GravitationalConstant = -9.81f;
 
 		glm::vec2 m_Direction = { -1,0 };
 

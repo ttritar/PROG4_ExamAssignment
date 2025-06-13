@@ -15,7 +15,7 @@ void dae::MovementComponent::Update(float deltaTime)
 
 
 	// JUMPING
-	if (m_JumpSpeed !=0)
+	if (m_JumpSpeed != 0)
 	{
 		m_timeSinceJumpPress += deltaTime;
 		if (IsGrounded && m_timeSinceJumpPress < m_MAX_JUMP_BUFFER) // NO JUMPIN IN AIR ???

@@ -40,7 +40,7 @@ namespace cat
 			AnimationComponent::FrameData{ 16, 16, 7, 0.2f });
 			player->AddComponent(std::move(playerAnimation));
 
-			auto playerMovement = std::make_unique<dae::MovementComponent>(*player, 150.f, 200.f);
+			auto playerMovement = std::make_unique<dae::MovementComponent>(*player, 150.f, 400.f);
 			player->AddComponent(std::move(playerMovement));
 
 			auto playerAttack = std::make_unique<AttackComponent>(*player, isPlayerOne);
@@ -101,14 +101,7 @@ namespace cat
 				AnimationComponent::FrameData{ 16, 16, 3, 0.2f, rowIdx});
 			bubble->AddComponent(std::move(bubbleAnimation));
 
-			// COLLIDER
-			auto colInfo = dae::ColliderComponent::ColliderInfo{
-				dae::ColliderComponent::ColliderType::Trigger, false, { 48.f, 48.f },{},
-				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Projectile), static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy)
-			};
-			auto bubbleCol = std::make_unique<dae::ColliderComponent>(*bubble,colInfo);
-			bubble->AddComponent(std::move(bubbleCol));
-			
+			// MOVEMENT			
 			auto bubbleMovement = std::make_unique<dae::MovementComponent>(*bubble);
 			bubbleMovement->SetUsesGravity(false);
 			bubble->AddComponent(std::move(bubbleMovement));
@@ -116,6 +109,17 @@ namespace cat
 			auto bubbleC = std::make_unique<BubbleComponent>(*bubble);
 			bubbleC->Direction = direction;
 			bubble->AddComponent(std::move(bubbleC));
+
+			// COLLIDER
+			auto colInfo = dae::ColliderComponent::ColliderInfo{
+				dae::ColliderComponent::ColliderType::Solid, false, { 48.f, 48.f },{},
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Projectile),
+				static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy)
+			};
+			auto bubbleCol = std::make_unique<dae::ColliderComponent>(*bubble, colInfo);
+			bubble->AddComponent(std::move(bubbleCol));
+
+
 
 			bubble->SetLocalPosition(pos);
 			scene.Add(std::move(bubble));
@@ -143,7 +147,7 @@ namespace cat
 				AnimationComponent::FrameData{ 16, 16, 4, 0.2f });
 
 			// MOVEMENT
-			auto zenMovement = std::make_unique<dae::MovementComponent>(*zenChan, 100.f, 200.f);
+			auto zenMovement = std::make_unique<dae::MovementComponent>(*zenChan, 100.f, 400.f);
 			zenChan->AddComponent(std::move(zenMovement));
 
 

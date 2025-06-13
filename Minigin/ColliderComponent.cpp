@@ -32,7 +32,6 @@ dae::ColliderComponent::~ColliderComponent()
 void dae::ColliderComponent::FixedUpdate(float)
 {
 	if (Info.isStatic) return;
-	m_pMovementComponent->MoveLimits = { true, true, true, true };
 
 	auto physColliders = ServiceLocator::GetInstance().GetCollisionSystem().GetPhysicsColliders();
 	auto triggerColliders = ServiceLocator::GetInstance().GetCollisionSystem().GetTriggerColliders();
@@ -47,7 +46,10 @@ void dae::ColliderComponent::FixedUpdate(float)
 		}
 	}
 
-	if (m_pMovementComponent) m_pMovementComponent->IsGrounded=false;
+	if (m_pMovementComponent) {
+		m_pMovementComponent->IsGrounded = false;
+		m_pMovementComponent->MoveLimits = { true, true, true, true };
+	}
 	for (auto& coll : physColliders)
 	{
 		if (coll->GetOwner() == GetOwner()) continue;
