@@ -52,36 +52,36 @@ void cat::SwitchToLvl1_Versus()
 		cat::Level::LevelGameMode::Versus);
 	dae::SceneManager::GetInstance().SetActiveScene("Level1_Versus");
 }
-
-void cat::SwitchToLVl2_1P()
-{
-	ResetScene();
-
-	auto& scene1_SinglePlayer = dae::SceneManager::GetInstance().CreateScene("Level2_SinglePlayer");
-	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 2, "../Data/Levels/Level2.tmj",
-		cat::Level::LevelGameMode::SinglePlayer);
-
-	dae::SceneManager::GetInstance().SetActiveScene("Level2_SinglePlayer");
-}
-
-void cat::SwitchToLvl2_2P()
-{
-	ResetScene();
-
-	auto& scene1_Multiplayer = dae::SceneManager::GetInstance().CreateScene("Level2_Multiplayer");
-	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 2, "../Data/Levels/Level2.tmj",
-		cat::Level::LevelGameMode::Multiplayer);
-	dae::SceneManager::GetInstance().SetActiveScene("Level2_Multiplayer");
-}
-
-void cat::SwitchToLvl2_Versus()
-{
-	ResetScene();
-	auto& scene1_Versus = dae::SceneManager::GetInstance().CreateScene("Level2_Versus");
-	auto level1_Versus = cat::Level(scene1_Versus, 2, "../Data/Levels/Level2.tmj",
-		cat::Level::LevelGameMode::Versus);
-	dae::SceneManager::GetInstance().SetActiveScene("Level2_Versus");
-}
+//
+//void cat::SwitchToLVl2_1P()
+//{
+//	ResetScene();
+//
+//	auto& scene1_SinglePlayer = dae::SceneManager::GetInstance().CreateScene("Level2_SinglePlayer");
+//	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 2, "../Data/Levels/Level2.tmj",
+//		cat::Level::LevelGameMode::SinglePlayer);
+//
+//	dae::SceneManager::GetInstance().SetActiveScene("Level2_SinglePlayer");
+//}
+//
+//void cat::SwitchToLvl2_2P()
+//{
+//	ResetScene();
+//
+//	auto& scene1_Multiplayer = dae::SceneManager::GetInstance().CreateScene("Level2_Multiplayer");
+//	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 2, "../Data/Levels/Level2.tmj",
+//		cat::Level::LevelGameMode::Multiplayer);
+//	dae::SceneManager::GetInstance().SetActiveScene("Level2_Multiplayer");
+//}
+//
+//void cat::SwitchToLvl2_Versus()
+//{
+//	ResetScene();
+//	auto& scene1_Versus = dae::SceneManager::GetInstance().CreateScene("Level2_Versus");
+//	auto level1_Versus = cat::Level(scene1_Versus, 2, "../Data/Levels/Level2.tmj",
+//		cat::Level::LevelGameMode::Versus);
+//	dae::SceneManager::GetInstance().SetActiveScene("Level2_Versus");
+//}
 
 #pragma region Password
 void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
@@ -302,6 +302,11 @@ void cat::MainMenuPreset::SetCommandsAndObservers(dae::Scene& scene)
 #pragma region TitleScreen
 void cat::TitleScreenPreset::SpawnTitleScreen(dae::Scene& scene) const
 {
+	// load title screen music
+	dae::sound_id hash = static_cast<dae::sound_id>(dae::make_sdbm_hash("Title"));
+	dae::ServiceLocator::GetInstance().GetSoundSystem().LoadSound(hash, "../Data/UI/TitleTheme.mp3");
+	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(hash,100);
+
 	// BUBBLES
 	{
 		// random movement bubbles

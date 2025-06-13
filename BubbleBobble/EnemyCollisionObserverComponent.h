@@ -25,21 +25,8 @@ namespace cat
 				if (!thisCollider) return;
 
 
-				//// PLAYER - ENEMY
-				//if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player) &&
-				//	thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy))
-				//{
-				//	other->m_pendingRemoval = true;
-				//}
-				//else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy) &&
-				//	thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player))
-				//{
-				//	thisCollider->GetOwner()->m_pendingRemoval = true;
-				//}
-
-
-				// PROJECTILE - ENEMY
-				if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Projectile) &&
+				// PLAYER - ENEMY
+				if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player) &&
 					thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy))
 				{
 					other->m_pendingRemoval = true;
@@ -48,6 +35,21 @@ namespace cat
 					thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player))
 				{
 					thisCollider->GetOwner()->m_pendingRemoval = true;
+				}
+
+
+				// PROJECTILE - ENEMY
+				if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Projectile) &&
+					thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy))
+				{
+					other->m_pendingRemoval = true;
+					thisCollider->GetOwner()->m_pendingRemoval = true;
+				}
+				else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy) &&
+					thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player))
+				{
+					thisCollider->GetOwner()->m_pendingRemoval = true;
+					other->m_pendingRemoval = true;
 				}
 
 			}
