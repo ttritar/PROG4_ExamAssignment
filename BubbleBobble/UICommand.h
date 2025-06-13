@@ -6,11 +6,11 @@
 
 namespace cat
 {
-	class NavigationDownCommand : public dae::GameActorCommand
+	class NavigationNextCommand : public dae::GameActorCommand
 	{
 
 	public:
-		NavigationDownCommand(dae::GameObject* obj)
+		NavigationNextCommand(dae::GameObject* obj)
 			: GameActorCommand(obj)
 		{
 		}
@@ -18,27 +18,37 @@ namespace cat
 
 		void Execute() override
 		{
-			if (auto* previousComponent = dae::ServiceLocator::GetInstance().GetUIInputSystem().GetNextUIComponent(GetGameActor()->GetComponent<dae::UIComponent>()))
+			if (m_buttonState.ReleasedThisFrame)
 			{
-				this->GetGameActor()->GetComponent<dae::UIComponent>()->Selected = false;
-				previousComponent->Selected = true;
+				auto& uiSystem = dae::ServiceLocator::GetInstance().GetUIInputSystem();
+				auto* current = uiSystem.GetSelectedUIComponent();
+				if (auto* next = uiSystem.GetNextUIComponent(current))
+				{
+					uiSystem.SetSelectedUIComponent(next);
+					next->OnSelected();
+				}
 			}
 		}
 	};
 
-	class NavigationUpCommand : public dae::GameActorCommand
+	class NavigationPreviousCommand : public dae::GameActorCommand
 	{
 	public:
-		NavigationUpCommand(dae::GameObject* obj)
+		NavigationPreviousCommand(dae::GameObject* obj)
 			: GameActorCommand(obj)
 		{
 		}
 		void Execute() override
 		{
-			if (auto* nextComponent = dae::ServiceLocator::GetInstance().GetUIInputSystem().GetPreviousUIComponent(GetGameActor()->GetComponent<dae::UIComponent>()))
+			if (m_buttonState.ReleasedThisFrame)
 			{
-				this->GetGameActor()->GetComponent<dae::UIComponent>()->Selected = false;
-				nextComponent->Selected = true;
+				auto& uiSystem = dae::ServiceLocator::GetInstance().GetUIInputSystem();
+				auto* current = uiSystem.GetSelectedUIComponent();
+				if (auto* previous = uiSystem.GetPreviousUIComponent(current))
+				{
+					uiSystem.SetSelectedUIComponent(previous);
+					previous->OnSelected();
+				}
 			}
 		}
 	};
@@ -53,13 +63,32 @@ namespace cat
 		}
 		void Execute() override
 		{
-			if (m_buttonState.PressedThisFrame)
+			if (m_buttonState.ReleasedThisFrame)
 			{
-				auto* uiComponent = GetGameActor()->GetComponent<dae::UIComponent>();
-				if (uiComponent)
+				auto* selected = dae::ServiceLocator::GetInstance().GetUIInputSystem().GetSelectedUIComponent();
+				if (selected)
 				{
-					uiComponent->OnButtonPressed();
+					selected->OnButtonPressed();
 				}
+			}
+		}
+	};
+
+	class CustomUICommand : public dae::GameActorCommand
+	{
+	protected:
+		std::function<void()> m_customCallback;
+
+	public:
+		CustomUICommand(dae::GameObject* obj, std::function<void()> customCallback)
+			: GameActorCommand(obj), m_customCallback(std::move(customCallback))
+		{
+		}
+		void Execute() override
+		{
+			if (m_buttonState.ReleasedThisFrame)
+			{
+				m_customCallback();
 			}
 		}
 	};

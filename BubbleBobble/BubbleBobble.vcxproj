@@ -156,6 +156,7 @@
     <ClCompile Include="MaitaAIComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreObserverComponent.cpp" />
+    <ClCompile Include="ScenePresets.cpp" />
     <ClCompile Include="ZenChanAIComponent.cpp" />
     <ClCompile Include="ZenChanState.cpp" />
   </ItemGroup>
@@ -166,7 +167,7 @@
     <ClInclude Include="BubbleState.h" />
     <ClInclude Include="EnemyCollisionObserverComponent.h" />
     <ClInclude Include="UICommand.h" />
-    <ClInclude Include="UIPresets.h" />
+    <ClInclude Include="ScenePresets.h" />
     <ClInclude Include="PlayerSoundObserverComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthUIComponent.h" />

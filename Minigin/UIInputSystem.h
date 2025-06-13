@@ -18,7 +18,19 @@ namespace dae
 		UIComponent* GetNextUIComponent(UIComponent* uiComponent) const;
 		UIComponent* GetPreviousUIComponent(UIComponent* uiComponent) const;
 
+		UIComponent* GetSelectedUIComponent() const { return m_SelectedUIComponent; }
+		void SetSelectedUIComponent(UIComponent* uiComponent)
+		{
+			if (m_SelectedUIComponent)
+				m_SelectedUIComponent->Selected = false;
+
+			m_SelectedUIComponent = uiComponent;
+
+			if (m_SelectedUIComponent)
+				m_SelectedUIComponent->Selected = true;
+		}
 	private:
-		std::vector<UIComponent*> m_UIComponents; 
+		std::vector<UIComponent*> m_UIComponents;
+		UIComponent* m_SelectedUIComponent = nullptr;
 	};
 }

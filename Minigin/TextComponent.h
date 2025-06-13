@@ -19,6 +19,8 @@ namespace dae
 		void Render() const override;
 
 		void SetText(const std::string& text);
+		void SetColor(const glm::vec4& color);
+		glm::vec4 GetColor() const;
 
 		TextComponent(dae::GameObject& owner, const std::string& text, dae::Font* font);
 		virtual ~TextComponent() = default;
@@ -31,6 +33,7 @@ namespace dae
 		bool m_needsUpdate;
 		std::string m_text;
 		dae::Font* m_font;
+		SDL_Color m_color{ 255, 255, 255, 255};
 		std::unique_ptr<dae::Texture2D> m_textTexture;
 	};
 }

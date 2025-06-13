@@ -129,8 +129,6 @@ namespace cat
 	};
 
 
-
-
 	// ZEN-CHAN
 	//----------------
 	struct ZenChanPreset

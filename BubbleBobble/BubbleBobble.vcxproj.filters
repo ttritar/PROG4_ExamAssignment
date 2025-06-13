@@ -40,6 +40,9 @@
     <Filter Include="Header Files\Presets">
       <UniqueIdentifier>{f0336fe9-b04d-4d0c-bc87-c982dd9a026c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Presets">
+      <UniqueIdentifier>{ebe04ba8-5ebc-4abd-b436-1c910825d074}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -80,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="ScoreObserverComponent.cpp">
       <Filter>Source Files\Observers</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenePresets.cpp">
+      <Filter>Source Files\Presets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,7 +137,7 @@
     <ClInclude Include="EnemyCollisionObserverComponent.h">
       <Filter>Header Files\Observers</Filter>
     </ClInclude>
-    <ClInclude Include="UIPresets.h">
+    <ClInclude Include="ScenePresets.h">
       <Filter>Header Files\Presets</Filter>
     </ClInclude>
     <ClInclude Include="ScoreObserverComponent.h">

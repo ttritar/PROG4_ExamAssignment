@@ -17,7 +17,7 @@ void dae::TextComponent::Update( float )
 
 	if (m_needsUpdate)
 	{
-		const SDL_Color color = { 255,255,255,255 }; // only white text is supported now
+		const SDL_Color color = m_color;
 		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), color);
 		if (surf == nullptr) 
 		{
@@ -48,6 +48,27 @@ void dae::TextComponent::SetText(const std::string& text)
 {
 	m_text = text;
 	m_needsUpdate = true;
+}
+
+void dae::TextComponent::SetColor(const glm::vec4& color)
+{
+	m_color = {
+		static_cast<Uint8>(color.x * 255),
+		static_cast<Uint8>(color.y * 255),
+		static_cast<Uint8>(color.z * 255),
+		static_cast<Uint8>(color.w * 255)
+	};
+	m_needsUpdate = true;
+}
+
+glm::vec4 dae::TextComponent::GetColor() const
+{
+	return glm::vec4{
+		static_cast<float>(m_color.r) / 255.f,
+		static_cast<float>(m_color.g) / 255.f,
+		static_cast<float>(m_color.b) / 255.f,
+		static_cast<float>(m_color.a) / 255.f
+	};
 }
 
 
