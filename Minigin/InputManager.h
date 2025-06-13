@@ -27,6 +27,11 @@ namespace dae
 		void UnbindKeyCommand(SDL_Keycode key, const GameActorCommand* command);
 		void UnbindBtnCommand(unsigned int controllerIndex, unsigned int btn, const GameActorCommand* command);
 
+		void UnbindAllBtnCommands(unsigned int controllerIndex);
+		void UnbindAllBtnCommands();
+		void UnbindAllKeyCommands();
+		void UnbindAllCommands();
+
 		bool ProcessInput();
 
 

@@ -30,7 +30,8 @@ namespace cat
 			m_pTextureComponent = owner.GetComponent<dae::TextureComponent>();
 			if (!m_pTextureComponent) throw std::runtime_error("AnimationComponent requires a TextureComponent to function.");
 			m_pTextureComponent->SetSourceRect({
-				0, 0,
+				m_CurrentFrame* m_FrameData.frameWidth,
+				m_FrameData.frameHeight* m_FrameData.row,
 				m_FrameData.frameWidth,
 				m_FrameData.frameHeight
 				});

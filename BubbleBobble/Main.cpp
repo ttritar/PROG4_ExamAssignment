@@ -10,18 +10,28 @@
 #include "MixerSoundSystem.h"
 #include "SceneManager.h"
 #include "ServiceLocator.h"
+#include "UIPresets.h"
 
 
 void load()
 {
-	auto& scene1 = dae::SceneManager::GetInstance().CreateScene("Level1");
-	auto level = cat::Level(scene1,1, "../Data/Levels/Level1.tmj");
-
-	//auto& scene2 = dae::SceneManager::GetInstance().CreateScene("Level2");
-	//auto level2 = cat::Level(scene2, 2, "../Data/Levels/Level2.tmj");
-
-	// TUT TEXT
+	// LEVELS
 	//----------
+
+	//----- main menu -----
+	{
+		auto& sceneTitleScreen = dae::SceneManager::GetInstance().CreateScene("TitleScreen");
+		cat::TitleScreenPreset titleScreenPreset{};
+		titleScreenPreset.SpawnTitleScreen(sceneTitleScreen);
+		titleScreenPreset.SetCommandsAndObservers(sceneTitleScreen);
+	}
+
+
+
+
+
+	// SET ACTIVE
+	dae::SceneManager::GetInstance().SetActiveScene("TitleScreen");
 
 }
 
@@ -34,6 +44,7 @@ int main(int, char* [])
 		serviceLocator.RegisterSoundSystem(std::make_unique<dae::MixerSoundSystem>());
 		serviceLocator.RegisterCollisionSystem(std::make_unique<dae::CollisionSystem>());
 		serviceLocator.RegisterPlayerSystem(std::make_unique<dae::PlayerSystem>());
+		serviceLocator.RegisterUIInputSystem(std::make_unique<dae::UIInputSystem>());
 
 		dae::Minigin engine("../Data/");
 		engine.Run(load);

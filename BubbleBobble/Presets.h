@@ -5,7 +5,7 @@
 #include "AttackComponent.h"
 #include "BubbleComponent.h"
 #include "ColliderComponent.h"
-#include "EnemyCollisionObserver.h"
+#include "EnemyCollisionObserverComponent.h"
 #include "MovementComponent.h"
 #include "TextureComponent.h"
 #include "HealthComponent.h"
@@ -13,7 +13,7 @@
 
 #include "InputManager.h"
 #include "PlayerCommand.h"
-#include "PlayerSoundObserver.h"
+#include "PlayerSoundObserverComponent.h"
 #include "ServiceLocator.h"
 
 namespace cat
@@ -69,12 +69,14 @@ namespace cat
 
 			// OBSERVERS
 			//----------------
-			player->AddObserver(new PlayerSoundObserver);
+			auto playerSoundObserver = std::make_unique<PlayerSoundObserverComponent>(*player);
+			player->AddObserver(playerSoundObserver.get());
+			player->AddComponent(std::move(playerSoundObserver));
 
 			// SPAWN
 			//----------------
 			player->SetLocalPosition(pos);
-			dae::ServiceLocator::GetInstance().GetPlayerSystem().RegisterPlayer(playerIdx, player.get());
+			dae::ServiceLocator::GetInstance().GetPlayerSystem().RegisterPlayer(scene.GetName(), playerIdx, player.get());
 			scene.Add(std::move(player));
 		}
 	};
@@ -175,7 +177,10 @@ namespace cat
 
 			// OBSERVERS
 			//-----------------
-			zenChan->AddObserver(new EnemyCollisionObserver);
+			auto zenCollisionObserver = std::make_unique<EnemyCollisionObserverComponent>(*zenChan);
+			zenChan->AddObserver(zenCollisionObserver.get());
+			zenChan->AddComponent(std::move(zenCollisionObserver));
+
 				
 			zenChan->SetLocalPosition(pos);
 			scene.Add(std::move(zenChan));

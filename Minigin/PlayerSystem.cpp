@@ -4,26 +4,39 @@
 #include <stdexcept>
 #include <string>
 
-void dae::PlayerSystem::RegisterPlayer(int playerIdx, dae::GameObject* player)
+void dae::PlayerSystem::RegisterPlayer(const std::string& sceneName, int playerIdx, GameObject* player)
 {
-	if (playerIdx < 0 || playerIdx >= static_cast<int>(m_Players.size()))
-	{
-		m_Players.resize(playerIdx + 1, nullptr);
-	}
+	auto& players = m_ScenePlayers[sceneName];
+	if (playerIdx >= static_cast<int>(players.size()))
+		players.resize(playerIdx + 1, nullptr);
 
-	if (m_Players[playerIdx] != nullptr)
-	{
+	if (players[playerIdx] != nullptr)
 		throw std::runtime_error("Player already registered at index " + std::to_string(playerIdx));
-	}
 
-	m_Players[playerIdx] = player;
+	players[playerIdx] = player;
 }
 
-void dae::PlayerSystem::UnregisterPlayer(int playerIdx, dae::GameObject* player)
+void dae::PlayerSystem::UnregisterPlayer(const std::string& sceneName, int playerIdx, GameObject* player)
 {
-	if (playerIdx < 0 || playerIdx >= static_cast<int>(m_Players.size()) || m_Players[playerIdx] != player)
-	{
+	auto it = m_ScenePlayers.find(sceneName);
+	if (it == m_ScenePlayers.end() || it->second[playerIdx] != player)
 		throw std::runtime_error("Player not registered at index " + std::to_string(playerIdx));
-	}
-	m_Players[playerIdx] = nullptr;
+
+	it->second[playerIdx] = nullptr;
+}
+
+std::vector<dae::GameObject*> dae::PlayerSystem::GetPlayers(const std::string& sceneName)
+{
+	auto it = m_ScenePlayers.find(sceneName);
+	if (it != m_ScenePlayers.end())
+		return it->second;
+	return {};
+}
+
+dae::GameObject* dae::PlayerSystem::GetPlayer(const std::string& sceneName, int playerIdx) const
+{
+	auto it = m_ScenePlayers.find(sceneName);
+	if (it == m_ScenePlayers.end() || playerIdx >= static_cast<int>(it->second.size()))
+		return nullptr;
+	return it->second[playerIdx];
 }

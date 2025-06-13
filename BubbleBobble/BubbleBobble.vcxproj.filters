@@ -28,14 +28,17 @@
     <Filter Include="Source Files\States">
       <UniqueIdentifier>{dd6edf13-8f0f-4d50-93ac-54e76b0cedaa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Characters">
-      <UniqueIdentifier>{f0336fe9-b04d-4d0c-bc87-c982dd9a026c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Characters">
       <UniqueIdentifier>{1e7a376f-4a3d-4260-96a8-bdbf70652feb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Observers">
       <UniqueIdentifier>{955c302b-bfc1-4c49-9d92-2a6b8061fd53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Observers">
+      <UniqueIdentifier>{5590bac4-c326-4878-a125-1798356ed383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Presets">
+      <UniqueIdentifier>{f0336fe9-b04d-4d0c-bc87-c982dd9a026c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +69,6 @@
     <ClCompile Include="HealthUIComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreUIComponent.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="ScoreComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -78,11 +78,11 @@
     <ClCompile Include="ZenChanState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreObserverComponent.cpp">
+      <Filter>Source Files\Observers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Minigin\UICommand.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="Level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,7 +93,7 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Presets.h">
-      <Filter>Header Files\Characters</Filter>
+      <Filter>Header Files\Presets</Filter>
     </ClInclude>
     <ClInclude Include="AttackComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -119,20 +119,26 @@
     <ClInclude Include="ScoreComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreUIComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerCommand.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="ZenChanState.h">
       <Filter>Header Files\States</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerSoundObserver.h">
+    <ClInclude Include="PlayerSoundObserverComponent.h">
       <Filter>Header Files\Observers</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyCollisionObserver.h">
+    <ClInclude Include="EnemyCollisionObserverComponent.h">
       <Filter>Header Files\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIPresets.h">
+      <Filter>Header Files\Presets</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreObserverComponent.h">
+      <Filter>Header Files\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="UICommand.h">
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

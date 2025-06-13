@@ -1,4 +1,7 @@
 #pragma once
+#include <unordered_map>
+#include <xstring>
+
 #include "GameObject.h"
 
 namespace dae
@@ -6,18 +9,13 @@ namespace dae
 	class PlayerSystem
 	{
 	public:
-		void RegisterPlayer(int playerIdx, dae::GameObject* player);
-		void UnregisterPlayer(int playerIdx, dae::GameObject* player);
+		void RegisterPlayer(const std::string& sceneName, int playerIdx, dae::GameObject* player);
+		void UnregisterPlayer(const std::string& sceneName, int playerIdx, dae::GameObject* player);
 
-		std::vector<dae::GameObject*> GetPlayers() const { return m_Players; }
-		dae::GameObject* GetPlayer(int playerIdx) const
-		{
-			if (playerIdx < 0 || playerIdx >= static_cast<int>(m_Players.size()))
-				return nullptr;
-			return m_Players[playerIdx];
-		}
+		std::vector<dae::GameObject*> GetPlayers(const std::string& sceneName);
+		dae::GameObject* GetPlayer(const std::string& sceneName, int playerIdx) const;
 
 	private:
-		std::vector<dae::GameObject*> m_Players{}; 
+		std::unordered_map<std::string, std::vector<GameObject*>> m_ScenePlayers;
 	};
 }

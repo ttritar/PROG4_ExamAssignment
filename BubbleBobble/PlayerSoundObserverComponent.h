@@ -4,7 +4,7 @@
 
 namespace cat
 {
-	class PlayerSoundObserver final : public dae::Observer
+	class PlayerSoundObserverComponent final : public dae::BaseComponent, public dae::Observer
 	{
 	public:
 		void Notify(const dae::Event& event, dae::GameObject* ) override
@@ -29,5 +29,18 @@ namespace cat
 			}
 		}
 
+
+		// CTOR & DTOR
+		//--------------
+		PlayerSoundObserverComponent(dae::GameObject& owner)
+			: BaseComponent(owner)
+		{
+			// No initialization needed
+		};
+		virtual ~PlayerSoundObserverComponent() = default;
+		PlayerSoundObserverComponent(const PlayerSoundObserverComponent& other) = delete;
+		PlayerSoundObserverComponent(PlayerSoundObserverComponent&& other) = delete;
+		PlayerSoundObserverComponent& operator=(const PlayerSoundObserverComponent& other) = delete;
+		PlayerSoundObserverComponent& operator=(PlayerSoundObserverComponent&& other) = delete;
 	};
 }

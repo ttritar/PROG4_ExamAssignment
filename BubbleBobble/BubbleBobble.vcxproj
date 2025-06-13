@@ -155,18 +155,19 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MaitaAIComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
-    <ClCompile Include="ScoreUIComponent.cpp" />
+    <ClCompile Include="ScoreObserverComponent.cpp" />
     <ClCompile Include="ZenChanAIComponent.cpp" />
     <ClCompile Include="ZenChanState.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Minigin\UICommand.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="BubbleComponent.h" />
     <ClInclude Include="BubbleState.h" />
-    <ClInclude Include="EnemyCollisionObserver.h" />
-    <ClInclude Include="PlayerSoundObserver.h" />
+    <ClInclude Include="EnemyCollisionObserverComponent.h" />
+    <ClInclude Include="UICommand.h" />
+    <ClInclude Include="UIPresets.h" />
+    <ClInclude Include="PlayerSoundObserverComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthUIComponent.h" />
     <ClInclude Include="MaitaState.h" />
@@ -175,7 +176,7 @@
     <ClInclude Include="PlayerCommand.h" />
     <ClInclude Include="Presets.h" />
     <ClInclude Include="ScoreComponent.h" />
-    <ClInclude Include="ScoreUIComponent.h" />
+    <ClInclude Include="ScoreObserverComponent.h" />
     <ClInclude Include="ZenChanAIComponent.h" />
     <ClInclude Include="ZenChanState.h" />
   </ItemGroup>

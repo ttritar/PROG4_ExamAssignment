@@ -1,5 +1,7 @@
 #include "ZenChanState.h"
 
+#include "Scene.h"
+#include "SceneManager.h"
 #include "ServiceLocator.h"
 #include "ZenChanAIComponent.h"
 
@@ -43,7 +45,7 @@ void cat::ChaseState::OnEnter(ZenChanAIComponent* ai)
 	}
 
 	// register players
-	const auto& players = dae::ServiceLocator::GetInstance().GetPlayerSystem().GetPlayers();
+	const auto& players = dae::ServiceLocator::GetInstance().GetPlayerSystem().GetPlayers(dae::SceneManager::GetInstance().GetActiveScene().GetName());
 	for (auto player : players)
 	{
 		m_pAIComponent->AddPlayer(player);
@@ -120,7 +122,7 @@ void cat::PatrolState::OnEnter(ZenChanAIComponent* ai)
 	m_pMovementComponent->SetSpeed(m_PatrolSpeed);
 
 	// register players
-	const auto& players = dae::ServiceLocator::GetInstance().GetPlayerSystem().GetPlayers();
+	const auto& players = dae::ServiceLocator::GetInstance().GetPlayerSystem().GetPlayers(dae::SceneManager::GetInstance().GetActiveScene().GetName());
 	for (auto player : players)
 	{
 		m_pAIComponent->AddPlayer(player);

@@ -30,4 +30,14 @@ namespace dae
     {
 		_ps_instance = std::move(ps);
     }
+
+
+	// UI INPUT SYSTEM
+	//---------------------------
+	std::unique_ptr<UIInputSystem> ServiceLocator::_ui_instance = nullptr;
+
+    void ServiceLocator::RegisterUIInputSystem(std::unique_ptr<UIInputSystem>&& ui)
+    {
+		_ui_instance = std::move(ui);
+    }
 }

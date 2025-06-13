@@ -13,7 +13,7 @@
 
 namespace dae
 {
-	static float g_SCALE{ 3.f };
+	static float g_BASE_SCALE =  3.f;
 
 	class TextureComponent final : public dae::BaseComponent
 	{
@@ -45,6 +45,8 @@ namespace dae
 		// Members
 		//-------------
 		SDL_RendererFlip FlipFlag = SDL_FLIP_NONE;
+
+		float Scale{ g_BASE_SCALE };
 
 	private:
 		dae::Texture2D* m_pTexture{};

@@ -7,7 +7,7 @@
 
 namespace cat
 {
-	class EnemyCollisionObserver final : public dae::Observer
+	class EnemyCollisionObserverComponent final : public dae::BaseComponent, public dae::Observer
 	{
 	public:
 		void Notify(const dae::Event& event, dae::GameObject* object) override
@@ -52,5 +52,19 @@ namespace cat
 
 			}
 		}
+
+		// CTOR & DTOR
+		//--------------
+		EnemyCollisionObserverComponent(dae::GameObject& owner)
+			: BaseComponent(owner)
+		{
+			// No initialization needed
+		};
+		virtual ~EnemyCollisionObserverComponent() = default;
+		EnemyCollisionObserverComponent(const EnemyCollisionObserverComponent& other) = delete;
+		EnemyCollisionObserverComponent(EnemyCollisionObserverComponent&& other) = delete;
+		EnemyCollisionObserverComponent& operator=(const EnemyCollisionObserverComponent& other) = delete;
+		EnemyCollisionObserverComponent& operator=(EnemyCollisionObserverComponent&& other) = delete;
+
 	};
 }

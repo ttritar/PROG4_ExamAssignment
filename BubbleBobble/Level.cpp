@@ -9,8 +9,8 @@
 
 #include "ServiceLocator.h"
 
-cat::Level::Level(dae::Scene& scene, int levelNr, const std::string& filePath)
-	:m_Scene(scene), m_LevelPath(filePath)
+cat::Level::Level(dae::Scene& scene, int levelNr, const std::string& filePath, const LevelGameMode& gameMode)
+	:m_Scene(scene), m_LevelPath(filePath), m_GameMode(gameMode)
 {
 	auto fontUI = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 20);
 
@@ -123,7 +123,7 @@ void cat::Level::LoadLevel()
 					// CREATE TILE GAMEOBJECT
 					//--------------------------
 					std::unique_ptr<dae::GameObject> tileObj = std::make_unique<dae::GameObject>();
-					tileObj->SetLocalPosition(glm::vec3(x * tileWidth * dae::g_SCALE, y * tileHeight * dae::g_SCALE, 0));
+					tileObj->SetLocalPosition(glm::vec3(x * tileWidth * dae::g_BASE_SCALE, y * tileHeight * dae::g_BASE_SCALE, 0));
 
 					// texture component
 					std::string tilesetImagePath = "../Data/Levels/" + activeTileset->getImagePath().string();
@@ -145,7 +145,7 @@ void cat::Level::LoadLevel()
 						default:;
 						}
 						colliderInfo.isStatic = true;
-						colliderInfo.size = { tileWidth * dae::g_SCALE, tileHeight * dae::g_SCALE };
+						colliderInfo.size = { tileWidth * dae::g_BASE_SCALE, tileHeight * dae::g_BASE_SCALE };
 
 						colliderInfo.tag = static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level);
 
@@ -165,12 +165,15 @@ void cat::Level::LoadLevel()
 			{
 				for (auto& object : layer.getObjects())
 				{
-					glm::vec3 pos{ object.getPosition().x * dae::g_SCALE, object.getPosition().y * dae::g_SCALE, 0 };
+					glm::vec3 pos{ object.getPosition().x * dae::g_BASE_SCALE, object.getPosition().y * dae::g_BASE_SCALE, 0 };
 
 					// PLAYER
 					if (object.getName() == "player")
 					{
-						PlayerPreset player = { object.getProp("isPlayerOne")->getValue<bool>() };
+						bool isPlayerOne = object.getProp("isPlayerOne")->getValue<bool>();
+						if (m_GameMode == LevelGameMode::SinglePlayer && !isPlayerOne) continue;
+
+						PlayerPreset player = { isPlayerOne };
 						player.SpawnPlayer(m_Scene, pos);
 					}
 					// ZENCHAN

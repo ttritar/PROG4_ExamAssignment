@@ -3,8 +3,8 @@
 void dae::TextureComponent::Update(float )
 {
 	m_DestSize = {
-		static_cast<int>(m_pTexture->GetSourceRect()->w * g_SCALE),
-		static_cast<int>(m_pTexture->GetSourceRect()->h * g_SCALE)
+		static_cast<int>(m_pTexture->GetSourceRect()->w * Scale),
+		static_cast<int>(m_pTexture->GetSourceRect()->h * Scale)
 	};
 }
 

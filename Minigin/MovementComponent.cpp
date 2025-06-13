@@ -1,8 +1,5 @@
 #include "MovementComponent.h"
-
-#include <iostream>
-
-#include "TimeSingleton.h"
+#include "WindowInfo.h"
 
 // Methods
 //---------------
@@ -35,6 +32,22 @@ void dae::MovementComponent::Update(float deltaTime)
 		pos.x += Velocity.x * deltaTime;
 	if ((Velocity.y < 0 && MoveLimits.canUp) || (Velocity.y > 0 && MoveLimits.canDown))
 		pos.y += Velocity.y * deltaTime;
+
+	// WINDOW WRAPPING
+	{
+		// H
+		if (pos.x < 0.f)
+			pos.x = static_cast<float>(WINDOW_WIDTH);
+		else if (pos.x > static_cast<float>(WINDOW_WIDTH))
+			pos.x = 0.f;
+
+		// V
+		if (pos.y < 0.f)
+			pos.y = static_cast<float>(WINDOW_HEIGHT);
+		else if (pos.y > static_cast<float>(WINDOW_HEIGHT))
+			pos.y = 0.f;
+	}
+
 	GetOwner()->SetLocalPosition(pos);
 
 	// RESETS

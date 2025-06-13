@@ -234,6 +234,41 @@ namespace dae
             controllerCommands.end());
     }
 
+    void InputManager::UnbindAllBtnCommands(unsigned int controllerIndex)
+	{
+		m_pImpl->m_controllerCommands.erase(
+			std::remove_if(m_pImpl->m_controllerCommands.begin(), m_pImpl->m_controllerCommands.end(),
+				[controllerIndex](const auto& pair) { return std::get<0>(pair) == controllerIndex; }),
+			m_pImpl->m_controllerCommands.end()
+		);
+    }
+
+    void InputManager::UnbindAllBtnCommands()
+    {
+        for (auto& gamepad : m_pImpl->m_gamepads)
+        {
+            UnbindAllBtnCommands(gamepad->GetIndex());
+        }
+    }
+
+    void InputManager::UnbindAllKeyCommands()
+    {
+        m_pImpl->m_keyboardCommands.erase(
+            std::remove_if(m_pImpl->m_keyboardCommands.begin(), m_pImpl->m_keyboardCommands.end(),
+                [](const auto&) { return true; }),
+            m_pImpl->m_keyboardCommands.end()
+        );
+    }
+
+    void InputManager::UnbindAllCommands()
+    {
+	    for (auto& gamepad : m_pImpl->m_gamepads)
+	    {
+            UnbindAllBtnCommands(gamepad->GetIndex());
+	    }
+		UnbindAllKeyCommands();
+    }
+
 
     bool InputManager::ProcessInput()
     {

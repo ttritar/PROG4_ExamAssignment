@@ -165,6 +165,15 @@
     <ClInclude Include="PlayerSystem.h">
       <Filter>Header Files\Systems\Input</Filter>
     </ClInclude>
+    <ClInclude Include="UIComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UIInputSystem.h">
+      <Filter>Header Files\Systems\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowInfo.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Transform.cpp">
@@ -249,6 +258,12 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="PlayerSystem.cpp">
+      <Filter>Source Files\Systems\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="UIComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="UIInputSystem.cpp">
       <Filter>Source Files\Systems\Input</Filter>
     </ClCompile>
   </ItemGroup>
