@@ -15,7 +15,7 @@ namespace cat
 		ZenChanAIComponent(dae::GameObject& owner)
 			:BaseComponent(owner)
 		{
-			m_CurrentState = std::make_unique<ChaseState>();
+			m_CurrentState = std::make_unique<PatrolState>();
 			m_CurrentState->OnEnter(this);
 		}
 

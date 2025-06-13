@@ -18,10 +18,10 @@ void dae::MovementComponent::Update(float deltaTime)
 	if (m_JumpSpeed !=0)
 	{
 		m_timeSinceJumpPress += deltaTime;
-		if (m_IsGrounded && m_timeSinceJumpPress < m_MAX_JUMP_BUFFER) // NO JUMPIN IN AIR ???
+		if (IsGrounded && m_timeSinceJumpPress < m_MAX_JUMP_BUFFER) // NO JUMPIN IN AIR ???
 		{
 			m_timeSinceJumpPress = FLT_MAX;
-			m_IsGrounded = false;
+			IsGrounded = false;
 
 			Velocity.y -= m_JumpSpeed;
 
@@ -31,21 +31,20 @@ void dae::MovementComponent::Update(float deltaTime)
 	}
 
 	// ALL MOVEMENT
-	if ((Velocity.x < 0 && MoveLimits.left) || (Velocity.x > 0 && MoveLimits.right))
+	if ((Velocity.x < 0 && MoveLimits.canLeft) || (Velocity.x > 0 && MoveLimits.canRight))
 		pos.x += Velocity.x * deltaTime;
-	if ((Velocity.y < 0 && MoveLimits.up) || (Velocity.y > 0 && MoveLimits.down))
+	if ((Velocity.y < 0 && MoveLimits.canUp) || (Velocity.y > 0 && MoveLimits.canDown))
 		pos.y += Velocity.y * deltaTime;
 	GetOwner()->SetLocalPosition(pos);
 
 	// RESETS
-	MoveLimits = { true, true, true, true };
 	Velocity.x = 0.f;
 }
 
 void dae::MovementComponent::Move(float dx, float dy)
 {
-	if ((dx < 0 && !MoveLimits.left) || (dx > 0 && !MoveLimits.right)) dx = 0;
-	if ((dy < 0 && !MoveLimits.up) || (dy > 0 && !MoveLimits.down)) dy = 0;
+	if ((dx < 0 && !MoveLimits.canLeft) || (dx > 0 && !MoveLimits.canRight)) dx = 0;
+	if ((dy < 0 && !MoveLimits.canUp) || (dy > 0 && !MoveLimits.canDown)) dy = 0;
 
 	if (dx != 0)
 		Velocity.x = dx * m_Speed;
@@ -85,7 +84,7 @@ void dae::MovementComponent::ApplyGravity()
 {
 	if (m_UsesGravity)
 	{
-		if (m_IsGrounded)
+		if (IsGrounded)
 		{
 			Velocity.y = 0; 
 		}

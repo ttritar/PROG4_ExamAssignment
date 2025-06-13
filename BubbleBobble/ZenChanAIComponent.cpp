@@ -2,13 +2,20 @@
 
 void cat::ZenChanAIComponent::Update(float deltaTime)
 {
+	// target reset
+	m_pTarget = nullptr;
+
 	// update target if someone else is closer
 	for (auto player : m_pPlayers)
-	{	// if the target and enemy are on the same level .._> add small treshold for y distance
-		if (player->GetWorldPosition().y + 5.0f >= this->GetOwner()->GetWorldPosition().y &&
-			player->GetWorldPosition().y - 5.0f <= this->GetOwner()->GetWorldPosition().y)
+	{
+		const float playerY = player->GetWorldPosition().y;
+		const float zenchanY = this->GetOwner()->GetWorldPosition().y;
+
+		// if the target and enemy are on the same level 
+		if (std::abs(playerY - zenchanY) <= 5.0f)
 		{
 			m_pTarget = player;
+			break;
 		}
 	}
 
@@ -40,15 +47,5 @@ void cat::ZenChanAIComponent::AddPlayer(dae::GameObject* player)
 	if (std::find(m_pPlayers.begin(), m_pPlayers.end(), player) == m_pPlayers.end())
 	{
 		m_pPlayers.push_back(player);
-		if (!m_pTarget) m_pTarget = player;
 	}
-
-	//// set the target to the closest player
-	//float oldDist = glm::distance(m_pTarget->GetWorldPosition(), GetOwner()->GetWorldPosition());
-	//float newDist = glm::distance(player->GetWorldPosition(), GetOwner()->GetWorldPosition());
-	//if (newDist < oldDist)
-	//{
-	//	m_pTarget = player;
-	//}
-
 }

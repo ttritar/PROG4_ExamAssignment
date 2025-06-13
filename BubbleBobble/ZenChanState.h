@@ -29,4 +29,27 @@ namespace cat
 		dae::MovementComponent* m_pMovementComponent = nullptr;
 	};
 
+
+	class PatrolState : public ZenChanState
+	{
+	public:
+		std::unique_ptr<ZenChanState> Update(float deltaTime) override;
+		void OnEnter(ZenChanAIComponent* ai) override;
+		void OnExit() override;
+	private:
+		ZenChanAIComponent* m_pAIComponent = nullptr;
+		dae::MovementComponent* m_pMovementComponent = nullptr;
+
+
+		float m_PatrolSpeed = 100.f;
+		glm::vec2 m_Direction = { 1.f, 0.f };
+
+		const float m_JumpCd = 4.0f;
+		float m_JumpTimer = 0.0f;
+
+		const float m_FallBehCd = 1.0f;
+		float m_FallTimer = 0.f;
+	};
+
+
 }

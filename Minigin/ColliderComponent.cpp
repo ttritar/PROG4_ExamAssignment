@@ -32,6 +32,7 @@ dae::ColliderComponent::~ColliderComponent()
 void dae::ColliderComponent::FixedUpdate(float)
 {
 	if (Info.isStatic) return;
+	m_pMovementComponent->MoveLimits = { true, true, true, true };
 
 	auto physColliders = ServiceLocator::GetInstance().GetCollisionSystem().GetPhysicsColliders();
 	auto triggerColliders = ServiceLocator::GetInstance().GetCollisionSystem().GetTriggerColliders();
@@ -46,7 +47,7 @@ void dae::ColliderComponent::FixedUpdate(float)
 		}
 	}
 
-	if (m_pMovementComponent) m_pMovementComponent->SetIsGrounded(false);
+	if (m_pMovementComponent) m_pMovementComponent->IsGrounded=false;
 	for (auto& coll : physColliders)
 	{
 		if (coll->GetOwner() == GetOwner()) continue;
@@ -131,11 +132,11 @@ void dae::ColliderComponent::HandlePhysicalCollision(const ColliderComponent* ot
 			{
 
 				GetOwner()->SetLocalPosition({ pos.x, pos.y - overlapY,0 });
-				m_pMovementComponent->MoveLimits.down = false;
-				m_pMovementComponent->SetIsGrounded(true);
+				m_pMovementComponent->MoveLimits.canDown = false;
+				m_pMovementComponent->IsGrounded=true;
 			}
 			else
-				m_pMovementComponent->SetIsGrounded(false);
+				m_pMovementComponent->IsGrounded=false;
 
 		}
 		break;
@@ -148,24 +149,24 @@ void dae::ColliderComponent::HandlePhysicalCollision(const ColliderComponent* ot
 			{
 				if (dx < 0) {
 					newPos.x -= overlapX;
-					m_pMovementComponent->MoveLimits.right = false;
+					m_pMovementComponent->MoveLimits.canRight = false;
 				}
 				else {
 					newPos.x += overlapX;
-					m_pMovementComponent->MoveLimits.left = false;
+					m_pMovementComponent->MoveLimits.canLeft = false;
 				}
 			}
 			else
 			{
 				if (dy < 0) {
 					newPos.y -= overlapY;
-					m_pMovementComponent->MoveLimits.down = false;
-					m_pMovementComponent->SetIsGrounded(true);
+					m_pMovementComponent->MoveLimits.canDown = false;
+					m_pMovementComponent->IsGrounded = true;
 				}
 				else {
 					newPos.y += overlapY;
-					m_pMovementComponent->MoveLimits.up = false;
-					m_pMovementComponent->SetIsGrounded(false);
+					m_pMovementComponent->MoveLimits.canUp = false;
+					m_pMovementComponent->IsGrounded = false;
 				}
 			}
 

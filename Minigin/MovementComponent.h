@@ -33,8 +33,6 @@ namespace dae
 		void SetSpeed(float speed) { m_Speed = speed; }
 		void SetJumpSpeed(float jumpSpeed) { m_JumpSpeed = jumpSpeed; }
 
-		void SetIsGrounded(bool isGrounded) { m_IsGrounded = isGrounded; }
-
 		void SetUsesGravity(bool usesGravity) { m_UsesGravity = usesGravity; }
 		void SetGravitationalConstant(float gravitationalConstant) { m_GravitationalConstant = gravitationalConstant; }
 
@@ -46,12 +44,13 @@ namespace dae
 		//---------------
 		glm::vec2 Velocity = { 0,0 };
 
+		bool IsGrounded = false;
 		struct MoveLimits
 		{
-			bool left = true;
-			bool right = true;
-			bool up = true;
-			bool down = true;
+			bool canLeft = true;
+			bool canRight = true;
+			bool canUp = true;
+			bool canDown = true;
 		};
 		MoveLimits MoveLimits{};
 
@@ -66,11 +65,10 @@ namespace dae
 		float m_JumpSpeed;
 
 		bool m_UsesGravity = true;
-		float m_GravitationalConstant = -9.81f;
+		float m_GravitationalConstant = -4.f;
 
 		glm::vec2 m_Direction = { -1,0 };
 
-		bool m_IsGrounded = false;
 		float m_timeSinceJumpPress = FLT_MAX;
 		const float m_MAX_JUMP_BUFFER = 1.f;
 

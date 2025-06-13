@@ -57,7 +57,7 @@ std::unique_ptr<cat::BubbleState> cat::RisingState::Update(float )
 	if (std::abs(pos.x - m_TargetPosition.x) > 1.0f)
 	{
 		m_pMovementComponent->Velocity.y = 0;
-		m_pMovementComponent->MoveLimits.up = true;
+		m_pMovementComponent->MoveLimits.canUp = true;
 
 
 		float dir = (m_TargetPosition.x > pos.x) ? 1.f : -1.f;

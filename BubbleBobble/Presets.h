@@ -40,7 +40,7 @@ namespace cat
 			AnimationComponent::FrameData{ 16, 16, 7, 0.2f });
 			player->AddComponent(std::move(playerAnimation));
 
-			auto playerMovement = std::make_unique<dae::MovementComponent>(*player, 150.f, 400.f);
+			auto playerMovement = std::make_unique<dae::MovementComponent>(*player, 150.f, 200.f);
 			player->AddComponent(std::move(playerMovement));
 
 			auto playerAttack = std::make_unique<AttackComponent>(*player, isPlayerOne);
