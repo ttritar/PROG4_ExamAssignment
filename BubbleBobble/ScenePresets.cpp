@@ -324,11 +324,13 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 
 	auto uiController = std::make_unique<dae::GameObject>();
 	auto& inputManager = dae::InputManager::GetInstance();
+	
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<NavigationNextCommand>(uiController.get()));
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<NavigationPreviousCommand>(uiController.get()));
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_A, std::make_unique<PressButtonCommand>(uiController.get()));
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_B, std::make_unique<CustomUICommand>(uiController.get(), [passwordChars, &scene, &inputManager]() {
-			// save the highscore 
+
+		// save the highscore 
 		HighScore{
 			.playerName = std::string(passwordChars),
 			.score = ScoreComponent::GetCurrentScore()
@@ -344,6 +346,33 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 		inputManager.UnbindAllBtnCommands(0);
 
 		}));
+
+
+	inputManager.BindKeyCommand( SDLK_RIGHT, std::make_unique<NavigationNextCommand>(uiController.get()));
+	inputManager.BindKeyCommand( SDLK_LEFT, std::make_unique<NavigationPreviousCommand>(uiController.get()));
+	inputManager.BindKeyCommand(SDLK_d, std::make_unique<NavigationNextCommand>(uiController.get()));
+	inputManager.BindKeyCommand(SDLK_a, std::make_unique<NavigationPreviousCommand>(uiController.get()));
+	inputManager.BindKeyCommand(SDLK_RETURN, std::make_unique<PressButtonCommand>(uiController.get()));
+	inputManager.BindKeyCommand(SDLK_SPACE, std::make_unique<PressButtonCommand>(uiController.get()));
+	inputManager.BindKeyCommand(SDLK_BACKSPACE, std::make_unique<CustomUICommand>(uiController.get(), [passwordChars, &scene, &inputManager]() {
+
+		// save the highscore 
+		HighScore{
+			.playerName = std::string(passwordChars),
+			.score = ScoreComponent::GetCurrentScore()
+		}.WriteToFile();
+
+		auto feedback = std::make_unique<dae::GameObject>();
+		auto font = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 14);
+		auto textComponent = std::make_unique<dae::TextComponent>(*feedback, "SUCCESFULLY ADDED THE HIGHSCORE!", font);
+		feedback->AddComponent(std::move(textComponent));
+		feedback->SetLocalPosition({ 200, 225, 0 });
+		scene.Add(std::move(feedback));
+
+		inputManager.UnbindAllBtnCommands(0);
+
+		}));
+
 	scene.Add(std::move(uiController));
 
 	auto controller = std::make_unique<dae::GameObject>();
@@ -432,6 +461,14 @@ void cat::MainMenuPreset::SetCommandsAndObservers(dae::Scene& scene)
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_DOWN, std::make_unique<NavigationNextCommand>(uiController.get()));
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_UP, std::make_unique<NavigationPreviousCommand>(uiController.get()));
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_A, std::make_unique<PressButtonCommand>(uiController.get()));
+
+	inputManager.BindKeyCommand( SDLK_DOWN, std::make_unique<NavigationNextCommand>(uiController.get()));
+	inputManager.BindKeyCommand( SDLK_UP, std::make_unique<NavigationPreviousCommand>(uiController.get()));
+	inputManager.BindKeyCommand(SDLK_s, std::make_unique<NavigationNextCommand>(uiController.get()));
+	inputManager.BindKeyCommand(SDLK_w, std::make_unique<NavigationPreviousCommand>(uiController.get()));
+	inputManager.BindKeyCommand( SDLK_RETURN, std::make_unique<PressButtonCommand>(uiController.get()));
+	inputManager.BindKeyCommand(SDLK_SPACE, std::make_unique<PressButtonCommand>(uiController.get()));
+
 	scene.Add(std::move(uiController));
 
 	auto controller = std::make_unique<dae::GameObject>();
@@ -537,6 +574,8 @@ void cat::TitleScreenPreset::SetCommandsAndObservers(dae::Scene& scene)
 
 		auto& inputManager = dae::InputManager::GetInstance();
 		inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_A, std::make_unique<PressButtonCommand>(pressStart.get()));
+		inputManager.BindKeyCommand(SDLK_RETURN, std::make_unique<PressButtonCommand>(pressStart.get()));
+		inputManager.BindKeyCommand(SDLK_SPACE, std::make_unique<PressButtonCommand>(pressStart.get()));
 		scene.Add(std::move(pressStart));
 
 		auto controller = std::make_unique<dae::GameObject>();

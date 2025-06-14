@@ -62,8 +62,18 @@ void cat::PlayerPreset::SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) cons
 	inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<cat::MoveLeftCommand>(cat::MoveLeftCommand(player.get())));
 	inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<cat::MoveRightCommand>(cat::MoveRightCommand(player.get())));
 	inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_A, std::make_unique<cat::JumpCommand>(cat::JumpCommand(player.get())));
-	inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_B, std::make_unique<cat::AttackCommand>(cat::AttackCommand(player.get()))); 
+	inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_B, std::make_unique<cat::AttackCommand>(cat::AttackCommand(player.get())));
 
+	if (isPlayerOne)
+	{
+		inputManager.BindKeyCommand(SDLK_LEFT, std::make_unique<cat::MoveLeftCommand>(cat::MoveLeftCommand(player.get())));
+		inputManager.BindKeyCommand(SDLK_RIGHT, std::make_unique<cat::MoveRightCommand>(cat::MoveRightCommand(player.get())));
+		inputManager.BindKeyCommand(SDLK_a, std::make_unique<cat::MoveLeftCommand>(cat::MoveLeftCommand(player.get())));
+		inputManager.BindKeyCommand(SDLK_d, std::make_unique<cat::MoveRightCommand>(cat::MoveRightCommand(player.get())));
+		inputManager.BindKeyCommand(SDLK_SPACE, std::make_unique<cat::JumpCommand>(cat::JumpCommand(player.get())));
+		inputManager.BindKeyCommand(SDLK_e, std::make_unique<cat::AttackCommand>(cat::AttackCommand(player.get())));
+		inputManager.BindKeyCommand(SDLK_RETURN, std::make_unique<cat::AttackCommand>(cat::AttackCommand(player.get())));
+	}
 
 	// OBSERVERS
 	//----------------

@@ -48,6 +48,13 @@ int main(int, char* [])
 	if (!std::filesystem::exists(data_location))
 		data_location = "../Data/";
 	dae::Minigin engine(data_location.string());
+
+	std::filesystem::path data_location = "./Data/";
+	if (!std::filesystem::exists(data_location))
+		data_location = "../../Data/";
+	dae::Minigin engine(data_location.string());
+
+
 	engine.Run(load);
 	return 0;
 }
