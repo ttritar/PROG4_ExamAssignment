@@ -53,6 +53,6 @@ namespace cat
 	//----------------
 	struct ItemPreset
 	{
-		static void SpawnItem(dae::Scene& scene, const glm::vec3 pos);
+		static void SpawnItem(dae::Scene& scene, const glm::vec3 pos, BubbleComponent::TrappedEnemyType type);
 	};
 }

@@ -90,6 +90,9 @@
     <ClCompile Include="Presets.cpp">
       <Filter>Source Files\Presets</Filter>
     </ClCompile>
+    <ClCompile Include="BubbleComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Level.h">

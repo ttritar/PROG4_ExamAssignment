@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttackComponent.cpp" />
+    <ClCompile Include="BubbleComponent.cpp" />
     <ClCompile Include="BubbleState.cpp" />
     <ClCompile Include="CollisionObserverComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />

@@ -44,7 +44,7 @@ void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::
 			{
 				other->m_pendingRemoval = true;
 				BubbleComponent::TrappedEnemyType type = BubbleComponent::TrappedEnemyType::Maita;
-				if (other->GetComponent<ZenChanAIComponent>()) type = BubbleComponent::TrappedEnemyType::ZenChan;
+				if (thisCollider->GetOwner()->GetComponent<ZenChanAIComponent>()) type = BubbleComponent::TrappedEnemyType::ZenChan;
 
 
 				//bubble
@@ -68,7 +68,7 @@ void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::
 			{
 				thisCollider->GetOwner()->m_pendingRemoval = true;
 				BubbleComponent::TrappedEnemyType type = BubbleComponent::TrappedEnemyType::Maita;
-				if (thisCollider->GetOwner()->GetComponent<ZenChanAIComponent>()) type = BubbleComponent::TrappedEnemyType::ZenChan;
+				if (other->GetComponent<ZenChanAIComponent>()) type = BubbleComponent::TrappedEnemyType::ZenChan;
 			
 			
 				//bubble
@@ -107,9 +107,7 @@ void cat::PlayerCollisionObserverComponent::Notify(const dae::Event& event, dae:
 		if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Item) &&
 			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player))
 		{
-			// random nmber between 1000 and 5000
-			int randomScore = rand() % 4000 + 1000;
-			thisCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(randomScore);
+			thisCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(100);
 
 			other->m_pendingRemoval = true;
 			Level::TotalPickups--;
@@ -132,11 +130,13 @@ void cat::PlayerCollisionObserverComponent::Notify(const dae::Event& event, dae:
 				other->m_pendingRemoval = true; 
 
 				thisCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(10);
+
 				bubble->ChangeState(std::make_unique<PopState>());
+
 				if (bubble->HasTrapped)
 				{
 					auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
-					ItemPreset().SpawnItem(scene, other->GetLocalPosition());
+					ItemPreset().SpawnItem(scene, other->GetLocalPosition(), bubble->TrappedEnemy);
 
 					--Level::TotalEnemies;
 					if (Level::TotalEnemies <= 0 && Level::TotalPickups <= 0)

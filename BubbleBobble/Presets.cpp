@@ -200,7 +200,7 @@ void cat::BubblePreset::SpawnBubble(dae::Scene& scene, const glm::vec3 pos) cons
 	bubble->AddComponent(std::move(bubbleCol));
 
 
-	bubble->SetLocalPosition({pos.x + direction.x*100,pos.y,pos.z});
+	bubble->SetLocalPosition({pos.x + direction.x*50,pos.y,pos.z});
 	scene.Add(std::move(bubble));
 }
 
@@ -299,7 +299,7 @@ void cat::ZenChanPreset::SpawnZenChan(dae::Scene& scene, const glm::vec3 pos)
 	scene.Add(std::move(zenChan));
 }
 
-void cat::ItemPreset::SpawnItem(dae::Scene& scene, const glm::vec3 pos)
+void cat::ItemPreset::SpawnItem(dae::Scene& scene, const glm::vec3 pos, BubbleComponent::TrappedEnemyType type)
 {
 	auto item = std::make_unique<dae::GameObject>();
 
@@ -313,7 +313,7 @@ void cat::ItemPreset::SpawnItem(dae::Scene& scene, const glm::vec3 pos)
 	item->AddComponent(std::move(movement));
 
 	auto texture = std::make_unique<dae::TextureComponent>(*item, "Enemies/Items.png");
-	int itemIdx = rand() % 9;
+	int itemIdx = type == BubbleComponent::TrappedEnemyType::ZenChan ? 0 : 1;
 	texture->SrcRect={
 		static_cast<int>(16.f * itemIdx),
 		0, 16 ,16 };
