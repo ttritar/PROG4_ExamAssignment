@@ -2,16 +2,16 @@
 #include "Observer.h"
 #include "GameObject.h"
 
+cat::ScoreComponent::ScoreComponent(dae::GameObject& owner)
+	:BaseComponent(owner)
+{
+	m_currentScore = 0;
+};
+
 void cat::ScoreComponent::GainScore(int amount)
 {
 	m_currentScore += amount;
 
 	dae::Event e(dae::make_sdbm_hash("GainScore"));
 	GetOwner()->NotifyObservers(e);
-
-	if (m_currentScore >= 500)
-	{
-		dae::Event eWin(dae::make_sdbm_hash("WonGame"));
-		GetOwner()->NotifyObservers(eWin);
-	}
 }

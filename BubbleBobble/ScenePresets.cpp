@@ -1,7 +1,14 @@
 #include "ScenePresets.h"
 
+#include "ResourceManager.h"
 #include "Level.h"
+#include "GeneralCommand.h"
+#include "AnimationComponent.h"
+#include "MovementComponent.h"
+#include "TextureComponent.h"
+#include "WindowInfo.h"
 
+#pragma region SceneSwitches
 
 void cat::SwitchToMainMenu()
 {
@@ -22,10 +29,10 @@ void cat::SwitchToPassword()
 	PasswordPreset::SpawnPassword(scene_password);
 }
 
-
 void cat::SwitchToLVl1_1P()
 {
 	ResetScene();
+	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 
 	auto& scene1_SinglePlayer = dae::SceneManager::GetInstance().CreateScene("Level1_SinglePlayer");
 	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 1, "../Data/Levels/Level1.tmj",
@@ -37,6 +44,7 @@ void cat::SwitchToLVl1_1P()
 void cat::SwitchToLvl1_2P()
 {
 	ResetScene();
+	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 
 	auto& scene1_Multiplayer = dae::SceneManager::GetInstance().CreateScene("Level1_Multiplayer");
 	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 1, "../Data/Levels/Level1.tmj",
@@ -47,41 +55,50 @@ void cat::SwitchToLvl1_2P()
 void cat::SwitchToLvl1_Versus()
 {
 	ResetScene();
+	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
+
 	auto& scene1_Versus = dae::SceneManager::GetInstance().CreateScene("Level1_Versus");
 	auto level1_Versus = cat::Level(scene1_Versus, 1, "../Data/Levels/Level1.tmj",
 		cat::Level::LevelGameMode::Versus);
 	dae::SceneManager::GetInstance().SetActiveScene("Level1_Versus");
 }
-//
-//void cat::SwitchToLVl2_1P()
-//{
-//	ResetScene();
-//
-//	auto& scene1_SinglePlayer = dae::SceneManager::GetInstance().CreateScene("Level2_SinglePlayer");
-//	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 2, "../Data/Levels/Level2.tmj",
-//		cat::Level::LevelGameMode::SinglePlayer);
-//
-//	dae::SceneManager::GetInstance().SetActiveScene("Level2_SinglePlayer");
-//}
-//
-//void cat::SwitchToLvl2_2P()
-//{
-//	ResetScene();
-//
-//	auto& scene1_Multiplayer = dae::SceneManager::GetInstance().CreateScene("Level2_Multiplayer");
-//	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 2, "../Data/Levels/Level2.tmj",
-//		cat::Level::LevelGameMode::Multiplayer);
-//	dae::SceneManager::GetInstance().SetActiveScene("Level2_Multiplayer");
-//}
-//
-//void cat::SwitchToLvl2_Versus()
-//{
-//	ResetScene();
-//	auto& scene1_Versus = dae::SceneManager::GetInstance().CreateScene("Level2_Versus");
-//	auto level1_Versus = cat::Level(scene1_Versus, 2, "../Data/Levels/Level2.tmj",
-//		cat::Level::LevelGameMode::Versus);
-//	dae::SceneManager::GetInstance().SetActiveScene("Level2_Versus");
-//}
+
+void cat::SwitchToLVl2_1P()
+{
+	ResetScene();
+	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
+
+	auto& scene1_SinglePlayer = dae::SceneManager::GetInstance().CreateScene("Level2_SinglePlayer");
+	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 2, "../Data/Levels/Level2.tmj",
+		cat::Level::LevelGameMode::SinglePlayer);
+
+	dae::SceneManager::GetInstance().SetActiveScene("Level2_SinglePlayer");
+}
+
+void cat::SwitchToLvl2_2P()
+{
+	ResetScene();
+	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
+
+	auto& scene1_Multiplayer = dae::SceneManager::GetInstance().CreateScene("Level2_Multiplayer");
+	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 2, "../Data/Levels/Level2.tmj",
+		cat::Level::LevelGameMode::Multiplayer);
+	dae::SceneManager::GetInstance().SetActiveScene("Level2_Multiplayer");
+}
+
+void cat::SwitchToLvl2_Versus()
+{
+	ResetScene();
+	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
+	auto& scene1_Versus = dae::SceneManager::GetInstance().CreateScene("Level2_Versus");
+	auto level1_Versus = cat::Level(scene1_Versus, 2, "../Data/Levels/Level2.tmj",
+		cat::Level::LevelGameMode::Versus);
+	dae::SceneManager::GetInstance().SetActiveScene("Level2_Versus");
+}
+
+
+#pragma endregion
+
 
 #pragma region Password
 void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
@@ -213,6 +230,10 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 		}));
 	scene.Add(std::move(uiController));
 
+	auto controller = std::make_unique<dae::GameObject>();
+	inputManager.BindKeyCommand(SDLK_F2, std::make_unique<cat::MuteCommand>(controller.get()));
+	scene.Add(std::move(controller));
+
 }
 #pragma endregion
 
@@ -295,7 +316,11 @@ void cat::MainMenuPreset::SetCommandsAndObservers(dae::Scene& scene)
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_DOWN, std::make_unique<NavigationNextCommand>(uiController.get()));
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_UP, std::make_unique<NavigationPreviousCommand>(uiController.get()));
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_A, std::make_unique<PressButtonCommand>(uiController.get()));
+	scene.Add(std::move(uiController));
 
+	auto controller = std::make_unique<dae::GameObject>();
+	inputManager.BindKeyCommand(SDLK_F2, std::make_unique<cat::MuteCommand>(controller.get()));
+	scene.Add(std::move(controller));
 }
 #pragma endregion
 
@@ -396,8 +421,11 @@ void cat::TitleScreenPreset::SetCommandsAndObservers(dae::Scene& scene)
 
 		auto& inputManager = dae::InputManager::GetInstance();
 		inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_A, std::make_unique<PressButtonCommand>(pressStart.get()));
-
 		scene.Add(std::move(pressStart));
+
+		auto controller = std::make_unique<dae::GameObject>();
+		inputManager.BindKeyCommand(SDLK_F2, std::make_unique<cat::MuteCommand>(controller.get()));
+		scene.Add(std::move(controller));
 	}
 }
 

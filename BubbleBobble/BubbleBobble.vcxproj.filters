@@ -87,6 +87,12 @@
     <ClCompile Include="ScenePresets.cpp">
       <Filter>Source Files\Presets</Filter>
     </ClCompile>
+    <ClCompile Include="HealthObserverComponent.cpp">
+      <Filter>Source Files\Observers</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionObserverComponent.cpp">
+      <Filter>Source Files\Observers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Level.h">
@@ -134,7 +140,7 @@
     <ClInclude Include="PlayerSoundObserverComponent.h">
       <Filter>Header Files\Observers</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyCollisionObserverComponent.h">
+    <ClInclude Include="CollisionObserverComponent.h">
       <Filter>Header Files\Observers</Filter>
     </ClInclude>
     <ClInclude Include="ScenePresets.h">
@@ -145,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="UICommand.h">
       <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralCommand.h">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthObserverComponent.h">
+      <Filter>Header Files\Observers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

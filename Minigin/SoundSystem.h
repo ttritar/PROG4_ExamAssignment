@@ -27,6 +27,7 @@ namespace dae
 		virtual bool IsSoundPlaying(sound_id id) = 0;
 		virtual void Stop(sound_id id) = 0;
 		virtual void StopAllSounds() = 0;
+		virtual void ToggleMuteAllSounds() = 0;
 
 	private:
 

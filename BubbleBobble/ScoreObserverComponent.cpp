@@ -6,7 +6,7 @@ void cat::ScoreObserverComponent::Notify(const dae::Event& event, dae::GameObjec
 {
 	if (event.id == dae::make_sdbm_hash("GainScore"))
 	{
-		std::string text = "Score: " + std::to_string(object->GetComponent<ScoreComponent>()->GetCurrentScore());
+		std::string text = std::to_string(object->GetComponent<ScoreComponent>()->GetCurrentScore());
 		m_pTextComponent->SetText(text);
 	}
 }

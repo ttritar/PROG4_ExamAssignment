@@ -10,11 +10,7 @@ namespace cat
 	class HealthComponent : public dae::BaseComponent
 	{
 	public:
-		HealthComponent(dae::GameObject& owner,const int health)
-			:BaseComponent(owner),
-			m_currentHealth(health), m_maxHealth(health)
-		{
-		};
+		HealthComponent(dae::GameObject& owner, const int health);;
 
 		virtual ~HealthComponent() = default;
 		HealthComponent(const HealthComponent& other) = delete;
@@ -23,15 +19,19 @@ namespace cat
 		HealthComponent& operator=(HealthComponent&& other) = delete;
 
 
+		void Update(float) override;
 
-		int GetCurrentHealth() { return m_currentHealth; }
+		static int GetCurrentHealth() { return m_currentHealth; }
 		int GetMaxHealth() { return m_maxHealth; }
 
 		void TakeDamage(int damageAmount);
 
 	private:
-		int m_currentHealth;
+		static inline int m_currentHealth;
 		const int m_maxHealth;
+
+		float m_damageCooldown = 0.f; 
+		const float m_cooldownDuration = 1.f;
 	};
 
 }

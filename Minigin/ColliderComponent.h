@@ -23,7 +23,7 @@ namespace dae
 			Enemy = 1 << 1,
 			Projectile = 1 << 2,
 			Level = 1 << 3,
-			Tag_04 = 1 << 4,
+			Item = 1 << 4,
 		};
 
 	    enum class ColliderType

@@ -2,6 +2,8 @@
 #include "../3rdParty/json/tileson.hpp"
 
 #include "ColliderComponent.h"
+#include "GeneralCommand.h"
+#include "HealthObserverComponent.h"
 #include "TextureComponent.h"
 #include "TextComponent.h"
 
@@ -14,13 +16,23 @@ cat::Level::Level(dae::Scene& scene, int levelNr, const std::string& filePath, c
 {
 	auto fontUI = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 20);
 
-	auto level = std::make_unique<dae::GameObject>();
-	level->SetLocalPosition({ 360,50,0 });
-	auto textLevel = std::make_unique<dae::TextComponent>(*level, std::format("{:02}", levelNr), fontUI);
-	level->AddComponent(std::move(textLevel));
-	m_Scene.Add(std::move(level));
+	// LVL NR TEXT
+	{
+		auto level = std::make_unique<dae::GameObject>();
+		level->SetLocalPosition({ 360,50,0 });
+		auto textLevel = std::make_unique<dae::TextComponent>(*level, std::format("{:02}", levelNr), fontUI);
+		level->AddComponent(std::move(textLevel));
+		m_Scene.Add(std::move(level));
+	}
+
+
 
 	LoadLevel();
+
+	auto controller = std::make_unique<dae::GameObject>();
+	auto& inputManager = dae::InputManager::GetInstance();
+	inputManager.BindKeyCommand(SDLK_F1, std::make_unique<cat::SkipCommand>(controller.get()));
+	inputManager.BindKeyCommand(SDLK_F2, std::make_unique<cat::MuteCommand>(controller.get()));
 }
 
 void cat::Level::LoadLevel()

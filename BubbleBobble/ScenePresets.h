@@ -1,17 +1,9 @@
 #pragma once
-#include <memory>
-#include <random>
-
 #include "Scene.h"
 
-#include "AnimationComponent.h"
 #include "InputManager.h"
-#include "MovementComponent.h"
-#include "TextComponent.h"
 #include "UICommand.h"
-#include "UIComponent.h"
 #include "UIInputSystem.h"
-#include "WindowInfo.h"
 
 namespace cat
 {
@@ -19,21 +11,23 @@ namespace cat
 	{
 		// reset
 		dae::ServiceLocator::GetInstance().GetUIInputSystem().ClearUIComponents();
-		dae::InputManager::GetInstance().UnbindAllBtnCommands();
+		dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
+		dae::ServiceLocator::GetInstance().GetCollisionSystem().ClearColliders();
+		dae::InputManager::GetInstance().UnbindAllCommands();
 	}
 
 
-	static void SwitchToMainMenu();
+	void SwitchToMainMenu();
 
-	static void SwitchToLVl1_1P();
-	static void SwitchToLvl1_2P();
-	static void SwitchToLvl1_Versus();
+	void SwitchToLVl1_1P();
+	void SwitchToLvl1_2P();
+	void SwitchToLvl1_Versus();
 
-	static void SwitchToLVl2_1P();
-	static void SwitchToLvl2_2P();
-	static void SwitchToLvl2_Versus();
+	void SwitchToLVl2_1P();
+	void SwitchToLvl2_2P();
+	void SwitchToLvl2_Versus();
 
-	static void SwitchToPassword();
+	void SwitchToPassword();
 
 
 #pragma region Password

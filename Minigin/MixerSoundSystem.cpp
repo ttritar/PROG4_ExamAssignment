@@ -82,12 +82,20 @@ namespace dae
 			m_Condition.notify_one();
 		}
 
+		void ToggleMuteAllSounds()
+		{
+			std::lock_guard<std::mutex> lock(m_QueueMutex);
+			m_EventQueue.push({ SoundEventType::MUTE_ALL, 0, 0, "" });
+			m_Condition.notify_one();
+		}
+
 	private:
 		enum class SoundEventType { 
 			PLAY, 
 			STOP, 
 			STOP_ALL, 
-			LOAD 
+			LOAD,
+			MUTE_ALL
 		};
 
 		struct SoundEvent {
@@ -133,6 +141,8 @@ namespace dae
 				case SoundEventType::LOAD:
 					HandleLoadEvent(event);
 					break;
+				case SoundEventType::MUTE_ALL:
+					HandleMuteAllEvent();
 				}
 			}
 		}
@@ -186,6 +196,26 @@ namespace dae
 			}
 		}
 
+		void HandleMuteAllEvent()
+		{
+			std::lock_guard<std::mutex> lock(m_PlayingChannelsMutex);
+			if (m_IsMuted)
+			{
+				for (const auto& pair : m_PlayingChannels)
+				{
+					Mix_Volume(pair.second, MIX_MAX_VOLUME);
+				}
+			}
+			else
+			{
+				for (const auto& pair : m_PlayingChannels)
+				{
+					Mix_Volume(pair.second, 0);
+				}
+			}
+			m_IsMuted = !m_IsMuted;
+		}
+
 		// Private Datamembers
 		//--------------------
 		std::queue<SoundEvent> m_EventQueue;
@@ -196,6 +226,8 @@ namespace dae
 		std::mutex m_PlayingChannelsMutex;
 		std::atomic<bool> m_IsThreadRunning;
 		std::thread m_WorkerThread;
+
+		bool m_IsMuted{ false };
 	};
 
 
@@ -234,6 +266,11 @@ namespace dae
 	void MixerSoundSystem::StopAllSounds()
 	{
 		m_pImpl->StopAllSounds();
+	}
+
+	void MixerSoundSystem::ToggleMuteAllSounds()
+	{
+		m_pImpl->ToggleMuteAllSounds();
 	}
 
 }

@@ -27,6 +27,7 @@ namespace dae
         bool IsSoundPlaying(const sound_id id) override;
         void Stop(const sound_id id) override;
         void StopAllSounds() override;
+        void ToggleMuteAllSounds();
 
     private:
         class Impl;

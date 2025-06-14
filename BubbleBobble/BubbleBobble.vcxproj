@@ -148,6 +148,7 @@
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttackComponent.cpp" />
     <ClCompile Include="BubbleState.cpp" />
+    <ClCompile Include="CollisionObserverComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="HealthUIComponent.cpp" />
     <ClCompile Include="MaitaState.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreObserverComponent.cpp" />
     <ClCompile Include="ScenePresets.cpp" />
+    <ClCompile Include="HealthObserverComponent.cpp" />
     <ClCompile Include="ZenChanAIComponent.cpp" />
     <ClCompile Include="ZenChanState.cpp" />
   </ItemGroup>
@@ -165,7 +167,9 @@
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="BubbleComponent.h" />
     <ClInclude Include="BubbleState.h" />
-    <ClInclude Include="EnemyCollisionObserverComponent.h" />
+    <ClInclude Include="CollisionObserverComponent.h" />
+    <ClInclude Include="GeneralCommand.h" />
+    <ClInclude Include="HealthObserverComponent.h" />
     <ClInclude Include="UICommand.h" />
     <ClInclude Include="ScenePresets.h" />
     <ClInclude Include="PlayerSoundObserverComponent.h" />

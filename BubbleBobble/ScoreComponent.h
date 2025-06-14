@@ -7,10 +7,7 @@ namespace cat
 	class ScoreComponent : public dae::BaseComponent
 	{
 	public:
-		ScoreComponent(dae::GameObject& owner)
-			:BaseComponent(owner)
-		{
-		};
+		ScoreComponent(dae::GameObject& owner);
 
 		virtual ~ScoreComponent() = default;
 		ScoreComponent(const ScoreComponent& other) = delete;
@@ -19,13 +16,12 @@ namespace cat
 		ScoreComponent& operator=(ScoreComponent&& other) = delete;
 
 
-
-		int GetCurrentScore() { return m_currentScore; }
+		static int GetCurrentScore() { return m_currentScore; }
 
 		void GainScore(int amount);
 
 	private:
-		int m_currentScore{};
+		static inline int m_currentScore;
 	};
 
 }

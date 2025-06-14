@@ -74,5 +74,4 @@ namespace dae
 
 		TextureComponent* m_pTextureComponent = nullptr;
 	};
-
 }

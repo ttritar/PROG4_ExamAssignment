@@ -5,7 +5,6 @@
 #include <vld.h>
 #endif
 #endif
-#include "Level.h"
 #include "Minigin.h"
 #include "MixerSoundSystem.h"
 #include "SceneManager.h"
@@ -15,6 +14,7 @@
 
 void load()
 {
+
 	// LEVELS
 	//----------
 
@@ -25,10 +25,6 @@ void load()
 		titleScreenPreset.SpawnTitleScreen(sceneTitleScreen);
 		titleScreenPreset.SetCommandsAndObservers(sceneTitleScreen);
 	}
-
-
-
-
 
 	// SET ACTIVE
 	dae::SceneManager::GetInstance().SetActiveScene("TitleScreen");

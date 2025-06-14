@@ -27,7 +27,8 @@ void dae::UIInputSystem::UnregisterUIComponent(dae::UIComponent* uiComponent)
 void dae::UIInputSystem::ClearUIComponents()
 {
 	m_UIComponents.clear();
-	m_SelectedUIComponent->Selected = false;
+	if (m_SelectedUIComponent)
+		m_SelectedUIComponent->Selected = false;
 	m_SelectedUIComponent = nullptr;
 }
 

@@ -26,6 +26,12 @@ namespace cat
 		//-------------
 		void Update(float deltaTime) override
 		{
+			m_Lifetime += deltaTime;
+			if (m_Lifetime > m_MaxLifetime)
+			{
+				GetOwner()->m_pendingRemoval = true;
+			}
+
 			// STATE
 			//-----------------
 			std::unique_ptr<BubbleState> newState = nullptr;
@@ -52,5 +58,7 @@ namespace cat
 	private:
 		std::unique_ptr<BubbleState> m_CurrentState;
 
+		float m_Lifetime = 0.f;
+		const float m_MaxLifetime = 20.f;
 	};
 }

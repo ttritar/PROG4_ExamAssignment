@@ -5,16 +5,21 @@
 #include "AttackComponent.h"
 #include "BubbleComponent.h"
 #include "ColliderComponent.h"
-#include "EnemyCollisionObserverComponent.h"
+#include "CollisionObserverComponent.h"
 #include "MovementComponent.h"
 #include "TextureComponent.h"
 #include "HealthComponent.h"
 #include "ZenChanAIComponent.h"
+#include "HealthObserverComponent.h"
+#include "PlayerSoundObserverComponent.h"
+#include "ScoreObserverComponent.h"
+
 
 #include "InputManager.h"
 #include "PlayerCommand.h"
-#include "PlayerSoundObserverComponent.h"
+#include "ScoreComponent.h"
 #include "ServiceLocator.h"
+#include "WindowInfo.h"
 
 namespace cat
 {
@@ -26,6 +31,7 @@ namespace cat
 
 		void SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) const
 		{
+
 			auto player = std::make_unique<dae::GameObject>();
 			int playerIdx = isPlayerOne ? 0 : 1;
 
@@ -46,8 +52,11 @@ namespace cat
 			auto playerAttack = std::make_unique<AttackComponent>(*player, isPlayerOne);
 			player->AddComponent(std::move(playerAttack));
 
-			auto playerHealth = std::make_unique<HealthComponent>(*player, 3);
+			auto playerHealth = std::make_unique<HealthComponent>(*player, 4);
 			player->AddComponent(std::move(playerHealth));
+
+			auto playerScore = std::make_unique<ScoreComponent>(*player);
+			player->AddComponent(std::move(playerScore));
 
 			dae::ColliderComponent::ColliderInfo bubblunColliderInfo{
 				dae::ColliderComponent::ColliderType::Solid,false, {48.f,48.f},{},
@@ -72,6 +81,36 @@ namespace cat
 			auto playerSoundObserver = std::make_unique<PlayerSoundObserverComponent>(*player);
 			player->AddObserver(playerSoundObserver.get());
 			player->AddComponent(std::move(playerSoundObserver));
+
+			auto itemCollisionObserver = std::make_unique<ItemCollisionObserverComponent>(*player);
+			player->AddObserver(itemCollisionObserver.get());
+			player->AddComponent(std::move(itemCollisionObserver));
+
+
+			auto fontUI = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 20);
+			// SCORE TEXT
+			{
+				auto score = std::make_unique<dae::GameObject>();
+				score->SetLocalPosition({ 100,20,0 });
+				auto textScore = std::make_unique<dae::TextComponent>(*score, "00", fontUI);
+				score->AddComponent(std::move(textScore));
+				auto scoreObserver = std::make_unique<ScoreObserverComponent>(*score);
+				player->AddObserver(scoreObserver.get());
+				score->AddComponent(std::move(scoreObserver));
+				scene.Add(std::move(score));
+			}
+			// HEALTH TEXT
+			{
+				auto health = std::make_unique<dae::GameObject>();
+				health->SetLocalPosition({ 50,WINDOW_HEIGHT - 70,0 });
+				auto textHealth = std::make_unique<dae::TextComponent>(*health, "4", fontUI);
+				health->AddComponent(std::move(textHealth));
+				auto healthObserver = std::make_unique<HealthObserverComponent>(*health);
+				player->AddObserver(healthObserver.get());
+				health->AddComponent(std::move(healthObserver));
+				scene.Add(std::move(health));
+			}
+
 
 			// SPAWN
 			//----------------
@@ -182,6 +221,43 @@ namespace cat
 				
 			zenChan->SetLocalPosition(pos);
 			scene.Add(std::move(zenChan));
+		}
+	};
+
+
+	// ITEM
+	//----------------
+	struct ItemPreset
+	{
+		void SpawnItem(dae::Scene& scene, const glm::vec3 pos) const
+		{
+			auto item = std::make_unique<dae::GameObject>();
+
+			auto movement = std::make_unique<dae::MovementComponent>(*item, 0.f, 0.f);
+			movement->SetUsesGravity(true);
+			item->AddComponent(std::move(movement));
+
+			auto texture = std::make_unique<dae::TextureComponent>(*item, "Enemies/Items.png");
+			int itemIdx = rand() % 9;
+			texture->SetSourceRect({
+				static_cast<int>(16.f * itemIdx),
+				0, 16 ,16 });
+			item->AddComponent(std::move(texture));
+
+			auto col = std::make_unique<dae::ColliderComponent>(*item,
+				dae::ColliderComponent::ColliderInfo{
+					dae::ColliderComponent::ColliderType::Solid, false, { 48.f, 48.f }, {},
+					static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Item),
+					static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player) | static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level)
+				});
+			item->AddComponent(std::move(col));
+
+
+			// OBSERTVER
+
+
+			item->SetLocalPosition(pos);
+			scene.Add(std::move(item));
 		}
 	};
 }
