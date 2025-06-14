@@ -16,7 +16,7 @@ void cat::HealthObserverComponent::Notify(const dae::Event& event, dae::GameObje
 		// sound
 		auto& ss = dae::ServiceLocator::GetInstance().GetSoundSystem();
 		const dae::sound_id soundId = static_cast<dae::sound_id>(dae::make_sdbm_hash("PlayerHurt"));
-		ss.LoadSound(soundId, "../Data/Players/Death.wav");
+		ss.LoadSound(soundId, "Data/Players/Death.wav");
 		ss.Play(soundId, 100);
 	}
 

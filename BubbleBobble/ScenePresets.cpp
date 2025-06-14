@@ -77,7 +77,7 @@ void cat::SwitchToLVl1_1P()
 	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 
 	auto& scene1_SinglePlayer = dae::SceneManager::GetInstance().CreateScene("Level1_SinglePlayer");
-	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 1, "../Data/Levels/Level1.tmj",
+	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 1, "Data/Levels/Level1.tmj",
 		cat::Level::LevelGameMode::SinglePlayer);
 
 	dae::SceneManager::GetInstance().SetActiveScene("Level1_SinglePlayer");
@@ -89,7 +89,7 @@ void cat::SwitchToLvl1_2P()
 	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 
 	auto& scene1_Multiplayer = dae::SceneManager::GetInstance().CreateScene("Level1_Multiplayer");
-	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 1, "../Data/Levels/Level1.tmj",
+	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 1, "Data/Levels/Level1.tmj",
 		cat::Level::LevelGameMode::Multiplayer);
 	dae::SceneManager::GetInstance().SetActiveScene("Level1_Multiplayer");
 }
@@ -100,7 +100,7 @@ void cat::SwitchToLvl1_Versus()
 	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 
 	auto& scene1_Versus = dae::SceneManager::GetInstance().CreateScene("Level1_Versus");
-	auto level1_Versus = cat::Level(scene1_Versus, 1, "../Data/Levels/Level1.tmj",
+	auto level1_Versus = cat::Level(scene1_Versus, 1, "Data/Levels/Level1.tmj",
 		cat::Level::LevelGameMode::Versus);
 	dae::SceneManager::GetInstance().SetActiveScene("Level1_Versus");
 }
@@ -111,7 +111,7 @@ void cat::SwitchToLVl2_1P()
 	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 
 	auto& scene1_SinglePlayer = dae::SceneManager::GetInstance().CreateScene("Level2_SinglePlayer");
-	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 2, "../Data/Levels/Level2.tmj",
+	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 2, "Data/Levels/Level2.tmj",
 		cat::Level::LevelGameMode::SinglePlayer);
 
 	dae::SceneManager::GetInstance().SetActiveScene("Level2_SinglePlayer");
@@ -123,7 +123,7 @@ void cat::SwitchToLvl2_2P()
 	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 
 	auto& scene1_Multiplayer = dae::SceneManager::GetInstance().CreateScene("Level2_Multiplayer");
-	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 2, "../Data/Levels/Level2.tmj",
+	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 2, "Data/Levels/Level2.tmj",
 		cat::Level::LevelGameMode::Multiplayer);
 	dae::SceneManager::GetInstance().SetActiveScene("Level2_Multiplayer");
 }
@@ -133,7 +133,7 @@ void cat::SwitchToLvl2_Versus()
 	ResetScene();
 	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 	auto& scene1_Versus = dae::SceneManager::GetInstance().CreateScene("Level2_Versus");
-	auto level1_Versus = cat::Level(scene1_Versus, 2, "../Data/Levels/Level2.tmj",
+	auto level1_Versus = cat::Level(scene1_Versus, 2, "Data/Levels/Level2.tmj",
 		cat::Level::LevelGameMode::Versus);
 	dae::SceneManager::GetInstance().SetActiveScene("Level2_Versus");
 }
@@ -144,7 +144,7 @@ void cat::SwitchToLVl3_1P()
 	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 
 	auto& scene1_SinglePlayer = dae::SceneManager::GetInstance().CreateScene("Level3_SinglePlayer");
-	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 2, "../Data/Levels/Level3.tmj",
+	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 2, "Data/Levels/Level3.tmj",
 		cat::Level::LevelGameMode::SinglePlayer);
 
 	dae::SceneManager::GetInstance().SetActiveScene("Level3_SinglePlayer");
@@ -156,7 +156,7 @@ void cat::SwitchToLvl3_2P()
 	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 
 	auto& scene1_Multiplayer = dae::SceneManager::GetInstance().CreateScene("Level3_Multiplayer");
-	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 2, "../Data/Levels/Level3.tmj",
+	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 2, "Data/Levels/Level3.tmj",
 		cat::Level::LevelGameMode::Multiplayer);
 	dae::SceneManager::GetInstance().SetActiveScene("Level3_Multiplayer");
 }
@@ -166,7 +166,7 @@ void cat::SwitchToLvl3_Versus()
 	ResetScene();
 	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
 	auto& scene1_Versus = dae::SceneManager::GetInstance().CreateScene("Level3_Versus");
-	auto level1_Versus = cat::Level(scene1_Versus, 2, "../Data/Levels/Level3.tmj",
+	auto level1_Versus = cat::Level(scene1_Versus, 2, "Data/Levels/Level3.tmj",
 		cat::Level::LevelGameMode::Versus);
 	dae::SceneManager::GetInstance().SetActiveScene("Level3_Versus");
 }
@@ -445,7 +445,7 @@ void cat::TitleScreenPreset::SpawnTitleScreen(dae::Scene& scene) const
 {
 	// load title screen music
 	dae::sound_id hash = static_cast<dae::sound_id>(dae::make_sdbm_hash("Title"));
-	dae::ServiceLocator::GetInstance().GetSoundSystem().LoadSound(hash, "../Data/UI/TitleTheme.mp3");
+	dae::ServiceLocator::GetInstance().GetSoundSystem().LoadSound(hash, "Data/UI/TitleTheme.mp3");
 	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(hash,100);
 
 	// BUBBLES

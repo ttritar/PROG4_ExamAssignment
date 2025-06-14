@@ -9,7 +9,7 @@ struct HighScore
 
 	void WriteToFile()
 	{
-		std::ofstream file("../HighScore.txt", std::ios::app); 
+		std::ofstream file("HighScore.txt", std::ios::app); 
 		if (file.is_open())
 		{
 			file << playerName << ' ' << score << '\n';
@@ -19,7 +19,7 @@ struct HighScore
 
 	static std::vector<HighScore> ReadFromFile()
 	{
-		std::ifstream file("../HighScore.txt");
+		std::ifstream file("HighScore.txt");
 		std::vector<HighScore> scores;
 
 		if (file.is_open())
