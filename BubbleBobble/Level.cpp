@@ -11,6 +11,7 @@
 
 #include "ServiceLocator.h"
 
+
 cat::Level::Level(dae::Scene& scene, int levelNr, const std::string& filePath, const LevelGameMode& gameMode)
 	:m_Scene(scene), m_LevelPath(filePath), m_GameMode(gameMode)
 {
@@ -25,7 +26,8 @@ cat::Level::Level(dae::Scene& scene, int levelNr, const std::string& filePath, c
 		m_Scene.Add(std::move(level));
 	}
 
-
+	TotalEnemies = 0;
+	TotalPickups = 0;
 
 	LoadLevel();
 
@@ -193,6 +195,7 @@ void cat::Level::LoadLevel()
 					{
 						ZenChanPreset zenChan{};
 						zenChan.SpawnZenChan(m_Scene, pos);
+						++TotalEnemies;
 					}
 					// MAITA
 					else if (object.getName() == "Maita")

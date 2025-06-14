@@ -1,9 +1,11 @@
 #include "CollisionObserverComponent.h"
 
 #include "HealthComponent.h"
+#include "Level.h"
 #include "ScoreComponent.h"
 
 #include "Presets.h"
+#include "ScenePresets.h"
 
 void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::GameObject* object)
 {
@@ -44,7 +46,7 @@ void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::
 
 			auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
 			ItemPreset().SpawnItem(scene, other->GetLocalPosition());
-
+			Level::TotalEnemies--;
 		}
 		else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy) &&
 			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Projectile))
@@ -56,6 +58,7 @@ void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::
 
 			auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
 			ItemPreset().SpawnItem(scene, thisCollider->GetOwner()->GetLocalPosition());
+			Level::TotalEnemies--;
 		}
 
 	}
@@ -85,6 +88,7 @@ void cat::ItemCollisionObserverComponent::Notify(const dae::Event& event, dae::G
 			thisCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(randomScore);
 
 			thisCollider->GetOwner()->m_pendingRemoval = true;
+			Level::TotalPickups--;
 		}
 		else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Item) &&
 			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player))
@@ -94,6 +98,12 @@ void cat::ItemCollisionObserverComponent::Notify(const dae::Event& event, dae::G
 			thisCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(randomScore);
 
 			other->m_pendingRemoval = true;
+			Level::TotalPickups--;
+
+			if (Level::TotalEnemies == 0 && Level::TotalPickups == 0)
+			{
+				SwitchToNextLevel();
+			}
 		}
 
 

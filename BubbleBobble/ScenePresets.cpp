@@ -4,11 +4,53 @@
 #include "Level.h"
 #include "GeneralCommand.h"
 #include "AnimationComponent.h"
+#include "HighScore.h"
 #include "MovementComponent.h"
+#include "ScoreComponent.h"
 #include "TextureComponent.h"
 #include "WindowInfo.h"
 
 #pragma region SceneSwitches
+
+void cat::SwitchToNextLevel()
+{
+	const std::string& name = dae::SceneManager::GetInstance().GetActiveScene().GetName();
+
+	//----- LEVEL 1 -----------------
+	if (name == "Level1_SinglePlayer")
+	{
+		cat::SwitchToLVl2_1P();
+	}
+	else if (name == "Level1_Multiplayer")
+	{
+		cat::SwitchToLvl2_2P();
+	}
+	else if (name == "Level1_Versus")
+	{
+		cat::SwitchToLvl2_Versus();
+	}
+
+	//----- LEVEL 2 -----------------
+	else if (name == "Level2_SinglePlayer")
+	{
+		cat::SwitchToLVl3_1P();
+	}
+	else if (name == "Level2_Multiplayer")
+	{
+		cat::SwitchToLvl3_2P();
+	}
+	else if (name == "Level2_Versus")
+	{
+		cat::SwitchToLvl3_Versus();
+	}
+
+	else if (name == "Level3_SinglePlayer" ||
+		name == "Level3_Multiplayer" ||
+		name == "Level3_Versus")
+	{
+		cat::SwitchToPassword();
+	}
+}
 
 void cat::SwitchToMainMenu()
 {
@@ -96,6 +138,38 @@ void cat::SwitchToLvl2_Versus()
 	dae::SceneManager::GetInstance().SetActiveScene("Level2_Versus");
 }
 
+void cat::SwitchToLVl3_1P()
+{
+	ResetScene();
+	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
+
+	auto& scene1_SinglePlayer = dae::SceneManager::GetInstance().CreateScene("Level3_SinglePlayer");
+	auto level1_SinglePlayer = cat::Level(scene1_SinglePlayer, 2, "../Data/Levels/Level3.tmj",
+		cat::Level::LevelGameMode::SinglePlayer);
+
+	dae::SceneManager::GetInstance().SetActiveScene("Level3_SinglePlayer");
+}
+
+void cat::SwitchToLvl3_2P()
+{
+	ResetScene();
+	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
+
+	auto& scene1_Multiplayer = dae::SceneManager::GetInstance().CreateScene("Level3_Multiplayer");
+	auto level1_Multiplayer = cat::Level(scene1_Multiplayer, 2, "../Data/Levels/Level3.tmj",
+		cat::Level::LevelGameMode::Multiplayer);
+	dae::SceneManager::GetInstance().SetActiveScene("Level3_Multiplayer");
+}
+
+void cat::SwitchToLvl3_Versus()
+{
+	ResetScene();
+	dae::ServiceLocator::GetInstance().GetSoundSystem().StopAllSounds();
+	auto& scene1_Versus = dae::SceneManager::GetInstance().CreateScene("Level3_Versus");
+	auto level1_Versus = cat::Level(scene1_Versus, 2, "../Data/Levels/Level3.tmj",
+		cat::Level::LevelGameMode::Versus);
+	dae::SceneManager::GetInstance().SetActiveScene("Level3_Versus");
+}
 
 #pragma endregion
 
@@ -110,22 +184,23 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 	password->SetLocalPosition({ 200, 100, 0 });
 	scene.Add(std::move(password));
 
+	char* passwordChars = new char[5];
 	//--- LETTERS ---
 	{
 		// 1
 		{
 			auto letter = std::make_unique<dae::GameObject>();
 
-			char let = 'A';
-			std::string letterStr(1, let);
+			passwordChars[0] = 'A';
+			std::string letterStr(1, passwordChars[0]);
 			auto letterTxtComponent = std::make_unique<dae::TextComponent>(*letter, letterStr, font);
 
 			letter->AddComponent(std::move(letterTxtComponent));
 
-			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [let, letterPtr = letter.get()]() mutable {
-				let++;
-				if (let > 'Z') let = 'A';
-				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, let));
+			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [passwordChars, letterPtr = letter.get()]() mutable {
+				passwordChars[0]++;
+				if (passwordChars[0] > 'Z') passwordChars[0] = 'A';
+				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, passwordChars[0]));
 				});
 			dae::ServiceLocator::GetInstance().GetUIInputSystem().SetSelectedUIComponent(uiComponent.get());
 			letter->AddComponent(std::move(uiComponent));
@@ -138,16 +213,16 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 		{
 			auto letter = std::make_unique<dae::GameObject>();
 
-			char let = 'A';
-			std::string letterStr(1, let);
+			passwordChars[1] = 'A';
+			std::string letterStr(1, passwordChars[0]);
 			auto letterTxtComponent = std::make_unique<dae::TextComponent>(*letter, letterStr, font);
 
 			letter->AddComponent(std::move(letterTxtComponent));
 
-			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [let, letterPtr = letter.get()]() mutable {
-				let++;
-				if (let > 'Z') let = 'A';
-				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, let));
+			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [passwordChars, letterPtr = letter.get()]() mutable {
+				passwordChars[1]++;
+				if (passwordChars[1] > 'Z') passwordChars[0] = 'A';
+				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, passwordChars[1]));
 				});
 			letter->AddComponent(std::move(uiComponent));
 
@@ -159,16 +234,16 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 		{
 			auto letter = std::make_unique<dae::GameObject>();
 
-			char let = 'A';
-			std::string letterStr(1, let);
+			passwordChars[2] = 'A';
+			std::string letterStr(1, passwordChars[2]);
 			auto letterTxtComponent = std::make_unique<dae::TextComponent>(*letter, letterStr, font);
 
 			letter->AddComponent(std::move(letterTxtComponent));
 
-			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [let, letterPtr = letter.get()]() mutable {
-				let++;
-				if (let > 'Z') let = 'A';
-				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, let));
+			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [passwordChars, letterPtr = letter.get()]() mutable {
+				passwordChars[2]++;
+				if (passwordChars[2] > 'Z') passwordChars[2] = 'A';
+				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, passwordChars[2]));
 				});
 			letter->AddComponent(std::move(uiComponent));
 
@@ -180,16 +255,16 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 		{
 			auto letter = std::make_unique<dae::GameObject>();
 
-			char let = 'A';
-			std::string letterStr(1, let);
+			passwordChars[3] = 'A';
+			std::string letterStr(1, passwordChars[3]);
 			auto letterTxtComponent = std::make_unique<dae::TextComponent>(*letter, letterStr, font);
 
 			letter->AddComponent(std::move(letterTxtComponent));
 
-			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [let, letterPtr = letter.get()]() mutable {
-				let++;
-				if (let > 'Z') let = 'A';
-				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, let));
+			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [passwordChars, letterPtr = letter.get()]() mutable {
+				passwordChars[3]++;
+				if (passwordChars[3] > 'Z') passwordChars[3] = 'A';
+				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, passwordChars[3]));
 				});
 			letter->AddComponent(std::move(uiComponent));
 
@@ -201,16 +276,16 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 		{
 			auto letter = std::make_unique<dae::GameObject>();
 
-			char let = 'A';
-			std::string letterStr(1, let);
+			passwordChars[4] = 'A';
+			std::string letterStr(1, passwordChars[4]);
 			auto letterTxtComponent = std::make_unique<dae::TextComponent>(*letter, letterStr, font);
 
 			letter->AddComponent(std::move(letterTxtComponent));
 
-			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [let, letterPtr = letter.get()]() mutable {
-				let++;
-				if (let > 'Z') let = 'A';
-				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, let));
+			auto uiComponent = std::make_unique<dae::UIComponent>(*letter, [passwordChars, letterPtr = letter.get()]() mutable {
+				passwordChars[4]++;
+				if (passwordChars[3] > 'Z') passwordChars[4] = 'A';
+				letterPtr->GetComponent<dae::TextComponent>()->SetText(std::string(1, passwordChars[4]));
 				});
 			letter->AddComponent(std::move(uiComponent));
 
@@ -219,14 +294,54 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 		}
 	}
 
+	//--- OTHER HIGHSCORES ---
+	{
+		auto instr = std::make_unique<dae::GameObject>();
+		instr->SetLocalPosition({ 200, 180 * 20, 0 });
+		auto instrTextComponent = std::make_unique<dae::TextComponent>(*instr, "PRESS B TO SAVE AND A TO CHANGE THE LETTERS!", font);
+		instr->AddComponent(std::move(instrTextComponent));
+		scene.Add(std::move(instr));
+
+		auto highscore = std::make_unique<dae::GameObject>();
+		auto hsTxtComp = std::make_unique<dae::TextComponent>(*highscore, "HIGHSCORES:", font);
+		highscore->AddComponent(std::move(hsTxtComp));
+		highscore->SetLocalPosition({ 200, 200, 0 });
+		scene.Add(std::move(highscore));
+
+		auto othersFont = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 14);
+		auto hss = HighScore::ReadFromFile();
+		for (int i =0; i< hss.size() ; i++)
+		{
+			auto others = std::make_unique<dae::GameObject>();
+			others->SetLocalPosition({ 200, 260 + i * 20, 0 });
+			std::string othersText = hss[i].playerName + ": " + std::to_string(hss[i].score);
+			auto othersTextComponent = std::make_unique<dae::TextComponent>(*others, othersText, othersFont);
+			others->AddComponent(std::move(othersTextComponent));
+			scene.Add(std::move(others));
+		}
+	}
 
 	auto uiController = std::make_unique<dae::GameObject>();
 	auto& inputManager = dae::InputManager::GetInstance();
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<NavigationNextCommand>(uiController.get()));
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<NavigationPreviousCommand>(uiController.get()));
 	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_A, std::make_unique<PressButtonCommand>(uiController.get()));
-	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_B, std::make_unique<CustomUICommand>(uiController.get(), []() {
-			SwitchToMainMenu();
+	inputManager.BindBtnCommand(0, XINPUT_GAMEPAD_B, std::make_unique<CustomUICommand>(uiController.get(), [passwordChars, &scene, &inputManager]() {
+			// save the highscore 
+		HighScore{
+			.playerName = std::string(passwordChars),
+			.score = ScoreComponent::GetCurrentScore()
+		}.WriteToFile();
+
+		auto feedback = std::make_unique<dae::GameObject>();
+		auto font = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 14);
+		auto textComponent = std::make_unique<dae::TextComponent>(*feedback, "SUCCESFULLY ADDED THE HIGHSCORE!", font);
+		feedback->AddComponent(std::move(textComponent));
+		feedback->SetLocalPosition({ 200, 225, 0 });
+		scene.Add(std::move(feedback));
+
+		inputManager.UnbindAllBtnCommands(0);
+
 		}));
 	scene.Add(std::move(uiController));
 
@@ -296,19 +411,19 @@ void cat::MainMenuPreset::SetCommandsAndObservers(dae::Scene& scene)
 		scene.Add(std::move(pressStartVersus));
 	}
 
-	// PASSWORD
-	{
-		auto pressPassword = std::make_unique<dae::GameObject>();
-		auto font = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 18);
-		auto textComponent = std::make_unique<dae::TextComponent>(*pressPassword, "PASSWORD", font);
-		pressPassword->AddComponent(std::move(textComponent));
-		pressPassword->SetLocalPosition({ 200,350 , 0 });
-		auto uiComp = std::make_unique<dae::UIComponent>(*pressPassword, [&]() {
-			SwitchToPassword();
-		});
-		pressPassword->AddComponent(std::move(uiComp));
-		scene.Add(std::move(pressPassword));
-	}
+	//// PASSWORD
+	//{
+	//	auto pressPassword = std::make_unique<dae::GameObject>();
+	//	auto font = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 18);
+	//	auto textComponent = std::make_unique<dae::TextComponent>(*pressPassword, "PASSWORD", font);
+	//	pressPassword->AddComponent(std::move(textComponent));
+	//	pressPassword->SetLocalPosition({ 200,350 , 0 });
+	//	auto uiComp = std::make_unique<dae::UIComponent>(*pressPassword, [&]() {
+	//		SwitchToPassword();
+	//	});
+	//	pressPassword->AddComponent(std::move(uiComp));
+	//	scene.Add(std::move(pressPassword));
+	//}
 
 
 	auto uiController = std::make_unique<dae::GameObject>();
@@ -344,7 +459,7 @@ void cat::TitleScreenPreset::SpawnTitleScreen(dae::Scene& scene) const
 			bubble->AddComponent(std::move(textureComponent));
 
 			auto animComponent = std::make_unique<AnimationComponent>(*bubble,
-				AnimationComponent::FrameData{ 16, 16, 5, static_cast<float>(i % 4) / 5.f, i % 4 }
+				AnimationComponent::FrameAnimationData{ 16, 16, 5, static_cast<float>(i % 4) / 5.f, i % 4 }
 			);
 			bubble->AddComponent(std::move(animComponent));
 
@@ -375,7 +490,7 @@ void cat::TitleScreenPreset::SpawnTitleScreen(dae::Scene& scene) const
 		title->AddComponent(std::move(textureComponent));
 
 		auto animComponent = std::make_unique<AnimationComponent>(*title,
-			AnimationComponent::FrameData{ 176, 142, 4, 0.2f });
+			AnimationComponent::FrameAnimationData{ 176, 142, 4, 0.2f });
 
 		title->SetLocalPosition({ 200, 100, 0 });
 		scene.Add(std::move(title));

@@ -21,10 +21,14 @@ void cat::HealthComponent::TakeDamage(int damageAmount)
 	if (m_damageCooldown > 0.f)
 		return;
 
+
+	if (m_currentHealth == 0)
+	{
+		dae::Event e(dae::make_sdbm_hash("LoseGame"));
+		GetOwner()->NotifyObservers(e);
+	}
+
 	m_currentHealth -= damageAmount;
-
-	m_currentHealth = std::max(m_currentHealth, 0);
-
 	dae::Event e(dae::make_sdbm_hash("LoseHealth"));
 	GetOwner()->NotifyObservers(e);
 

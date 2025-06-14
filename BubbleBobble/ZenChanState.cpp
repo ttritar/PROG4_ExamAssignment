@@ -1,5 +1,8 @@
 #include "ZenChanState.h"
 
+#include <iostream>
+
+#include "AnimationComponent.h"
 #include "Scene.h"
 #include "SceneManager.h"
 #include "ServiceLocator.h"
@@ -9,8 +12,9 @@
 #pragma region Chase
 std::unique_ptr<cat::ZenChanState> cat::ChaseState::Update(float )
 {
+	std::cout << "ChaseState Update" << std::endl;
 	const auto playerObj = m_pAIComponent->GetTarget();
-	if (!playerObj) return nullptr;
+	if (!playerObj) return std::make_unique<PatrolState>();
 	auto playerPos = playerObj->GetWorldPosition();
 	auto enemyPos = m_pAIComponent->GetOwner()->GetWorldPosition();
 
@@ -30,9 +34,7 @@ std::unique_ptr<cat::ZenChanState> cat::ChaseState::Update(float )
 
 	// STATE UPDATING
 	//-----------------
-	if (m_pAIComponent->GetTarget() == nullptr) return std::make_unique<PatrolState>();	
 	return nullptr;
-
 }
 
 void cat::ChaseState::OnEnter(ZenChanAIComponent* ai)
@@ -43,6 +45,11 @@ void cat::ChaseState::OnEnter(ZenChanAIComponent* ai)
 	{
 		throw std::runtime_error("ChaseState requires a MovementComponent");
 	}
+	m_pMovementComponent->SetSpeed(m_ChaseSpeed);
+
+	auto animC = ai->GetOwner()->GetComponent<AnimationComponent>();
+	if (animC) animC->FrameData.row = 1;
+
 
 	// register players
 	const auto& players = dae::ServiceLocator::GetInstance().GetPlayerSystem().GetPlayers(dae::SceneManager::GetInstance().GetActiveScene().GetName());
@@ -106,6 +113,17 @@ std::unique_ptr<cat::ZenChanState> cat::PatrolState::Update(float deltaTime)
 
 	// STATE UPDATING
 	//-----------------
+
+	// register players
+	const auto& players = dae::ServiceLocator::GetInstance().GetPlayerSystem().GetPlayers(dae::SceneManager::GetInstance().GetActiveScene().GetName());
+	if (m_pAIComponent->GetPlayers().size() != players.size())
+	{
+		for (auto player : players)
+		{
+			m_pAIComponent->AddPlayer(player);
+		}
+	}
+
 	if (m_pAIComponent->GetTarget() != nullptr)	return std::make_unique<ChaseState>();
 	return nullptr;
 }
@@ -120,6 +138,9 @@ void cat::PatrolState::OnEnter(ZenChanAIComponent* ai)
 	}
 
 	m_pMovementComponent->SetSpeed(m_PatrolSpeed);
+
+	auto animC = ai->GetOwner()->GetComponent<AnimationComponent>();
+	if (animC) animC->FrameData.row = 0;
 
 	// register players
 	const auto& players = dae::ServiceLocator::GetInstance().GetPlayerSystem().GetPlayers(dae::SceneManager::GetInstance().GetActiveScene().GetName());

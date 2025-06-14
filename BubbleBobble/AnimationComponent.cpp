@@ -3,15 +3,15 @@
 void cat::AnimationComponent::Update(float deltaTime)
 {
 	m_ElapsedTime += deltaTime;
-	if (m_ElapsedTime >= m_FrameData.frameDuration)
+	if (m_ElapsedTime >= FrameData.frameDuration)
 	{
-		m_CurrentFrame = (m_CurrentFrame + 1) % m_FrameData.frameCount;
+		m_CurrentFrame = (m_CurrentFrame + 1) % FrameData.frameCount;
 		m_ElapsedTime = 0.0f;
 		SDL_Rect srcRect{
-			m_CurrentFrame * m_FrameData.frameWidth,
-			m_FrameData.frameHeight * m_FrameData.row,
-			m_FrameData.frameWidth,
-			m_FrameData.frameHeight
+			m_CurrentFrame * FrameData.frameWidth,
+			FrameData.frameHeight * FrameData.row,
+			FrameData.frameWidth,
+			FrameData.frameHeight
 		};
 		m_pTextureComponent->SetSourceRect(srcRect);
 	}

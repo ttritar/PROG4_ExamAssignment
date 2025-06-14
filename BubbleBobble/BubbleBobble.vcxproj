@@ -155,6 +155,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MaitaAIComponent.cpp" />
+    <ClCompile Include="Presets.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreObserverComponent.cpp" />
     <ClCompile Include="ScenePresets.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="CollisionObserverComponent.h" />
     <ClInclude Include="GeneralCommand.h" />
     <ClInclude Include="HealthObserverComponent.h" />
+    <ClInclude Include="HighScore.h" />
     <ClInclude Include="UICommand.h" />
     <ClInclude Include="ScenePresets.h" />
     <ClInclude Include="PlayerSoundObserverComponent.h" />

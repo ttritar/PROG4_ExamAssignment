@@ -27,6 +27,8 @@ namespace cat
 	private:
 		ZenChanAIComponent* m_pAIComponent = nullptr;
 		dae::MovementComponent* m_pMovementComponent = nullptr;
+
+		const float m_ChaseSpeed = 200.f;
 	};
 
 
@@ -41,7 +43,7 @@ namespace cat
 		dae::MovementComponent* m_pMovementComponent = nullptr;
 
 
-		float m_PatrolSpeed = 100.f;
+		const float m_PatrolSpeed = 100.f;
 		glm::vec2 m_Direction = { 1.f, 0.f };
 
 		const float m_JumpCd = 4.0f;

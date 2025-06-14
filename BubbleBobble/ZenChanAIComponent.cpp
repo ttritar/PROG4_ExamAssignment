@@ -12,7 +12,7 @@ void cat::ZenChanAIComponent::Update(float deltaTime)
 		const float zenchanY = this->GetOwner()->GetWorldPosition().y;
 
 		// if the target and enemy are on the same level 
-		if (std::abs(playerY - zenchanY) <= 5.0f)
+		if (std::abs(playerY - zenchanY) <= 8.0f)
 		{
 			m_pTarget = player;
 			break;

@@ -11,7 +11,7 @@ namespace cat
 	class AnimationComponent : public dae::BaseComponent
 	{
 	public:
-		struct FrameData
+		struct FrameAnimationData
 		{
 			int frameWidth;
 			int frameHeight;
@@ -24,16 +24,16 @@ namespace cat
 
 		// CTOR & DTOR
 		//-------------
-		AnimationComponent(dae::GameObject& owner, const FrameData& frameData)
-			:BaseComponent(owner), m_FrameData(frameData)
+		AnimationComponent(dae::GameObject& owner, const FrameAnimationData& frameData)
+			:BaseComponent(owner), FrameData(frameData)
 		{
 			m_pTextureComponent = owner.GetComponent<dae::TextureComponent>();
 			if (!m_pTextureComponent) throw std::runtime_error("AnimationComponent requires a TextureComponent to function.");
 			m_pTextureComponent->SetSourceRect({
-				m_CurrentFrame* m_FrameData.frameWidth,
-				m_FrameData.frameHeight* m_FrameData.row,
-				m_FrameData.frameWidth,
-				m_FrameData.frameHeight
+				m_CurrentFrame* FrameData.frameWidth,
+				FrameData.frameHeight * FrameData.row,
+				FrameData.frameWidth,
+				FrameData.frameHeight
 				});
 		}
 
@@ -48,13 +48,13 @@ namespace cat
 		//-------------
 		void Update(float deltaTime) override;
 
+		FrameAnimationData FrameData;
 	private:
 		// Private Methods
 		//-----------------
 
 		// Private Members
 		//-----------------
-		FrameData m_FrameData;
 		dae::TextureComponent* m_pTextureComponent;
 
 		int m_CurrentFrame{ 0 };

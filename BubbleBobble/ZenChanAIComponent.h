@@ -35,6 +35,7 @@ namespace cat
 		void AddPlayer(dae::GameObject* player);
 
 		dae::GameObject* GetTarget() const { return m_pTarget; }
+		const std::vector<dae::GameObject*>& GetPlayers() const { return m_pPlayers; }
 
 	private:
 		std::unique_ptr<ZenChanState> m_CurrentState;

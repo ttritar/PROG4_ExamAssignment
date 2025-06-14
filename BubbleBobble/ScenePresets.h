@@ -16,6 +16,8 @@ namespace cat
 		dae::InputManager::GetInstance().UnbindAllCommands();
 	}
 
+	void SwitchToNextLevel();
+
 
 	void SwitchToMainMenu();
 
@@ -26,6 +28,10 @@ namespace cat
 	void SwitchToLVl2_1P();
 	void SwitchToLvl2_2P();
 	void SwitchToLvl2_Versus();
+
+	void SwitchToLVl3_1P();
+	void SwitchToLvl3_2P();
+	void SwitchToLvl3_Versus();
 
 	void SwitchToPassword();
 
