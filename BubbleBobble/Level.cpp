@@ -40,13 +40,14 @@ cat::Level::Level(dae::Scene& scene, int levelNr, const std::string& filePath, c
 void cat::Level::LoadLevel()
 {
 	const dae::sound_id soundId = static_cast<dae::sound_id>(dae::make_sdbm_hash("MainTheme"));
-	dae::ServiceLocator::GetInstance().GetSoundSystem().LoadSound(soundId, "Data/Levels/MainTheme.mp3");
+	dae::ServiceLocator::GetInstance().GetSoundSystem().LoadSound(soundId, "Levels/MainTheme.mp3");
 	dae::ServiceLocator::GetInstance().GetSoundSystem().Play(soundId, 100);
 
 	// LOAD
 	//----------
 	tson::Tileson parser;
-	std::unique_ptr<tson::Map> map = parser.parse(m_LevelPath);
+	std::string datapath = dae::ResourceManager::GetInstance().GetDataPath().string();
+	std::unique_ptr<tson::Map> map = parser.parse(datapath + m_LevelPath);
 
 	if (map->getStatus() != tson::ParseStatus::OK) {
 		std::cerr << "Failed to load map: " << map->getStatusMessage() << std::endl;
@@ -140,7 +141,7 @@ void cat::Level::LoadLevel()
 					tileObj->SetLocalPosition(glm::vec3(x * tileWidth * dae::g_BASE_SCALE, y * tileHeight * dae::g_BASE_SCALE, 0));
 
 					// texture component
-					std::string tilesetImagePath = "Data/Levels/" + activeTileset->getImagePath().string();
+					std::string tilesetImagePath = "Levels/" + activeTileset->getImagePath().string();
 					auto tex = std::make_unique<dae::TextureComponent>(*tileObj, tilesetImagePath);
 					tileObj->AddComponent(std::move(tex));
 

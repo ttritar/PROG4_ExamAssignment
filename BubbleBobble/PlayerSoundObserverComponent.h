@@ -15,7 +15,7 @@ namespace cat
 				auto& ss = dae::ServiceLocator::GetInstance().GetSoundSystem();
 
 				const dae::sound_id soundId = static_cast<dae::sound_id>(dae::make_sdbm_hash("PlayerJump"));
-				ss.LoadSound(soundId, "Data/Players/Jump.wav");
+				ss.LoadSound(soundId, "Players/Jump.wav");
 				ss.Play(soundId, 100);
 			}
 			//----- ATTACK -----
@@ -24,7 +24,7 @@ namespace cat
 				auto& ss = dae::ServiceLocator::GetInstance().GetSoundSystem();
 
 				const dae::sound_id soundId = static_cast<dae::sound_id>(dae::make_sdbm_hash("PlayerAttack"));
-				ss.LoadSound(soundId, "Data/Players/Attack.wav");
+				ss.LoadSound(soundId, "Players/Attack.wav");
 				ss.Play(soundId, 100);
 			}
 		}

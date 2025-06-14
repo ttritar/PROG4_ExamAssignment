@@ -7,6 +7,8 @@
 #include <SDL.h>
 #include <unordered_map>
 
+#include "ResourceManager.h"
+
 namespace dae
 {
 	class MixerSoundSystem::Impl
@@ -189,7 +191,8 @@ namespace dae
 				return;
 			}
 
-			Mix_Chunk* chunk = Mix_LoadWAV(event.filePath.c_str());
+			std::string dataPath = ResourceManager::GetInstance().GetDataPath().string();
+			Mix_Chunk* chunk = Mix_LoadWAV((dataPath + event.filePath).c_str());
 			if (chunk)
 			{
 				m_SoundChunks[event.id] = chunk;

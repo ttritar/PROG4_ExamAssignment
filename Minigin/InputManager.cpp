@@ -110,8 +110,8 @@ namespace dae
         //bool wasDown = m_previousKeyboardState[key];  // Was key down last frame?
         //bool isDown = keyboardState[key];           // Is key down this frame?
 
-       
-
+       if (!cmd.second) return;
+            
         // PRESSED THIS FRAME
         if (/*isDown && !wasDown*/currentKeyboardState[key] && !previousKeyboardState[key])
         {

@@ -22,6 +22,7 @@ namespace dae
 			m_loadedTextures.clear();
 			m_loadedFonts.clear();
 		}
+		const std::filesystem::path& GetDataPath() const { return m_dataPath; }
 	private:
 		friend class Singleton<ResourceManager>;
 		ResourceManager() = default;
