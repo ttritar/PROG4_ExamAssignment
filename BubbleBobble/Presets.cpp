@@ -1,5 +1,6 @@
 #include "Presets.h"
 
+#include "BoulderComponent.h"
 #include "Level.h"
 
 void cat::PlayerPreset::SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) const
@@ -24,7 +25,7 @@ void cat::PlayerPreset::SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) cons
 	auto playerAttack = std::make_unique<AttackComponent>(*player, isPlayerOne);
 	player->AddComponent(std::move(playerAttack));
 
-	auto playerHealth = std::make_unique<HealthComponent>(*player, 4);
+	auto playerHealth = std::make_unique<HealthComponent>(*player);
 	player->AddComponent(std::move(playerHealth));
 
 	auto playerScore = std::make_unique<ScoreComponent>(*player);
@@ -54,7 +55,7 @@ void cat::PlayerPreset::SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) cons
 	player->AddObserver(playerSoundObserver.get());
 	player->AddComponent(std::move(playerSoundObserver));
 
-	auto itemCollisionObserver = std::make_unique<ItemCollisionObserverComponent>(*player);
+	auto itemCollisionObserver = std::make_unique<PlayerCollisionObserverComponent>(*player);
 	player->AddObserver(itemCollisionObserver.get());
 	player->AddComponent(std::move(itemCollisionObserver));
 
@@ -64,7 +65,7 @@ void cat::PlayerPreset::SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) cons
 	{
 		auto score = std::make_unique<dae::GameObject>();
 		score->SetLocalPosition({ 100,20,0 });
-		auto textScore = std::make_unique<dae::TextComponent>(*score, "00", fontUI);
+		auto textScore = std::make_unique<dae::TextComponent>(*score, std::to_string(ScoreComponent::GetCurrentScore()), fontUI);
 		score->AddComponent(std::move(textScore));
 		auto scoreObserver = std::make_unique<ScoreObserverComponent>(*score);
 		player->AddObserver(scoreObserver.get());
@@ -75,7 +76,7 @@ void cat::PlayerPreset::SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) cons
 	{
 		auto health = std::make_unique<dae::GameObject>();
 		health->SetLocalPosition({ 50,WINDOW_HEIGHT - 70,0 });
-		auto textHealth = std::make_unique<dae::TextComponent>(*health, "4", fontUI);
+		auto textHealth = std::make_unique<dae::TextComponent>(*health, std::to_string(HealthComponent::GetCurrentHealth()), fontUI);
 		health->AddComponent(std::move(textHealth));
 		auto healthObserver = std::make_unique<HealthObserverComponent>(*health);
 		player->AddObserver(healthObserver.get());
@@ -83,6 +84,56 @@ void cat::PlayerPreset::SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) cons
 		scene.Add(std::move(health));
 	}
 
+
+	// SPAWN
+	//----------------
+	player->SetLocalPosition(pos);
+	dae::ServiceLocator::GetInstance().GetPlayerSystem().RegisterPlayer(scene.GetName(), playerIdx, player.get());
+	scene.Add(std::move(player));
+}
+
+void cat::PLayerMaitaPreset::SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) const
+{
+	auto player = std::make_unique<dae::GameObject>();
+	int playerIdx = isPlayerOne ? 0 : 1;
+
+	// COMPONENTS
+	//----------------
+	auto playerTexture = std::make_unique<dae::TextureComponent>(*player, "Enemies/Maita.png");
+	player->AddComponent(std::move(playerTexture));
+
+	auto playerAnimation = std::make_unique<AnimationComponent>(*player, AnimationComponent::FrameAnimationData{ 16, 16, 5, 0.2f });
+	player->AddComponent(std::move(playerAnimation));
+
+	auto playerMovement = std::make_unique<dae::MovementComponent>(*player, 150.f, 400.f);
+	player->AddComponent(std::move(playerMovement));
+
+	auto playerAttack = std::make_unique<AttackComponent>(*player, 1, AttackComponent::Boulder);
+	player->AddComponent(std::move(playerAttack));
+
+	dae::ColliderComponent::ColliderInfo playerColliderInfo{
+		dae::ColliderComponent::ColliderType::Solid,false, {40.f,40.f},{},
+		static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy),
+		 static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player) | static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Level)
+	};
+	auto playerCollider = std::make_unique<dae::ColliderComponent>(*player, playerColliderInfo);
+	player->AddComponent(std::move(playerCollider));
+
+	// INPUT
+	//----------------
+	auto& inputManager = dae::InputManager::GetInstance();
+
+	inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_DPAD_LEFT, std::make_unique<cat::MoveLeftCommand>(cat::MoveLeftCommand(player.get())));
+	inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_DPAD_RIGHT, std::make_unique<cat::MoveRightCommand>(cat::MoveRightCommand(player.get())));
+	inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_A, std::make_unique<cat::JumpCommand>(cat::JumpCommand(player.get())));
+	inputManager.BindBtnCommand(playerIdx, XINPUT_GAMEPAD_B, std::make_unique<cat::AttackCommand>(cat::AttackCommand(player.get())));
+
+
+	// OBSERVERS
+	//----------------
+	auto playerCollisionObserver = std::make_unique<EnemyCollisionObserverComponent>(*player);
+	player->AddObserver(playerCollisionObserver.get());
+	player->AddComponent(std::move(playerCollisionObserver));
 
 	// SPAWN
 	//----------------
@@ -102,7 +153,7 @@ void cat::BubblePreset::SpawnBubble(dae::Scene& scene, const glm::vec3 pos) cons
 	bubble->AddComponent(std::move(bubbleTexture));
 
 	auto bubbleAnimation = std::make_unique<AnimationComponent>(*bubble,
-	                                                            AnimationComponent::FrameAnimationData{ 16, 16, 3, 0.2f, rowIdx});
+		AnimationComponent::FrameAnimationData{ 16, 16, 3, 0.2f, rowIdx});
 	bubble->AddComponent(std::move(bubbleAnimation));
 
 	// MOVEMENT			
@@ -117,17 +168,59 @@ void cat::BubblePreset::SpawnBubble(dae::Scene& scene, const glm::vec3 pos) cons
 	// COLLIDER
 	auto colInfo = dae::ColliderComponent::ColliderInfo{
 		dae::ColliderComponent::ColliderType::Solid, false, { 48.f, 48.f },{},
-		static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Projectile),
-		static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy)
+		static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble),
+		static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy) | static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player)
 	};
 	auto bubbleCol = std::make_unique<dae::ColliderComponent>(*bubble, colInfo);
 	bubble->AddComponent(std::move(bubbleCol));
 
 
-
-	bubble->SetLocalPosition(pos);
+	
+	bubble->SetLocalPosition({pos.x + direction.x*100,pos.y,pos.z});
 	scene.Add(std::move(bubble));
 }
+
+void cat::BoulderPreset::SpawnBoulder(dae::Scene& scene, const glm::vec3 pos) const
+{
+	auto boulder = std::make_unique<dae::GameObject>();
+
+	// COMPONENTS
+	//----------------
+	auto boulderTexture = std::make_unique<dae::TextureComponent>(*boulder, "Enemies/Boulder.png");
+	boulder->AddComponent(std::move(boulderTexture));
+
+	auto boulderAnimation = std::make_unique<AnimationComponent>(*boulder,
+		AnimationComponent::FrameAnimationData{ 16, 16, 7, 0.3f, 0 });
+	boulder->AddComponent(std::move(boulderAnimation));
+
+	// MOVEMENT			
+	auto boulderMovement = std::make_unique<dae::MovementComponent>(*boulder,300.f);
+	boulderMovement->SetUsesGravity(false);
+	boulder->AddComponent(std::move(boulderMovement));
+
+	auto boulderC = std::make_unique<BoulderComponent>(*boulder);
+	boulderC->Direction = direction;
+	boulder->AddComponent(std::move(boulderC));
+
+	// COLLIDER
+	auto colInfo = dae::ColliderComponent::ColliderInfo{
+		dae::ColliderComponent::ColliderType::Solid, false, { 48.f, 48.f },{},
+		static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy),
+		static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player)
+	};
+	auto boulderCol = std::make_unique<dae::ColliderComponent>(*boulder, colInfo);
+	boulder->AddComponent(std::move(boulderCol));
+
+
+	auto boulderCollisionObserver = std::make_unique<EnemyCollisionObserverComponent>(*boulder);
+	boulder->AddObserver(boulderCollisionObserver.get());
+	boulder->AddComponent(std::move(boulderCollisionObserver));
+
+
+	boulder->SetLocalPosition(pos);
+	scene.Add(std::move(boulder));
+}
+
 
 void cat::ZenChanPreset::SpawnZenChan(dae::Scene& scene, const glm::vec3 pos)
 {

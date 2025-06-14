@@ -109,4 +109,33 @@ void cat::StillState::OnEnter(BubbleComponent* )
 void cat::StillState::OnExit()
 {
 }
+
+std::unique_ptr<cat::BubbleState> cat::PopState::Update(float deltaTime)
+{
+	m_PopTimer += deltaTime;
+	if (m_PopTimer >= m_PopDuration)
+	{
+		m_pBubbleComponent->GetOwner()->m_pendingRemoval = true;
+	}
+	return nullptr;
+}
+
+void cat::PopState::OnEnter(BubbleComponent* pBubble)
+{
+	m_pBubbleComponent = pBubble;
+	m_pAnimationComponent = m_pBubbleComponent->GetOwner()->GetComponent<AnimationComponent>();
+	if (!m_pAnimationComponent)
+	{
+		throw std::runtime_error("PopState requires a TextureComponent on the Bubble's GameObject.");
+	}
+	m_pAnimationComponent->FrameData = {
+		.frameCount = 2,
+		.frameDuration = 0.25f,
+		.row = 2,
+	};
+}
+
+void cat::PopState::OnExit()
+{
+}
 #pragma endregion

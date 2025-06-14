@@ -32,6 +32,12 @@ namespace cat
 		void SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) const;
 	};
 
+	struct PLayerMaitaPreset
+	{
+		bool isPlayerOne;
+		void SpawnPlayer(dae::Scene& scene, const glm::vec3 pos) const;
+	};
+
 
 	// BUBBLE
 	//----------------
@@ -41,6 +47,12 @@ namespace cat
 		glm::vec2 direction;
 
 		void SpawnBubble(dae::Scene& scene, const glm::vec3 pos) const;
+	};
+
+	struct BoulderPreset
+	{
+		glm::vec2 direction;
+		void SpawnBoulder(dae::Scene& scene, const glm::vec3 pos) const;
 	};
 
 

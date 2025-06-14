@@ -4,10 +4,9 @@
 #include <iostream>
 
 
-cat::HealthComponent::HealthComponent(dae::GameObject& owner, const int health)
-	:BaseComponent(owner), m_maxHealth(health)
+cat::HealthComponent::HealthComponent(dae::GameObject& owner)
+	:BaseComponent(owner)
 {
-	m_currentHealth = health;
 }
 
 void cat::HealthComponent::Update(float dt)

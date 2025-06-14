@@ -3,6 +3,7 @@
 #include <memory>
 #include <vec3.hpp>
 
+#include "AnimationComponent.h"
 #include "MovementComponent.h"
 
 namespace cat
@@ -57,5 +58,19 @@ namespace cat
 		std::unique_ptr<BubbleState> Update(float deltaTime) override;
 		void OnEnter(BubbleComponent* pBubble) override;
 		void OnExit() override;
+	};
+
+	class PopState : public BubbleState
+	{
+	public:
+		std::unique_ptr<BubbleState> Update(float deltaTime) override;
+		void OnEnter(BubbleComponent* pBubble) override;
+		void OnExit() override;
+	private:
+		BubbleComponent* m_pBubbleComponent = nullptr;
+		AnimationComponent* m_pAnimationComponent = nullptr;
+
+		float m_PopTimer = 0.f;
+		float m_PopDuration = 0.5f; 
 	};
 }

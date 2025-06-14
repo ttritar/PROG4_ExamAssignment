@@ -21,7 +21,7 @@ namespace cat
 		void GainScore(int amount);
 
 	private:
-		static inline int m_currentScore;
+		static inline int m_currentScore = 0;
 	};
 
 }

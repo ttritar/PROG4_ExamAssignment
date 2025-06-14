@@ -26,23 +26,23 @@ namespace cat
 
 	};
 
-	class ItemCollisionObserverComponent final : public dae::BaseComponent, public dae::Observer
+	class PlayerCollisionObserverComponent final : public dae::BaseComponent, public dae::Observer
 	{
 	public:
 		void Notify(const dae::Event& event, dae::GameObject* object) override;
 
 		// CTOR & DTOR
 		//--------------
-		ItemCollisionObserverComponent(dae::GameObject& owner)
+		PlayerCollisionObserverComponent(dae::GameObject& owner)
 			: BaseComponent(owner)
 		{
 			// No initialization needed
 		};
-		virtual ~ItemCollisionObserverComponent() = default;
-		ItemCollisionObserverComponent(const ItemCollisionObserverComponent& other) = delete;
-		ItemCollisionObserverComponent(ItemCollisionObserverComponent&& other) = delete;
-		ItemCollisionObserverComponent& operator=(const ItemCollisionObserverComponent& other) = delete;
-		ItemCollisionObserverComponent& operator=(ItemCollisionObserverComponent&& other) = delete;
+		virtual ~PlayerCollisionObserverComponent() = default;
+		PlayerCollisionObserverComponent(const PlayerCollisionObserverComponent& other) = delete;
+		PlayerCollisionObserverComponent(PlayerCollisionObserverComponent&& other) = delete;
+		PlayerCollisionObserverComponent& operator=(const PlayerCollisionObserverComponent& other) = delete;
+		PlayerCollisionObserverComponent& operator=(PlayerCollisionObserverComponent&& other) = delete;
 
 	};
 }

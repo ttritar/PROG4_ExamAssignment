@@ -297,7 +297,7 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 	//--- OTHER HIGHSCORES ---
 	{
 		auto instr = std::make_unique<dae::GameObject>();
-		instr->SetLocalPosition({ 200, 180 * 20, 0 });
+		instr->SetLocalPosition({ 200, 180, 0 });
 		auto instrTextComponent = std::make_unique<dae::TextComponent>(*instr, "PRESS B TO SAVE AND A TO CHANGE THE LETTERS!", font);
 		instr->AddComponent(std::move(instrTextComponent));
 		scene.Add(std::move(instr));

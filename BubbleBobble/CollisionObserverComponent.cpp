@@ -36,7 +36,7 @@ void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::
 
 
 		// PROJECTILE - ENEMY
-		if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Projectile) &&
+		if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble) &&
 			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy))
 		{
 			other->m_pendingRemoval = true;
@@ -47,9 +47,13 @@ void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::
 			auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
 			ItemPreset().SpawnItem(scene, other->GetLocalPosition());
 			Level::TotalEnemies--;
+			if (Level::TotalEnemies == 0 && Level::TotalPickups == 0)
+			{
+				SwitchToNextLevel();
+			}
 		}
 		else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy) &&
-			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Projectile))
+			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble))
 		{
 			thisCollider->GetOwner()->m_pendingRemoval = true;
 
@@ -59,12 +63,16 @@ void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::
 			auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
 			ItemPreset().SpawnItem(scene, thisCollider->GetOwner()->GetLocalPosition());
 			Level::TotalEnemies--;
+			if (Level::TotalEnemies == 0 && Level::TotalPickups == 0)
+			{
+				SwitchToNextLevel();
+			}
 		}
 
 	}
 }
 
-void cat::ItemCollisionObserverComponent::Notify(const dae::Event& event, dae::GameObject* object)
+void cat::PlayerCollisionObserverComponent::Notify(const dae::Event& event, dae::GameObject* object)
 {
 	if (event.id == dae::make_sdbm_hash("ColliderEnter"))
 	{
@@ -89,6 +97,11 @@ void cat::ItemCollisionObserverComponent::Notify(const dae::Event& event, dae::G
 
 			thisCollider->GetOwner()->m_pendingRemoval = true;
 			Level::TotalPickups--;
+
+			if (Level::TotalEnemies == 0 && Level::TotalPickups == 0)
+			{
+				SwitchToNextLevel();
+			}
 		}
 		else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Item) &&
 			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player))
@@ -107,5 +120,19 @@ void cat::ItemCollisionObserverComponent::Notify(const dae::Event& event, dae::G
 		}
 
 
+		// PLAYER - BUBBLE
+
+		if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player) &&
+			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble))
+		{
+			otherCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(10);
+			thisCollider->GetOwner()->GetComponent<BubbleComponent>()->ChangeState(std::make_unique<PopState>());
+		}
+		else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble) &&
+			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player))
+		{
+			thisCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(10);
+			other->GetComponent<BubbleComponent>()->ChangeState(std::make_unique<PopState>());
+		}
 	}
 }

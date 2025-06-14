@@ -21,7 +21,7 @@ namespace dae
 
 			Player = 1 << 0,
 			Enemy = 1 << 1,
-			Projectile = 1 << 2,
+			Bubble = 1 << 2,
 			Level = 1 << 3,
 			Item = 1 << 4,
 		};

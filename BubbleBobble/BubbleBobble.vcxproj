@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AttackComponent.h" />
+    <ClInclude Include="BoulderComponent.h" />
     <ClInclude Include="BubbleComponent.h" />
     <ClInclude Include="BubbleState.h" />
     <ClInclude Include="CollisionObserverComponent.h" />

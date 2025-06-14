@@ -164,6 +164,9 @@
     <ClInclude Include="HighScore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BoulderComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

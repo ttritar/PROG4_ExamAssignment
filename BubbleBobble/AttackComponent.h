@@ -8,9 +8,15 @@ namespace cat
 	class AttackComponent final : public dae::BaseComponent
 	{
 	public:
+		enum AttackType
+		{
+			Bubble,
+			Boulder
+		};
+
 		// CTOR & DTOR
 		//-------------
-		AttackComponent(dae::GameObject& owner, bool isPlayerOne);
+		AttackComponent(dae::GameObject& owner, bool isPlayerOne, const AttackType& type = Bubble );
 
 		virtual ~AttackComponent() = default;
 		AttackComponent(const AttackComponent& other) = delete;
@@ -25,5 +31,6 @@ namespace cat
 	private:
 		dae::MovementComponent* m_pMovementComponent{ nullptr };
 		bool m_IsPlayerOne{ false };
+		AttackType m_AttackType{ AttackType::Bubble };
 	};
 }

@@ -186,6 +186,12 @@ void cat::Level::LoadLevel()
 					{
 						bool isPlayerOne = object.getProp("isPlayerOne")->getValue<bool>();
 						if (m_GameMode == LevelGameMode::SinglePlayer && !isPlayerOne) continue;
+						else if (m_GameMode == LevelGameMode::Versus && !isPlayerOne)
+						{
+							PLayerMaitaPreset player = { isPlayerOne };
+							player.SpawnPlayer(m_Scene, pos);
+							continue;
+						}
 
 						PlayerPreset player = { isPlayerOne };
 						player.SpawnPlayer(m_Scene, pos);
@@ -193,15 +199,11 @@ void cat::Level::LoadLevel()
 					// ZENCHAN
 					else if (object.getName() == "ZenChan")
 					{
+						if (m_GameMode == LevelGameMode::Versus) continue;
+
 						ZenChanPreset zenChan{};
 						zenChan.SpawnZenChan(m_Scene, pos);
 						++TotalEnemies;
-					}
-					// MAITA
-					else if (object.getName() == "Maita")
-					{
-						//MaitaPreset maita{};
-						//maita.SpawnMaita(m_Scene, pos);
 					}
 				}
 			}
