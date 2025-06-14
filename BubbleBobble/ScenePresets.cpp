@@ -181,7 +181,7 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 	auto font = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 18);
 	auto textComponent = std::make_unique<dae::TextComponent>(*password, "PASSWORD:", font);
 	password->AddComponent(std::move(textComponent));
-	password->SetLocalPosition({ 200, 100, 0 });
+	password->SetLocalPosition({ 100, 100, 0 });
 	scene.Add(std::move(password));
 
 	char* passwordChars = new char[5];
@@ -205,7 +205,7 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 			dae::ServiceLocator::GetInstance().GetUIInputSystem().SetSelectedUIComponent(uiComponent.get());
 			letter->AddComponent(std::move(uiComponent));
 
-			letter->SetLocalPosition({ 200, 150, 0 });
+			letter->SetLocalPosition({ 100, 150, 0 });
 			scene.Add(std::move(letter));
 		}
 
@@ -226,7 +226,7 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 				});
 			letter->AddComponent(std::move(uiComponent));
 
-			letter->SetLocalPosition({ 225, 150, 0 });
+			letter->SetLocalPosition({ 125, 150, 0 });
 			scene.Add(std::move(letter));
 		}
 
@@ -247,7 +247,7 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 				});
 			letter->AddComponent(std::move(uiComponent));
 
-			letter->SetLocalPosition({ 250, 150, 0 });
+			letter->SetLocalPosition({ 150, 150, 0 });
 			scene.Add(std::move(letter));
 		}
 
@@ -268,7 +268,7 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 				});
 			letter->AddComponent(std::move(uiComponent));
 
-			letter->SetLocalPosition({ 275, 150, 0 });
+			letter->SetLocalPosition({ 175, 150, 0 });
 			scene.Add(std::move(letter));
 		}
 
@@ -289,23 +289,24 @@ void cat::PasswordPreset::SpawnPassword(dae::Scene& scene)
 				});
 			letter->AddComponent(std::move(uiComponent));
 
-			letter->SetLocalPosition({300, 150, 0 });
+			letter->SetLocalPosition({200, 150, 0 });
 			scene.Add(std::move(letter));
 		}
 	}
 
 	//--- OTHER HIGHSCORES ---
 	{
-		auto instr = std::make_unique<dae::GameObject>();
-		instr->SetLocalPosition({ 200, 180, 0 });
-		auto instrTextComponent = std::make_unique<dae::TextComponent>(*instr, "PRESS B TO SAVE AND A TO CHANGE THE LETTERS!", font);
+		auto instr = std::make_unique<dae::GameObject>();;
+		auto smallfont = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 12);
+		auto instrTextComponent = std::make_unique<dae::TextComponent>(*instr, "PRESS B TO SAVE AND A TO CHANGE THE LETTERS!", smallfont);
 		instr->AddComponent(std::move(instrTextComponent));
+		instr->SetLocalPosition({ 50, 500, 0 });
 		scene.Add(std::move(instr));
 
 		auto highscore = std::make_unique<dae::GameObject>();
 		auto hsTxtComp = std::make_unique<dae::TextComponent>(*highscore, "HIGHSCORES:", font);
 		highscore->AddComponent(std::move(hsTxtComp));
-		highscore->SetLocalPosition({ 200, 200, 0 });
+		highscore->SetLocalPosition({ 150, 200, 0 });
 		scene.Add(std::move(highscore));
 
 		auto othersFont = dae::ResourceManager::GetInstance().LoadFont("font.ttf", 14);

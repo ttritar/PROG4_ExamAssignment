@@ -19,6 +19,10 @@ std::unique_ptr<cat::BubbleState> cat::ShootingState::Update(float deltaTime)
 		m_ShootTimer = 0.f;
 		return std::make_unique<cat::RisingState>();
 	}
+	if (m_pBubbleComponent->Popped)
+	{
+		return std::make_unique<cat::PopState>();
+	}
 	return nullptr; 
 }
 
@@ -42,6 +46,12 @@ void cat::ShootingState::OnExit()
 #pragma region RisingState
 std::unique_ptr<cat::BubbleState> cat::RisingState::Update(float )
 {
+	if (m_pBubbleComponent->Popped)
+	{
+		return std::make_unique<cat::PopState>();
+	}
+
+
 	m_pMovementComponent->SetSpeed(m_RiseSpeed);
 	auto owner = m_pBubbleComponent->GetOwner();
 	auto pos = owner->GetWorldPosition();
@@ -101,10 +111,15 @@ void cat::RisingState::OnExit()
 #pragma region StillState
 std::unique_ptr<cat::BubbleState> cat::StillState::Update(float )
 {
+	if (m_pBubbleComponent->Popped)
+	{
+		return std::make_unique<cat::PopState>();
+	}
 	return nullptr;
 }
-void cat::StillState::OnEnter(BubbleComponent* )
+void cat::StillState::OnEnter(BubbleComponent* bubble )
 {
+	m_pBubbleComponent = bubble;
 }
 void cat::StillState::OnExit()
 {
@@ -131,7 +146,7 @@ void cat::PopState::OnEnter(BubbleComponent* pBubble)
 	m_pAnimationComponent->FrameData = {
 		.frameCount = 2,
 		.frameDuration = 0.25f,
-		.row = 2,
+		.row = 6,
 	};
 }
 

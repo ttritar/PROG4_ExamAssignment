@@ -12,7 +12,6 @@
 #pragma region Chase
 std::unique_ptr<cat::ZenChanState> cat::ChaseState::Update(float )
 {
-	std::cout << "ChaseState Update" << std::endl;
 	const auto playerObj = m_pAIComponent->GetTarget();
 	if (!playerObj) return std::make_unique<PatrolState>();
 	auto playerPos = playerObj->GetWorldPosition();

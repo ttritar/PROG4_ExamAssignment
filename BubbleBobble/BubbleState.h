@@ -58,6 +58,9 @@ namespace cat
 		std::unique_ptr<BubbleState> Update(float deltaTime) override;
 		void OnEnter(BubbleComponent* pBubble) override;
 		void OnExit() override;
+
+	private:
+		BubbleComponent* m_pBubbleComponent = nullptr;
 	};
 
 	class PopState : public BubbleState

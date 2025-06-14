@@ -151,10 +151,8 @@
     <ClCompile Include="CollisionObserverComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="HealthUIComponent.cpp" />
-    <ClCompile Include="MaitaState.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MaitaAIComponent.cpp" />
     <ClCompile Include="Presets.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreObserverComponent.cpp" />
@@ -178,9 +176,7 @@
     <ClInclude Include="PlayerSoundObserverComponent.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthUIComponent.h" />
-    <ClInclude Include="MaitaState.h" />
     <ClInclude Include="Level.h" />
-    <ClInclude Include="MaitaAIComponent.h" />
     <ClInclude Include="PlayerCommand.h" />
     <ClInclude Include="Presets.h" />
     <ClInclude Include="ScoreComponent.h" />

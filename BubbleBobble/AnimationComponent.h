@@ -24,17 +24,19 @@ namespace cat
 
 		// CTOR & DTOR
 		//-------------
-		AnimationComponent(dae::GameObject& owner, const FrameAnimationData& frameData)
+		AnimationComponent(dae::GameObject& owner, FrameAnimationData frameData)
 			:BaseComponent(owner), FrameData(frameData)
 		{
 			m_pTextureComponent = owner.GetComponent<dae::TextureComponent>();
 			if (!m_pTextureComponent) throw std::runtime_error("AnimationComponent requires a TextureComponent to function.");
-			m_pTextureComponent->SetSourceRect({
-				m_CurrentFrame* FrameData.frameWidth,
+
+			m_SrcRect = {
+				m_CurrentFrame * FrameData.frameWidth,
 				FrameData.frameHeight * FrameData.row,
 				FrameData.frameWidth,
 				FrameData.frameHeight
-				});
+			};
+			m_pTextureComponent->SrcRect=m_SrcRect;
 		}
 
 		virtual ~AnimationComponent() = default;
@@ -56,6 +58,7 @@ namespace cat
 		// Private Members
 		//-----------------
 		dae::TextureComponent* m_pTextureComponent;
+		SDL_Rect m_SrcRect;
 
 		int m_CurrentFrame{ 0 };
 		float m_ElapsedTime{ 0.0f };

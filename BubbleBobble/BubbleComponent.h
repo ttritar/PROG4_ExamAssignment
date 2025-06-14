@@ -8,6 +8,13 @@ namespace cat
 	class BubbleComponent : public dae::BaseComponent
 	{
 	public:
+		enum class TrappedEnemyType
+		{
+			None,
+			ZenChan,
+			Maita
+		};
+
 		// CTOR & DTOR
 		//-------------
 		BubbleComponent(dae::GameObject& owner)
@@ -16,6 +23,23 @@ namespace cat
 			m_CurrentState = std::make_unique<ShootingState>();
 			m_CurrentState->OnEnter(this);
 		}
+		BubbleComponent(dae::GameObject& owner, TrappedEnemyType enemy)
+			: BaseComponent(owner)
+		{
+			m_CurrentState = std::make_unique<RisingState>();
+			m_CurrentState->OnEnter(this);
+
+			if (enemy == TrappedEnemyType::ZenChan)
+			{
+				owner.GetComponent<AnimationComponent>()->FrameData.row += 2;
+			}
+			else if (enemy == TrappedEnemyType::Maita)
+			{
+				owner.GetComponent<AnimationComponent>()->FrameData.row += 4;
+			}
+			HasTrapped = true;
+		}
+
 		virtual ~BubbleComponent() = default;
 		BubbleComponent(const BubbleComponent& other) = delete;
 		BubbleComponent(BubbleComponent&& other) = delete;
@@ -54,6 +78,8 @@ namespace cat
 
 
 		glm::vec2 Direction{ 1,0 };
+		bool HasTrapped{ false };
+		bool Popped{false};
 
 	private:
 		std::unique_ptr<BubbleState> m_CurrentState;

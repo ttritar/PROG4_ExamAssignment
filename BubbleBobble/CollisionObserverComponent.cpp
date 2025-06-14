@@ -6,6 +6,7 @@
 
 #include "Presets.h"
 #include "ScenePresets.h"
+#include "ZenChanAIComponent.h"
 
 void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::GameObject* object)
 {
@@ -39,33 +40,48 @@ void cat::EnemyCollisionObserverComponent::Notify(const dae::Event& event, dae::
 		if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble) &&
 			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy))
 		{
-			other->m_pendingRemoval = true;
-
-			// bubble
-			thisCollider->GetOwner()->m_pendingRemoval = true;
-
-			auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
-			ItemPreset().SpawnItem(scene, other->GetLocalPosition());
-			Level::TotalEnemies--;
-			if (Level::TotalEnemies == 0 && Level::TotalPickups == 0)
+			if (!other->GetComponent<BubbleComponent>()->HasTrapped)
 			{
-				SwitchToNextLevel();
+				other->m_pendingRemoval = true;
+				BubbleComponent::TrappedEnemyType type = BubbleComponent::TrappedEnemyType::Maita;
+				if (other->GetComponent<ZenChanAIComponent>()) type = BubbleComponent::TrappedEnemyType::ZenChan;
+
+
+				//bubble
+				auto pos = thisCollider->GetOwner()->GetLocalPosition();
+				thisCollider->GetOwner()->m_pendingRemoval = true;
+				bool isPlayerOne = thisCollider->GetOwner()->GetComponent<AnimationComponent>()->FrameData.row == 0 ;
+				other->m_pendingRemoval = true;
+
+				auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
+				BubblePreset{
+					.isPlayerOne = isPlayerOne,
+					.direction = {},
+					.type = type
+				}.SpawnBubble(scene, pos);
 			}
 		}
-		else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy) &&
+		else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Enemy) && 
 			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble))
 		{
-			thisCollider->GetOwner()->m_pendingRemoval = true;
-
-			//bubble
-			other->m_pendingRemoval = true;
-
-			auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
-			ItemPreset().SpawnItem(scene, thisCollider->GetOwner()->GetLocalPosition());
-			Level::TotalEnemies--;
-			if (Level::TotalEnemies == 0 && Level::TotalPickups == 0)
+			if (!thisCollider->GetOwner()->GetComponent<BubbleComponent>()->HasTrapped)
 			{
-				SwitchToNextLevel();
+				thisCollider->GetOwner()->m_pendingRemoval = true;
+				BubbleComponent::TrappedEnemyType type = BubbleComponent::TrappedEnemyType::Maita;
+				if (thisCollider->GetOwner()->GetComponent<ZenChanAIComponent>()) type = BubbleComponent::TrappedEnemyType::ZenChan;
+			
+			
+				//bubble
+				auto pos = other->GetLocalPosition();
+				bool isPlayerOne = other->GetComponent<AnimationComponent>()->FrameData.row == 0;
+				other->m_pendingRemoval = true;
+			
+				auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
+				BubblePreset{
+					.isPlayerOne = isPlayerOne,
+					.direction = {},
+					.type = type
+				}.SpawnBubble(scene, pos);
 			}
 		}
 
@@ -88,22 +104,7 @@ void cat::PlayerCollisionObserverComponent::Notify(const dae::Event& event, dae:
 
 
 		// PLAYER - ITEM
-		if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player) &&
-			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Item))
-		{
-			// random nmber between 1000 and 5000
-			int randomScore = rand() % 4000 + 1000;
-			thisCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(randomScore);
-
-			thisCollider->GetOwner()->m_pendingRemoval = true;
-			Level::TotalPickups--;
-
-			if (Level::TotalEnemies == 0 && Level::TotalPickups == 0)
-			{
-				SwitchToNextLevel();
-			}
-		}
-		else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Item) &&
+		if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Item) &&
 			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player))
 		{
 			// random nmber between 1000 and 5000
@@ -113,7 +114,7 @@ void cat::PlayerCollisionObserverComponent::Notify(const dae::Event& event, dae:
 			other->m_pendingRemoval = true;
 			Level::TotalPickups--;
 
-			if (Level::TotalEnemies == 0 && Level::TotalPickups == 0)
+			if (Level::TotalEnemies <= 0 && Level::TotalPickups <= 0)
 			{
 				SwitchToNextLevel();
 			}
@@ -121,18 +122,30 @@ void cat::PlayerCollisionObserverComponent::Notify(const dae::Event& event, dae:
 
 
 		// PLAYER - BUBBLE
-
-		if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player) &&
-			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble))
-		{
-			otherCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(10);
-			thisCollider->GetOwner()->GetComponent<BubbleComponent>()->ChangeState(std::make_unique<PopState>());
-		}
-		else if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble) &&
+		if (otherCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Bubble) &&
 			thisCollider->Info.tag == static_cast<uint32_t>(dae::ColliderComponent::ColliderTag::Player))
 		{
-			thisCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(10);
-			other->GetComponent<BubbleComponent>()->ChangeState(std::make_unique<PopState>());
+			auto bubble = other->GetComponent<BubbleComponent>();
+			if (!bubble->Popped)
+			{
+				bubble->Popped = true;
+				other->m_pendingRemoval = true; 
+
+				thisCollider->GetOwner()->GetComponent<ScoreComponent>()->GainScore(10);
+				bubble->ChangeState(std::make_unique<PopState>());
+				if (bubble->HasTrapped)
+				{
+					auto& scene = dae::SceneManager::GetInstance().GetActiveScene();
+					ItemPreset().SpawnItem(scene, other->GetLocalPosition());
+
+					--Level::TotalEnemies;
+					if (Level::TotalEnemies <= 0 && Level::TotalPickups <= 0)
+					{
+						SwitchToNextLevel();
+					}
+				}
+			}
 		}
+
 	}
 }

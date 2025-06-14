@@ -1,25 +1,9 @@
 #pragma once
 #include "Scene.h"
 
-#include "AnimationComponent.h"
-#include "AttackComponent.h"
 #include "BubbleComponent.h"
 #include "ColliderComponent.h"
-#include "CollisionObserverComponent.h"
-#include "MovementComponent.h"
 #include "TextureComponent.h"
-#include "HealthComponent.h"
-#include "ZenChanAIComponent.h"
-#include "HealthObserverComponent.h"
-#include "PlayerSoundObserverComponent.h"
-#include "ScoreObserverComponent.h"
-
-
-#include "InputManager.h"
-#include "PlayerCommand.h"
-#include "ScoreComponent.h"
-#include "ServiceLocator.h"
-#include "WindowInfo.h"
 
 namespace cat
 {
@@ -45,6 +29,7 @@ namespace cat
 	{
 		bool isPlayerOne;
 		glm::vec2 direction;
+		BubbleComponent::TrappedEnemyType type = BubbleComponent::TrappedEnemyType::None;
 
 		void SpawnBubble(dae::Scene& scene, const glm::vec3 pos) const;
 	};

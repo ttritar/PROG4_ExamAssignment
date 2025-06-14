@@ -51,12 +51,6 @@
     <ClCompile Include="Level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MaitaState.cpp">
-      <Filter>Source Files\States</Filter>
-    </ClCompile>
-    <ClCompile Include="MaitaAIComponent.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="BubbleState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
@@ -100,12 +94,6 @@
   <ItemGroup>
     <ClInclude Include="Level.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MaitaState.h">
-      <Filter>Header Files\States</Filter>
-    </ClInclude>
-    <ClInclude Include="MaitaAIComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Presets.h">
       <Filter>Header Files\Presets</Filter>

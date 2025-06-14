@@ -1,5 +1,21 @@
 #include "Presets.h"
 
+#include "HealthComponent.h"
+#include "ZenChanAIComponent.h"
+#include "HealthObserverComponent.h"
+#include "PlayerSoundObserverComponent.h"
+#include "ScoreObserverComponent.h"
+
+#include "CollisionObserverComponent.h"
+#include "MovementComponent.h"
+#include "AnimationComponent.h"
+#include "AttackComponent.h"
+
+#include "InputManager.h"
+#include "PlayerCommand.h"
+#include "ScoreComponent.h"
+#include "ServiceLocator.h"
+#include "WindowInfo.h"
 #include "BoulderComponent.h"
 #include "Level.h"
 
@@ -161,9 +177,18 @@ void cat::BubblePreset::SpawnBubble(dae::Scene& scene, const glm::vec3 pos) cons
 	bubbleMovement->SetUsesGravity(false);
 	bubble->AddComponent(std::move(bubbleMovement));
 
-	auto bubbleC = std::make_unique<BubbleComponent>(*bubble);
-	bubbleC->Direction = direction;
-	bubble->AddComponent(std::move(bubbleC));
+	if (type == BubbleComponent::TrappedEnemyType::None)
+	{
+		auto bubbleC = std::make_unique<BubbleComponent>(*bubble);
+		bubbleC->Direction = direction;
+		bubble->AddComponent(std::move(bubbleC));
+	}
+	else
+	{
+		auto bubbleC = std::make_unique<BubbleComponent>(*bubble,type);
+		bubbleC->Direction = direction;
+		bubble->AddComponent(std::move(bubbleC));
+	}
 
 	// COLLIDER
 	auto colInfo = dae::ColliderComponent::ColliderInfo{
@@ -175,10 +200,10 @@ void cat::BubblePreset::SpawnBubble(dae::Scene& scene, const glm::vec3 pos) cons
 	bubble->AddComponent(std::move(bubbleCol));
 
 
-	
 	bubble->SetLocalPosition({pos.x + direction.x*100,pos.y,pos.z});
 	scene.Add(std::move(bubble));
 }
+
 
 void cat::BoulderPreset::SpawnBoulder(dae::Scene& scene, const glm::vec3 pos) const
 {
@@ -278,15 +303,20 @@ void cat::ItemPreset::SpawnItem(dae::Scene& scene, const glm::vec3 pos)
 {
 	auto item = std::make_unique<dae::GameObject>();
 
-	auto movement = std::make_unique<dae::MovementComponent>(*item, 0.f, 0.f);
+	glm::vec2 initialVelocity{
+		(rand() % 2 == 0 ? -1.f : 1.f) * (50.f + rand() % 50),
+		-150.f // Upward velocity
+	};
+	auto movement = std::make_unique<dae::MovementComponent>(*item, initialVelocity.x, initialVelocity.y);
+	movement->Jump();
 	movement->SetUsesGravity(true);
 	item->AddComponent(std::move(movement));
 
 	auto texture = std::make_unique<dae::TextureComponent>(*item, "Enemies/Items.png");
 	int itemIdx = rand() % 9;
-	texture->SetSourceRect({
+	texture->SrcRect={
 		static_cast<int>(16.f * itemIdx),
-		0, 16 ,16 });
+		0, 16 ,16 };
 	item->AddComponent(std::move(texture));
 
 	auto col = std::make_unique<dae::ColliderComponent>(*item,
@@ -301,7 +331,7 @@ void cat::ItemPreset::SpawnItem(dae::Scene& scene, const glm::vec3 pos)
 	// OBSERTVER
 
 
-	item->SetLocalPosition(pos);
+	item->SetLocalPosition({ pos.x + initialVelocity.x / 2,pos.y + initialVelocity.y / 2,pos.z });
 	scene.Add(std::move(item));
 
 	Level::TotalPickups++;

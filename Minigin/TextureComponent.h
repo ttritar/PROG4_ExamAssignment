@@ -22,15 +22,6 @@ namespace dae
 		void Update(float) override;
 		void Render() const override;
 
-		void SetSourceRect(SDL_Rect srcRect)
-		{
-			m_pTexture->SetSourceRect(srcRect);
-		}
-		SDL_Rect GetSourceRect() const
-		{
-			return *m_pTexture->GetSourceRect();
-		}
-
 
 		// CTOR & DTOR
 		//-------------
@@ -48,6 +39,7 @@ namespace dae
 
 		float Scale{ g_BASE_SCALE };
 
+		SDL_Rect SrcRect{ 0, 0, 0, 0 };
 	private:
 		dae::Texture2D* m_pTexture{};
 		glm::vec2 m_DestSize{};
